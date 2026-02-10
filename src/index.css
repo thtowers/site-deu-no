@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+:root {
+    --font-display: 'Playfair Display', serif;
+    --font-elegant: 'Cormorant Garamond', serif;
+    --font-body: 'Poppins', sans-serif;
+    /* Paleta Verde Cinza Elegante */
+    --color-sage-light: #a9b4aa;
+    --color-olive-medium: #78877a;
+    --color-forest-dark: #3f4d41;
+    /* Neutros */
+    --color-off-white: #faf9f7;
+    --color-beige: #f5f3f0;
+    --color-gray-light: #e8e6e3;
+    /* Destaques quentes (opcional) */
+    --color-terracotta: #c97d60;
+    --color-copper: #b87333;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-off-white);
+}
