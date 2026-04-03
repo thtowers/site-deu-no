@@ -4,20 +4,24 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const banners = [
     {
-        desktop: '/assets/Douré-desktop.jpeg',
-        mobile: '/assets/Mobile/doure.mobile.jpeg'
+        desktop: '/assets/Amago_desktop.jpg',
+        mobile: '/assets/Mobile/Amago_mobile.jpg'
     },
     {
-        desktop: '/assets/Vento-desktop.jpeg',
-        mobile: '/assets/Mobile/vento.mobile.jpeg'
+        desktop: '/assets/Vínculo2_desktop.jpg',
+        mobile: '/assets/Mobile/Vinculo_mobile.jpg'
     },
     {
-        desktop: '/assets/Solene-desktop.png',
-        mobile: '/assets/Mobile/solene.mobile.jpeg'
+        desktop: '/assets/Traço_desktop.jpg',
+        mobile: '/assets/Mobile/Traço_mobile.jpg'
     },
     {
-        desktop: '/assets/Sopro-desktop.jpeg',
-        mobile: '/assets/Mobile/sopro.mobile.jpeg'
+        desktop: '/assets/Angulo_desktop.jpg',
+        mobile: '/assets/Mobile/Angulo_mobile.jpg'
+    },
+    {
+        desktop: '/assets/Ciclo_desktop.jpg',
+        mobile: '/assets/Mobile/Ciclo_mobile.jpg'
     }
 ];
 
@@ -25,11 +29,12 @@ const Hero = () => {
     const [current, setCurrent] = useState(0);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrent((prev) => (prev + 1) % banners.length);
-        }, 5000);
-        return () => clearInterval(timer);
-    }, []);
+        const duration = current === 0 ? 10000 : 5000; // 10 segundos para Âmago, 5 para os outros
+        const timer = setTimeout(() => {
+            next();
+        }, duration);
+        return () => clearTimeout(timer);
+    }, [current]);
 
     const next = () => setCurrent((prev) => (prev + 1) % banners.length);
     const prev = () => setCurrent((prev) => (prev - 1 + banners.length) % banners.length);

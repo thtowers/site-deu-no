@@ -3,12 +3,12 @@ import ProductCard from './ProductCard';
 import ElegantDivider from './ElegantDivider';
 
 const ProductsSection = () => {
-    const [imageSrc, setImageSrc] = useState("/assets/chocolate.jpeg");
+    const [imageSrc, setImageSrc] = useState("/assets/Produtos/Rastro.png");
 
     const handleImageError = () => {
-        // Tenta .jpg se .jpeg falhar
-        if (imageSrc.endsWith('.jpeg')) {
-            setImageSrc("/assets/chocolate.jpg");
+        // Tenta .jpg se .png falhar (caso você mude o formato depois)
+        if (imageSrc.endsWith('.png')) {
+            setImageSrc("/assets/Produtos/Rastro.jpg");
         }
     };
 
@@ -28,95 +28,153 @@ const ProductsSection = () => {
                     </p>
                 </div>
 
-                {/* Produto Choco */}
+                {/* Produto Rastro */}
                 <ProductCard
-                    name="Choco"
-                    description="Acompanha um brinco de argola elegante, com detalhe em dourado e acabamento em preto texturizado, criando um contraste sofisticado que adiciona um toque de modernidade e refinamento ao visual."
-                    price="R$ 29,90"
-                    imageSrc={imageSrc}
-                    mobileImageSrc="assets\chocolate.jpeg"
-                    badgeText="Exclusivo"
+                    id="colares"
+                    name="Colar Rastro"
+                    description={"Forte, marcante, inesquecível — como você.\n \n Outras opções de cores disponíveis"}
+                    price=" R$40,00"
+                    imageSrc={["/assets/Produtos/Rastro.png", "/assets/Produtos/Rastro2.jpeg"]}
+                    mobileImageSrc="/assets/Produtos/Rastro.png"
+                    badgeText="Coleção Âmago"
                     onImageError={handleImageError}
                     reversed={false}
                 />
 
                 <ElegantDivider />
 
-                {/* Produto Rio */}
+                {/* Produto Fluxo */}
                 <ProductCard
-                    name="Rio"
-                    description="Inspirado nas belezas naturais do Rio de Janeiro, este brinco de argola apresenta um design fluido e elegante, com detalhes que remetem às ondas do mar e ao brilho do sol. Uma peça única que captura a essência da cidade maravilhosa."
-                    price="R$ 49,90"
-                    imageSrc="/Logo/Pessoas/rio.jpeg"
-                    mobileImageSrc="/Logo/Pessoas/rio.jpeg"
-                    badgeText="Novo"
+                    name="Colar Fluxo"
+                    description={"Um colar, infinitas versões de você. \n \n Outras opções de cores disponíveis"}
+                    price=" R$ 45,00"
+                    imageSrc={["/assets/Produtos/Fluxo.png", "/assets/Produtos/Fluxo2.png"]}
+                    mobileImageSrc="/assets/Produtos/Fluxo.png"
+                    badgeText="Coleção Âmago"
                     onImageError={handleImageError}
                     reversed={true}
                 />
 
                 <ElegantDivider />
 
-                {/* Produto Adidas */}
+                {/* Produto Traço */}
                 <ProductCard
-                    name="Adidas"
-                    description="Colar"
-                    price="R$ 39,90"
-                    imageSrc="/assets/adidas.jpeg"
-                    badgeText="Novo"
+                    name="Colar Traço"
+                    description={["A força do simples bem definido. \n \n Outras opções de cores disponíveis"]}
+                    price="R$ 58,00"
+                    imageSrc={["/assets/Produtos/Traço.jpeg", "/assets/Produtos/Traço2.png"]}
+                    mobileImageSrc="/assets/Produtos/Traço.jpeg"
+                    badgeText="Coleção Âmago"
                     reversed={false}
                 />
 
                 <ElegantDivider />
 
-                {/* Produto Luvas */}
+                {/* Produto Ângulo */}
                 <ProductCard
-                    name="Luvas"
-                    description="Luvas exclusivas com design único e acabamento impecável."
-                    price="R$ 49,90"
-                    imageSrc="/assets/luva.jpeg"
-                    mobileImageSrc="/assets/luva.jpeg"
-                    badgeText="Novo"
+                    name="Colar Ângulo "
+                    description={["Impacto sutil, elegância absoluta. \n \n Outras opções de cores disponíveis"]}
+                    price="R$ 60,00"
+                    imageSrc={["/assets/Produtos/Angulo.png", "/assets/Produtos/Angulo2.jpeg"]}
+                    mobileImageSrc="/assets/Produtos/Angulo.png"
+                    badgeText="Coleção Âmago"
                     reversed={true}
                 />
 
                 <ElegantDivider />
 
-                {/* Produto Carro */}
+                {/* Produto Vínculo */}
                 <ProductCard
-                    name="Carro"
-                    description="Colar"
-                    price="R$ 59,90"
-                    imageSrc="/assets/carro.jpeg"
-                    badgeText="Exclusivo"
+                    name="Colar Vínculo "
+                    description={["moderno no design, forte na personalidade. \n \n Outras opções de cores disponíveis"]}
+                    price="R$ 65,00"
+                    imageSrc={["/assets/Produtos/Vinculo.png", "/assets/Produtos/Vinculo2.png"]}
+                    mobileImageSrc="/assets/Produtos/Vinculo.png"
+                    badgeText="Coleção Âmago"
                     reversed={false}
                 />
 
                 <ElegantDivider />
 
-                {/* Produto Listrado */}
+                {/* Produto Eixo */}
                 <ProductCard
-                    name="Listrado"
-                    description="Um mar de listras que conta histórias. Este colar traz um padrão hipnotizante em preto e branco, combinando a ousadia geométrica com a leveza de um design artesanal. Perfeito para quem não tem medo de ser notado."
-                    price="R$ 49,90"
+                    name="Colar Eixo"
+                    description={["O equilíbrio entre quem você é e o que você mostra. \n \n Outras opções de cores disponíveis"]}
+                    price="R$ 70,00"
                     imageSrc="/assets/listrado.jpeg"
                     mobileImageSrc="/assets/listrado.jpeg"
-                    badgeText="Tendência"
+                    badgeText="Coleção Âmago"
                     reversed={true}
                 />
 
                 <ElegantDivider />
 
-                {/* Produto Mão */}
+                {/* Produto Ciclo */}
                 <ProductCard
-                    name="Mão"
-                    description="A arte em sua forma mais pura. Este colar apresenta um pingente esculpido em formato de mão, simbolizando a criatividade e o toque humano. Uma peça poética que transforma o visual em uma declaração de estilo."
-                    price="R$ 49,90"
-                    imageSrc="/assets/mão.jpeg"  
-                    mobileImageSrc="/assets/mão.jpeg"
-                    badgeText="Artesanal"
+                    name="Colar Ciclo"
+                    description={["Para quem transforma presença em assinatura. \n \n Outras opções de cores disponíveis"]}
+                    price="R$ 80,00"
+                    imageSrc={["/assets/Produtos/Ciclo.jpeg", "/assets/Produtos/Ciclo2.jpeg"]}
+                    mobileImageSrc="/assets/Produtos/Ciclo.jpeg"
+                    badgeText="Coleção Âmago"
                     reversed={false}
                 />
 
+                <ElegantDivider />
+
+                {/* Produto Eco */}
+                <ProductCard
+                    name="Colar Eco"
+                    description={["elegante hoje, atemporal sempre. \n \n Outras opções de cores disponíveis"]}
+                    price="R$ 80,00"
+                    imageSrc={["/assets/Produtos/Ciclo.jpeg", "/assets/Produtos/Ciclo2.jpeg"]}
+                    mobileImageSrc="/assets/Produtos/Ciclo.jpeg"
+                    badgeText="Coleção Âmago"
+                    reversed={true}
+                />
+
+                <ElegantDivider />
+
+                {/* Produto Elo */}
+                <ProductCard
+                    id="pulseiras"
+                    name="Pulseira Elo"
+                    description={"Presença que se impõe, estilo que permanece. \n \n Outras opções de cores disponíveis"}
+                    price="R$ 45,00"
+                    imageSrc={["/assets/Produtos/Elo.jpeg", "/assets/Produtos/Elo2.jpeg"]}
+                    mobileImageSrc="/assets/Produtos/Elo.jpeg"
+                    /* badgeText="Coleção Âmago" */
+                    reversed={false}
+                />
+
+                <ElegantDivider />
+
+                {/* Produto Orvalho */}
+                <ProductCard
+                    name="Pulseira Orvalho"
+                    description={"Sutil no olhar, marcante no sentir. \n \n Outras opções de cores disponíveis"}
+                    price="R$ 45,00"
+                    imageSrc={["/assets/Produtos/Orvalho.jpeg", "/assets/Produtos/Orvalho2.jpeg"]}
+                    mobileImageSrc="/assets/Produtos/Orvalho.jpeg"
+                    /* badgeText="Coleção Âmago" */
+                    reversed={true}
+                />
+
+                <ElegantDivider />
+
+                {/* Produto Laço */}
+                <ProductCard
+                    name="Pulseira Laço"
+                    description={"Feito para destacar quem você é. \n \n Outras opções de cores disponíveis"}
+                    price="R$ 50,00"
+                    imageSrc={["/assets/Produtos/Laço.jpeg", "/assets/Produtos/Laço2.jpeg"]}
+                    mobileImageSrc="/assets/Produtos/Laço.jpeg"
+                    /* badgeText="Coleção Âmago" */
+                    reversed={false}
+                />
+
+
+                <div id="brincos" className="pb-8"></div>
             </div>
         </section>
     );

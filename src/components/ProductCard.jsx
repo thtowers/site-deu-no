@@ -1,8 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 
 const ProductCard = ({
+    id,
     name,
     description,
     price,
@@ -12,12 +14,30 @@ const ProductCard = ({
     reversed = false,
     onImageError
 }) => {
+    // Garantir que imageSrc seja sempre um array para facilitar a lógica
+    const images = Array.isArray(imageSrc) ? imageSrc : [imageSrc];
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const nextImage = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+    };
+
+    const prevImage = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    };
+
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-    const fullImageUrl = imageSrc?.startsWith('http') ? imageSrc : `${baseUrl}${imageSrc}`;
+    const currentImage = images[currentIndex];
+    const fullImageUrl = currentImage?.startsWith('http') ? currentImage : `${baseUrl}${currentImage}`;
     const whatsappMessage = `Olá! Tenho interesse no produto ${name} (${price}).\n\n${description}\n\nImagem: ${encodeURI(fullImageUrl)}`;
 
     return (
         <motion.div
+            id={id}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -28,19 +48,78 @@ const ProductCard = ({
                 borderColor: '#e8e6e3'
             }}
         >
-            <div className={`flex flex-col ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
+            <div className={`flex flex-col ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-stretch`}>
                 {/* Imagem */}
-                <div className="lg:w-1/2 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-linear-to-br from-black/5 to-transparent z-10"></div>
-                    <picture>
-                        {mobileImageSrc && <source media="(max-width: 768px)" srcSet={mobileImageSrc} />}
-                        <img
-                            src={imageSrc}
-                            alt={`${name} - Joia Exclusiva`}
-                            className="w-full h-full object-cover min-h-[300px] md:min-h-[400px] lg:min-h-[600px]"
-                            onError={onImageError}
-                        />
-                    </picture>
+                <div 
+                    className="lg:w-1/2 relative overflow-hidden bg-[#f3f2f0] group self-stretch flex flex-col justify-center"
+                    style={{ touchAction: 'pan-y' }}
+                >
+                    <div className="absolute inset-0 bg-linear-to-br from-black/5 to-transparent z-10 pointer-events-none"></div>
+                    
+                    <AnimatePresence initial={false} mode="wait">
+                        <motion.div
+                            key={currentIndex}
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.02 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.7}
+                            onDragEnd={(_, info) => {
+                                const swipeThreshold = 50;
+                                if (info.offset.x < -swipeThreshold) {
+                                    nextImage({ preventDefault: () => {}, stopPropagation: () => {} });
+                                } else if (info.offset.x > swipeThreshold) {
+                                    prevImage({ preventDefault: () => {}, stopPropagation: () => {} });
+                                }
+                            }}
+                            className="w-full h-auto cursor-grab active:cursor-grabbing touch-none"
+                        >
+                            <picture className="pointer-events-none select-none w-full h-full block">
+                                {mobileImageSrc && currentIndex === 0 && <source media="(max-width: 768px)" srcSet={mobileImageSrc} />}
+                                <img
+                                    src={currentImage}
+                                    alt={`${name} - Joia Exclusiva`}
+                                    className="w-full h-auto object-cover pointer-events-none block"
+                                    onError={onImageError}
+                                />
+                            </picture>
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Setas de Navegação */}
+                    {images.length > 1 && (
+                        <>
+                            <button
+                                onClick={prevImage}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white/40"
+                                aria-label="Imagem anterior"
+                            >
+                                <ChevronLeft size={24} />
+                            </button>
+                            <button
+                                onClick={nextImage}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white/40"
+                                aria-label="Próxima imagem"
+                            >
+                                <ChevronRight size={24} />
+                            </button>
+
+                            {/* Indicadores (Pontos) */}
+                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                                {images.map((_, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                                            idx === currentIndex ? 'bg-white w-4' : 'bg-white/40'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    )}
+
                     {badgeText && (
                         <div className={`absolute top-4 md:top-6 ${reversed ? 'right-4 md:right-6' : 'left-4 md:left-6'} z-20`}>
                             <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs font-semibold tracking-wider uppercase" style={{
@@ -76,7 +155,8 @@ const ProductCard = ({
                         <p className="leading-relaxed text-base md:text-lg font-light tracking-wide" style={{
                             fontFamily: "'Poppins', sans-serif",
                             lineHeight: '1.8',
-                            color: '#78877a'
+                            color: '#78877a',
+                            whiteSpace: 'pre-line'
                         }}>
                             {description}
                         </p>
