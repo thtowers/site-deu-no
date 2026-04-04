@@ -79,16 +79,20 @@ const Footer = () => {
 
                     {/* Creator Credit */}
                     <a
-                        href="https://www.towersdigital.com.br"
+                        href="https://www.linkedin.com/in/thiago-torres-77151a90/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group flex items-center gap-3 px-5 py-2 rounded-full bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-black/5"
+                        className="group flex items-center gap-2 md:gap-3 px-4 py-1.5 md:py-2 rounded-full bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-black/5"
                     >
-                        <span className="text-[10px] md:text-xs uppercase tracking-widest opacity-60 text-black font-medium">Desenvolvido por</span>
+                        <span className="text-[9px] md:text-[10px] uppercase tracking-widest opacity-60 text-black font-medium">
+                            <span className="font-light">Desenvolvedor</span>
+                            <span className="mx-1 md:mx-1.5 opacity-40 font-light">|</span>
+                            Thiago Torres
+                        </span>
                         <img
-                            src="/logo/Logo_towers.webp"
+                            src="/assets/logo/LI.png"
                             alt="Towers Digital"
-                            className="h-16 md:h-20 w-auto object-contain"
+                            className="h-6 md:h-8 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                         />
                     </a>
                 </div>
