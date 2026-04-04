@@ -11,7 +11,7 @@ const Header = () => {
     useEffect(() => {
         const link = document.createElement('link');
         link.rel = 'icon';
-        link.href = '/assets/logo/logo_deuNó.5.webp';
+        link.href = '/public/assets/logo/Deu_No_favicon.png';
         document.head.appendChild(link);
     }, []);
     // Hook para detectar scroll
