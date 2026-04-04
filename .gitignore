@@ -24,3 +24,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Unused and Removed artifacts
+remove/
+public/assets/remove/

@@ -1,20 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [logoError, setLogoError] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    // Adiciona o favicon
+    useEffect(() => {
+        const link = document.createElement('link');
+        link.rel = 'icon';
+        link.href = '/assets/logo/logo_deuNó.5.webp';
+        document.head.appendChild(link);
+    }, []);
+    // Hook para detectar scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+    // Hook para scroll suave
+    const handleSmoothScroll = (e, href) => {
+        if (!href.startsWith('#')) return;
+        e.preventDefault();
+
+        // Garante o fechamento do menu no mobile de imediato antes do scroll
+        setIsOpen(false);
+        // Hook para scroll suave
+        const targetId = href.substring(1);
+        const elem = document.getElementById(targetId);
+
+        if (elem) {
+            // Um pequeno delay resolve o problema de navegadores mobile congelarem animações durante o scroll nativo
+            setTimeout(() => {
+                const headerOffset = 80;
+                const elementPosition = elem.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }, 150);
+        }
+    };
 
     const menuItems = [
-        { name: 'Início', href: '#' },
+        { name: 'Início', href: '#amago' },
         { name: 'Colares', href: '#colares' },
         { name: 'Pulseiras', href: '#pulseiras' },
         { name: 'Brincos', href: '#brincos' },
         { name: 'Qualidade', href: '#qualidade' },
         { name: 'Contato', href: '#contato' },
     ];
-
+    // Variações de animação
     const listVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -36,17 +77,18 @@ const Header = () => {
     };
 
     // Codifica o nome do arquivo para lidar com espaços e caracteres especiais
-    const logoPath = encodeURI("/assets/logo_deuNó.5.png");
+    const logoPath = encodeURI("/assets/logo/logo_deuNó.5.webp");
 
+    // Renderização do header
     return (
-        <header className="w-full shadow-sm" style={{ backgroundColor: 'var(--color-off-white)' }}>
-            <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <header className={`w-full shadow-sm sticky top-0 z-50 transition-all duration-500 ${isScrolled ? 'py-1 lg:py-2' : 'py-3'}`} style={{ backgroundColor: 'var(--color-off-white)' }}>
+            <div className="container mx-auto px-4 flex justify-between items-center">
                 <div className="flex items-center" style={{ color: 'var(--color-forest-dark)' }}>
                     {!logoError ? (
                         <img
                             src={logoPath}
                             alt="Deu Nó"
-                            className="h-16 md:h-20 lg:h-24 opacity-90 transition-opacity hover:opacity-100"
+                            className={`transition-all duration-500 hover:opacity-100 ${isScrolled ? 'h-10 md:h-12 lg:h-14 opacity-100' : 'h-16 md:h-20 lg:h-24 opacity-90'}`}
                             style={{
                                 mixBlendMode: 'multiply',
                                 filter: 'contrast(1.15) brightness(1.1)'
@@ -58,12 +100,13 @@ const Header = () => {
                     )}
                 </div>
 
-                {/* Desktop Menu */}
+                {/* Menu Desktop */}
                 <nav className="hidden md:flex gap-12">
                     {menuItems.map((item) => (
                         <a
                             key={item.name}
                             href={item.href}
+                            onClick={(e) => handleSmoothScroll(e, item.href)}
                             className="font-medium tracking-wide uppercase text-sm transition-all relative group"
                             style={{ color: 'var(--color-olive-medium)' }}
                         >
@@ -74,7 +117,7 @@ const Header = () => {
                 </nav>
 
 
-                {/* Social Media Icons - Desktop Only */}
+                {/* Redes Sociais - Desktop */}
                 <div className="hidden md:flex items-center gap-6">
                     <a
                         href="https://www.instagram.com/usedeuno?igsh=NWhvMnB3ZjB3NWs%3D"
@@ -84,7 +127,7 @@ const Header = () => {
                         aria-label="Instagram"
                     >
                         <img
-                            src="/assets/Instagram_Glyph_Gradient.png"
+                            src="/assets/logo/Instagram_Glyph_Gradient.webp"
                             alt="Instagram"
                             className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity"
                         />
@@ -106,7 +149,7 @@ const Header = () => {
                         aria-label="Shopee"
                     >
                         <img
-                            src="/Logo/Shopee.png"
+                            src="/assets/logo/Shopee.webp"
                             alt="Shopee"
                             className="h-7 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
                         />
@@ -142,7 +185,7 @@ const Header = () => {
                         className="md:hidden border-t overflow-hidden"
                         style={{ backgroundColor: 'var(--color-off-white)', borderColor: 'var(--color-gray-light)' }}
                     >
-                        <motion.nav 
+                        <motion.nav
                             className="flex flex-col p-6 gap-6"
                             variants={listVariants}
                             initial="hidden"
@@ -158,7 +201,7 @@ const Header = () => {
                                     style={{ color: 'var(--color-olive-medium)', '--hover-color': 'var(--color-forest-dark)' }}
                                     onMouseEnter={(e) => e.currentTarget.style.color = e.currentTarget.style.getPropertyValue('--hover-color')}
                                     onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-olive-medium)'}
-                                    onClick={() => setIsOpen(false)}
+                                    onClick={(e) => handleSmoothScroll(e, item.href)}
                                 >
                                     {item.name}
                                 </motion.a>
@@ -167,8 +210,8 @@ const Header = () => {
                             {/* Divider */}
                             <div className="w-full h-px bg-linear-to-r from-transparent via-gray-300 to-transparent my-2"></div>
 
-                            {/* Social Media Links */}
-                            <motion.div 
+                            {/* Redes Sociais - Mobile */}
+                            <motion.div
                                 variants={itemVariants}
                                 className="flex justify-center gap-8 pt-4"
                             >
@@ -181,7 +224,7 @@ const Header = () => {
                                     onClick={() => setIsOpen(false)}
                                 >
                                     <img
-                                        src="/assets/Instagram_Glyph_Gradient.png"
+                                        src="/assets/logo/Instagram_Glyph_Gradient.webp"
                                         alt="Instagram"
                                         className="w-8 h-8 group-hover:scale-110 transition-transform"
                                     />
@@ -196,7 +239,7 @@ const Header = () => {
                                     onClick={() => setIsOpen(false)}
                                 >
                                     <img
-                                        src="/Logo/Shopee.png"
+                                        src="/assets/logo/Shopee.webp"
                                         alt="Shopee"
                                         className="h-8 w-auto object-contain group-hover:scale-110 transition-transform"
                                     />

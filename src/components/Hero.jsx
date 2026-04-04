@@ -4,24 +4,24 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const banners = [
     {
-        desktop: '/assets/Amago_desktop.jpg',
-        mobile: '/assets/Mobile/Amago_mobile.jpg'
+        desktop: '/assets/Amago_desktop.webp',
+        mobile: '/assets/mobile/Amago_mobile.webp'
     },
     {
-        desktop: '/assets/Vínculo2_desktop.jpg',
-        mobile: '/assets/Mobile/Vinculo_mobile.jpg'
+        desktop: '/assets/Vínculo2_desktop.webp',
+        mobile: '/assets/mobile/Vinculo_mobile.webp'
     },
     {
-        desktop: '/assets/Traço_desktop.jpg',
-        mobile: '/assets/Mobile/Traço_mobile.jpg'
+        desktop: '/assets/Traço_desktop.webp',
+        mobile: '/assets/mobile/Traço_mobile.webp'
     },
     {
-        desktop: '/assets/Angulo_desktop.jpg',
-        mobile: '/assets/Mobile/Angulo_mobile.jpg'
+        desktop: '/assets/Angulo_desktop.webp',
+        mobile: '/assets/mobile/Angulo_mobile.webp'
     },
     {
-        desktop: '/assets/Ciclo_desktop.jpg',
-        mobile: '/assets/Mobile/Ciclo_mobile.jpg'
+        desktop: '/assets/Ciclo_desktop.webp',
+        mobile: '/assets/mobile/Ciclo_mobile.webp'
     }
 ];
 

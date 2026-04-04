@@ -86,7 +86,7 @@ const Footer = () => {
                     >
                         <span className="text-[10px] md:text-xs uppercase tracking-widest opacity-60 text-black font-medium">Desenvolvido por</span>
                         <img
-                            src="/Logo/Logo_towers.png"
+                            src="/logo/Logo_towers.webp"
                             alt="Towers Digital"
                             className="h-16 md:h-20 w-auto object-contain"
                         />
