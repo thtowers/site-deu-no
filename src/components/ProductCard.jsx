@@ -50,6 +50,13 @@ const ProductCard = ({
 
     return (
         <>
+            {/* PRÉ-CARREGAMENTO (evita piscada (blink) da segunda foto) */}
+            <div className="hidden">
+                {images.map((url, idx) => (
+                    <img key={idx} src={url} alt="preload" decoding="async" />
+                ))}
+            </div>
+
             <motion.div
                 id={id}
                 initial={{ opacity: 0, y: 30 }}
@@ -66,19 +73,19 @@ const ProductCard = ({
                 <div className={`flex flex-col ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-stretch`}>
                     {/* Imagem */}
                     <div
-                        className="lg:w-1/2 relative overflow-hidden bg-[#f3f2f0] group self-stretch flex flex-col justify-center"
+                        className="lg:w-1/2 relative overflow-hidden bg-[#f3f2f0] group self-stretch flex flex-col justify-center min-h-[350px] sm:min-h-[450px] lg:min-h-0 aspect-[4/5] lg:aspect-auto"
                         style={{ touchAction: 'pan-y' }}
                     >
                         <div className="absolute inset-0 bg-linear-to-br from-black/5 to-transparent z-10 pointer-events-none"></div>
 
                         {/* Animação de transição entre imagens */}
-                        <AnimatePresence initial={false} mode="wait">
+                        <AnimatePresence initial={false}>
                             <motion.div
                                 key={currentIndex}
-                                initial={{ opacity: 0, scale: 0.98 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.98 }}
-                                transition={{ duration: 0.15, ease: "easeOut" }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
                                 drag="x"
                                 dragConstraints={{ left: 0, right: 0 }}
                                 dragElastic={0.7}
@@ -90,14 +97,14 @@ const ProductCard = ({
                                         prevImage({ preventDefault: () => { }, stopPropagation: () => { } });
                                     }
                                 }}
-                                className="w-full h-auto cursor-grab active:cursor-grabbing touch-none"
+                                className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing touch-none"
                             >
                                 <picture className="pointer-events-none select-none w-full h-full block">
                                     {mobileImageSrc && currentIndex === 0 && <source media="(max-width: 768px)" srcSet={mobileImageSrc} />}
                                     <img
                                         src={currentImage}
                                         alt={`${name} - Joia Exclusiva`}
-                                        className="w-full h-auto object-cover pointer-events-none block"
+                                        className="w-full h-full object-cover pointer-events-none block"
                                         onError={onImageError}
                                         loading="lazy"
                                     />
