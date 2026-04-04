@@ -56,6 +56,8 @@ const Hero = () => {
                             src={banners[current].desktop}
                             alt={`Banner ${current + 1}`}
                             className="w-full h-full object-contain object-top xl:object-cover xl:object-bottom"
+                            fetchPriority={current === 0 ? "high" : "auto"}
+                            loading={current === 0 ? "eager" : "lazy"}
                         />
                     </picture>
                 </motion.div>
