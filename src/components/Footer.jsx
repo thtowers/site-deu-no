@@ -14,7 +14,7 @@ const Footer = () => {
                         <p className="font-light text-[#1c1c1c]/80 leading-relaxed text-sm md:text-base max-w-xs mx-auto md:mx-0">
                             Arte em cada nó.
                             <br />
-                            Acessórios artesanais feitos com alma e dedicação para realçar sua essência única.
+                            Acessórios artesanais feitos com amor e dedicação para realçar sua essência única.
                         </p>
                     </div>
 
