@@ -154,7 +154,7 @@ const ProductsSection = () => {
                         'marrom_sf', 'preto_sf', 'turquesa']}
                     name="Colar Ciclo"
                     price="R$ 80,00"
-                    imageSrc={["/assets/produtos/Ciclo.webp", "/assets/produtos/Ciclo2.webp"]}
+                    imageSrc={["/assets/produtos/Ciclo.webp", "/assets/produtos/Ciclo2.webp", "/assets/produtos/Ciclo3.webp"]}
                     mobileImageSrc="/assets/produtos/Ciclo.webp"
                     badgeText="Coleção Âmago"
                     reversed={true}
