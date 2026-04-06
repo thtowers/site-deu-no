@@ -48,7 +48,7 @@ const ProductsSection = () => {
                     colorOptions={['prata_e_dourado']}
                     name="Colar Fluxo"
                     price=" R$ 45,00"
-                    imageSrc={["/assets/produtos/Fluxo.webp", "/assets/produtos/Fluxo2.webp"]}
+                    imageSrc={["/assets/produtos/Fluxo.webp", "/assets/produtos/Fluxo2.webp", "/assets/produtos/Fluxo3.webp"]}
                     mobileImageSrc="/assets/produtos/Fluxo.webp"
                     badgeText="Coleção Âmago"
                     onImageError={handleImageError}
@@ -63,8 +63,8 @@ const ProductsSection = () => {
                     name="Colar Traço"
                     price="R$ 58,00"
                     imageSrc={["/assets/produtos/Traço.webp", "/assets/produtos/Traço2.webp",
-                        '/assets/produtos/traço3.webp', '/assets/produtos/traço4.webp',
-                        '/assets/produtos/traço5.webp'
+                        '/assets/produtos/Traço3.webp', '/assets/produtos/Traço4.webp',
+                        '/assets/produtos/Traço5.webp'
 
                     ]}
                     mobileImageSrc="/assets/produtos/Traço.webp"
@@ -229,7 +229,7 @@ const ProductsSection = () => {
                     description={"Feito para destacar quem você é. "}
                     modalSubtitle="Escolha até duas cores"
                     price="R$ 50,00"
-                    imageSrc={["/assets/produtos/Laço.webp", "/assets/produtos/Laço2.webp", "/assets/produtos/fluxo3.webp"]}
+                    imageSrc={["/assets/produtos/Laço.webp", "/assets/produtos/Laço2.webp"]}
                     mobileImageSrc="/assets/produtos/Laço.webp"
                     /* badgeText="Coleção Âmago" */
                     reversed={true}
