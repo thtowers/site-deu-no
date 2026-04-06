@@ -8,6 +8,7 @@ const ProductCard = ({
     id,
     name,
     description,
+    modalSubtitle,
     price,
     imageSrc,
     mobileImageSrc,
@@ -22,8 +23,8 @@ const ProductCard = ({
     const [showColorModal, setShowColorModal] = useState(false);
     const [expandedImage, setExpandedImage] = useState(null);
 
-    const descString = Array.isArray(description) ? description.join('\n') : description;
-    const cleanDescription = descString.replace(/Outras opções de cores disponíveis/g, "").replace(/\n\s*\n\s*$/, "");
+    const descString = Array.isArray(description) ? description.join('\n') : (description || '');
+    const cleanDescription = descString.replace(/Outras opções de cores disponíveis/g, "").trim();
 
     // Resolve as cores do catálogo
     const colorsList = colorOptions.map(colorId => COLORS_CATALOG[colorId]).filter(Boolean);
@@ -177,14 +178,16 @@ const ProductCard = ({
                             </div>
 
                             {/* Descrição */}
-                            <p className="leading-relaxed text-base md:text-lg font-light tracking-wide" style={{
-                                fontFamily: "'Poppins', sans-serif",
-                                lineHeight: '1.8',
-                                color: '#78877a',
-                                whiteSpace: 'pre-line'
-                            }}>
-                                {cleanDescription}
-                            </p>
+                            {cleanDescription && (
+                                <p className="leading-relaxed text-base md:text-lg font-light tracking-wide" style={{
+                                    fontFamily: "'Poppins', sans-serif",
+                                    lineHeight: '1.8',
+                                    color: '#78877a',
+                                    whiteSpace: 'pre-line'
+                                }}>
+                                    {cleanDescription}
+                                </p>
+                            )}
 
                             {/* Botão de Cores */}
                             {hasColorOptions && (
@@ -244,7 +247,7 @@ const ProductCard = ({
                                         e.currentTarget.style.boxShadow = 'none';
                                     }}
                                 >
-                                    <img src="/logo/Digital_Glyph_White.webp" alt="WhatsApp" className="w-4 h-4 md:w-5 md:h-5 object-contain relative z-10" />
+                                    <img src="/assets/logo/Digital_Glyph_White.webp" alt="WhatsApp" className="w-4 h-4 md:w-5 md:h-5 object-contain relative z-10" />
                                     <span className="relative z-10">Compre pelo WhatsApp</span>
                                 </a>
                             </div>
@@ -289,7 +292,12 @@ const ProductCard = ({
                                 <h4 className="text-2xl font-serif text-[#3f4d41] tracking-tight mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
                                     Cores Disponíveis
                                 </h4>
-                                <div className="w-12 h-px bg-linear-to-r from-transparent via-[#78877a] to-transparent mx-auto"></div>
+                                <div className="w-12 h-px bg-linear-to-r from-transparent via-[#78877a] to-transparent mx-auto mb-2"></div>
+                                {modalSubtitle && (
+                                    <p className="text-sm text-[#78877a] font-light italic mt-1" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                                        {modalSubtitle}
+                                    </p>
+                                )}
                             </div>
 
                             <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2 overscroll-contain custom-scrollbar">
@@ -303,7 +311,6 @@ const ProductCard = ({
                                         />
                                         <div>
                                             <span className="block font-medium text-[#3f4d41] text-lg" style={{ fontFamily: "'Poppins', sans-serif" }}>{color.name}</span>
-                                            <span className="block text-xs text-[#78877a] font-light mt-0.5">{color.description}</span>
                                         </div>
                                         <button
                                             className="absolute right-4 top-1/2 -translate-y-1/2 text-[#a9b4aa] hover:text-[#3f4d41] transition-colors"
