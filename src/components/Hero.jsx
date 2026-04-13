@@ -15,10 +15,7 @@ const banners = [
         desktop: '/assets/traço_desktop.webp',
         mobile: '/assets/mobile/traço_mobile.webp'
     },
-    {
-        desktop: '/assets/ciclo_desktop.webp',
-        mobile: '/assets/mobile/ciclo_mobile.webp'
-    }
+
 ];
 
 const Hero = () => {
