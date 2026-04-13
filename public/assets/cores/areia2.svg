@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24.37 23.94">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <ellipse class="cls-1" cx="12.19" cy="11.97" rx="11.97" ry="12.19" transform="translate(-.08 23.86) rotate(-88.6)"/>
+    </clipPath>
+  </defs>
+  <g id="Camada_1-2" data-name="Camada 1">
+    <g class="cls-2">
+      <image width="896" height="1101" transform="translate(-9.48 14.65) rotate(-63.47) scale(.03)" xlink:href="../../../../../../../Downloads/WhatsApp Image 2026-04-05 at 14.30.58.jpeg"/>
+    </g>
+  </g>
+</svg>
