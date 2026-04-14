@@ -21,6 +21,18 @@ const banners = [
 const Hero = () => {
     const [current, setCurrent] = useState(0);
 
+    // Pre-carrega as imagens subsequentes do carrossel para que a transição ocorra sem atrasos
+    useEffect(() => {
+        banners.forEach((banner, index) => {
+            if (index !== 0) { // O primeiro banner já possui preload no index.html (maior prioridade)
+                const imgDesktop = new Image();
+                imgDesktop.src = banner.desktop;
+                const imgMobile = new Image();
+                imgMobile.src = banner.mobile;
+            }
+        });
+    }, []);
+
     useEffect(() => {
         const duration = current === 0 ? 10000 : 5000; // 10 segundos para Âmago, 5 para os outros
         const timer = setTimeout(() => {
@@ -52,6 +64,7 @@ const Hero = () => {
                                 className="w-full h-full object-cover object-center"
                                 fetchPriority={current === 0 ? "high" : "auto"}
                                 loading={current === 0 ? "eager" : "lazy"}
+                                decoding="async"
                             />
                         </picture>
                     </motion.div>
