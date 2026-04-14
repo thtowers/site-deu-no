@@ -121,7 +121,7 @@ const ProductCard = ({
                                 {/* Botão para voltar para a imagem anterior */}
                                 <button
                                     onClick={prevImage}
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white/40"
+                                    className="btn-track-gallery-arrow absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white/40"
                                     aria-label="Imagem anterior"
                                 >
                                     <ChevronLeft size={24} />
@@ -129,7 +129,7 @@ const ProductCard = ({
                                 {/* Botão para avançar para a próxima imagem */}
                                 <button
                                     onClick={nextImage}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white/40"
+                                    className="btn-track-gallery-arrow absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white/40"
                                     aria-label="Próxima imagem"
                                 >
                                     <ChevronRight size={24} />
@@ -248,7 +248,7 @@ const ProductCard = ({
                                     href={`https://wa.me/5521965672034?text=${encodeURIComponent(whatsappMessage)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group relative px-6 py-3 md:px-8 md:py-3 font-medium tracking-wider uppercase text-xs md:text-sm rounded-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2 md:gap-3 w-fit mx-auto lg:mx-0"
+                                    className="btn-whatsapp-buy group relative px-6 py-3 md:px-8 md:py-3 font-medium tracking-wider uppercase text-xs md:text-sm rounded-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2 md:gap-3 w-fit mx-auto lg:mx-0"
                                     style={{
                                         background: 'linear-gradient(to right, #1DA851, #25D366)',
                                         color: '#ffffff'
