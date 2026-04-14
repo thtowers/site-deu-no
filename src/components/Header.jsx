@@ -96,6 +96,8 @@ const Header = () => {
                                 mixBlendMode: 'multiply',
                                 filter: 'contrast(1.15) brightness(1.1)'
                             }}
+                            fetchPriority="high"
+                            loading="eager"
                             onError={() => setLogoError(true)}
                         />
                     ) : (

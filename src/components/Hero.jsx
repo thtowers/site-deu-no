@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, startTransition } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 
@@ -41,8 +41,8 @@ const Hero = () => {
         return () => clearTimeout(timer);
     }, [current]);
 
-    const next = () => setCurrent((prev) => (prev + 1) % banners.length);
-    const prev = () => setCurrent((prev) => (prev - 1 + banners.length) % banners.length);
+    const next = () => startTransition(() => setCurrent((prev) => (prev + 1) % banners.length));
+    const prev = () => startTransition(() => setCurrent((prev) => (prev - 1 + banners.length) % banners.length));
 
     return (
         <div className="relative w-full">
@@ -89,7 +89,7 @@ const Hero = () => {
                     {banners.map((_, idx) => (
                         <button
                             key={idx}
-                            onClick={() => setCurrent(idx)}
+                            onClick={() => startTransition(() => setCurrent(idx))}
                             className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-colors ${idx === current ? 'bg-white' : 'bg-white/50'}`}
                             aria-label={`Ir para slide ${idx + 1}`}
                         />
