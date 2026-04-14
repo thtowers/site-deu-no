@@ -40,7 +40,7 @@ export const COLORS_CATALOG = {
     prata_e_dourado: {
         id: 'prata_e_dourado',
         name: 'Prata e Dourado',
-        imageSrc: '/assets/cores/prata e dourado.svg',
+        imageSrc: '/assets/cores/prata_e_dourado.svg',
 
     },
     verde_militar: {
@@ -55,10 +55,10 @@ export const COLORS_CATALOG = {
         imageSrc: '/assets/cores/verde_bandeira.svg',
 
     },
-    castanho: {
-        id: 'castanho',
-        name: 'Castanho',
-        imageSrc: '/assets/cores/castanho.svg',
+    caramelo: {
+        id: 'caramelo',
+        name: 'Caramelo',
+        imageSrc: '/assets/cores/caramelo.svg',
 
     },
     verde_jade: {
@@ -184,7 +184,7 @@ export const COLORS_CATALOG = {
     azul_marinho_poa_branco: {
         id: 'azul_marinho_poa_branco',
         name: 'Azul Marinho com Poá branco',
-        imageSrc: '/assets/cores/azul_marinho_poá2.svg',
+        imageSrc: '/assets/cores/azul_marinho_poa2.svg',
 
     },
     verde_militar_poa_branco: {
@@ -208,85 +208,79 @@ export const COLORS_CATALOG = {
     vermelho_poa_azul_marinho: {
         id: 'vermelho_poa_azul_marinho',
         name: 'Vermelho com Poá azul marinho',
-        imageSrc: '/assets/cores/vermelho_azul.svg',
+        imageSrc: '/assets/cores/vermelho_poa_azul_marinho.svg',
 
     },
     lenço_azul_bebe: {
         id: 'lenço_azul_bebe',
         name: 'Azul Bebê',
-        imageSrc: '/assets/cores/lenço_azul_bebe.svg',
+        imageSrc: '/assets/cores/lenco_azul_bebe.svg',
 
     },
     lenço_vermelho: {
         id: 'lenço_vermelho',
         name: 'Vermelho',
-        imageSrc: '/assets/cores/lenço_vermelho.svg',
+        imageSrc: '/assets/cores/lenco_vermelho.svg',
 
     },
     lenço_preto: {
         id: 'lenço_preto',
         name: 'Preto',
-        imageSrc: '/assets/cores/lenço_preto.svg',
+        imageSrc: '/assets/cores/lenco_preto.svg',
 
     },
     lenço_branco: {
         id: 'lenço_branco',
         name: 'Branco',
-        imageSrc: '/assets/cores/lenço_branco.svg',
+        imageSrc: '/assets/cores/lenco_branco.svg',
 
     },
     lenço_vermelho_vivo: {
         id: 'lenço_vermelho_vivo',
         name: 'Vermelho Vivo',
-        imageSrc: '/assets/cores/lenço_vermelho_vivo.svg',
+        imageSrc: '/assets/cores/lenco_vermelho_vivo.svg',
 
     },
     lenço_bege: {
         id: 'lenço_bege',
         name: 'Bege',
-        imageSrc: '/assets/cores/lenço_bege.svg',
+        imageSrc: '/assets/cores/lenco_bege.svg',
 
     },
     lenço_marrom_escuro: {
         id: 'lenço_marrom_escuro',
         name: 'Marrom Escuro',
-        imageSrc: '/assets/cores/lenço_marrom_escuro.svg',
+        imageSrc: '/assets/cores/lenco_marrom_escuro.svg',
 
     },
     lenço_azul_marinho: {
         id: 'lenço_azul_marinho',
         name: 'Azul Marinho',
-        imageSrc: '/assets/cores/lenço_azul_marinho.svg',
+        imageSrc: '/assets/cores/lenco_azul_marinho.svg',
 
     },
     lenço_laranja: {
         id: 'lenço_laranja',
         name: 'Laranja',
-        imageSrc: '/assets/cores/lenço_laranja.svg',
+        imageSrc: '/assets/cores/lenco_laranja.svg',
 
     },
     lenço_verde: {
         id: 'lenço_verde',
         name: 'Verde',
-        imageSrc: '/assets/cores/lenço_verde.svg',
+        imageSrc: '/assets/cores/lenco_verde.svg',
 
     },
     lenço_verde_escuro: {
         id: 'lenço_verde_escuro',
         name: 'Verde Escuro',
-        imageSrc: '/assets/cores/lenço_verde_escuro.svg',
+        imageSrc: '/assets/cores/lenco_verde_escuro.svg',
 
     },
     areia_poa_marrom_escuro: {
         id: 'areia_poa_marrom_escuro',
         name: 'Areia com Poá marrom escuro',
         imageSrc: '/assets/cores/areia_p_marrom_escuro.svg',
-
-    },
-    vermelho_poa_azul_marinho: {
-        id: 'vermelho_poa_azul_marinho',
-        name: 'Vermelho com Poá azul marinho',
-        imageSrc: '/assets/cores/vermelho_poa_azul_marinho.svg',
 
     },
 
@@ -324,12 +318,6 @@ export const COLORS_CATALOG = {
         id: 'turquesa_sf',
         name: 'Turquesa',
         imageSrc: '/assets/cores/turquesa_sf.svg',
-
-    },
-    bordo_sf: {
-        id: 'bordo_sf',
-        name: 'Bordo',
-        imageSrc: '/assets/cores/bordo_sf.svg',
 
     },
     bege_natural: {

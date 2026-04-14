@@ -30,12 +30,12 @@ const ProductsSection = () => {
 
                 {/* Produto Rastro */}
                 <ProductCard
-                    colorOptions={['verde_militar', 'verde_bandeira', 'azul_marinho', 'castanho', 'verde_jade']}
+                    colorOptions={['verde_militar', 'verde_bandeira', 'azul_marinho', 'caramelo', 'verde_jade']}
                     id="colares"
                     name="Colar Rastro"
                     description={["Forte, marcante, inesquecível — como você."]}
                     price=" R$40,00"
-                    imageSrc={["/assets/produtos/rastro.webp", "/assets/produtos/rastro2.webp"]}
+                    imageSrc={["/assets/produtos/rastro.webp", "/assets/produtos/rastro2.webp", "/assets/produtos/rastro3.webp"]}
                     mobileImageSrc="/assets/produtos/rastro.webp"
                     badgeText="Coleção Âmago"
                     onImageError={handleImageError}
@@ -67,12 +67,12 @@ const ProductsSection = () => {
                     name="Colar Traço"
                     description={["A força do simples bem definido."]}
                     price="R$ 58,00"
-                    imageSrc={["/assets/produtos/traço.webp", "/assets/produtos/traço2.webp",
-                        '/assets/produtos/traço3.webp', '/assets/produtos/traço4.webp',
-                        '/assets/produtos/traço5.webp'
+                    imageSrc={["/assets/produtos/traco.webp", "/assets/produtos/traco2.webp",
+                        '/assets/produtos/traco3.webp', '/assets/produtos/traco4.webp',
+                        '/assets/produtos/traco5.webp'
 
                     ]}
-                    mobileImageSrc="/assets/produtos/traço.webp"
+                    mobileImageSrc="/assets/produtos/traco.webp"
                     badgeText="Coleção Âmago"
                     reversed={false}
                     imageClass={["object-bottom", "object-bottom lg:object-center"]}
@@ -102,7 +102,7 @@ const ProductsSection = () => {
                         'verde_militar', 'azul_petroleo', 'verde_bandeira',
                         'azul_marinho', 'azul_anil', 'azul_royal', 'roxo',
                         'rosa', 'laranja', 'vermelho', 'terracota',
-                        'vermelho_figo', 'vinho', 'castanho', 'marrom',
+                        'vermelho_figo', 'vinho', 'caramelo', 'marrom',
                         'chumbo', 'mostarda', 'verde_jade', 'preto_poa_branco',
                         'preto', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
                         'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho'
@@ -111,8 +111,8 @@ const ProductsSection = () => {
                     description={["Quem tem estilo, sabe: é tudo sobre o ponto certo."]}
                     modalSubtitle="Escolha até duas cores"
                     price="R$ 60,00"
-                    imageSrc={["/assets/produtos/ponto.webp", "/assets/produtos/ponto2.webp"]}
-                    mobileImageSrc="/assets/produtos/ponto.webp"
+                    imageSrc={["/assets/produtos/ponto3.webp", "/assets/produtos/ponto2.webp", "/assets/produtos/ponto.webp"]}
+                    mobileImageSrc="/assets/produtos/ponto3.webp"
                     badgeText="Coleção Âmago"
                     reversed={false}
                     imageClass={["object-center lg:object-bottom", "object-center"]}
@@ -144,7 +144,7 @@ const ProductsSection = () => {
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao',
                         'rosa_bebe', 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
-                        'vermelho_figo', 'vinho', 'castanho', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
+                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
                         'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho'
 
@@ -180,7 +180,7 @@ const ProductsSection = () => {
                 <ProductCard
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                         'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho', 'azul_anil', 'azul_royal',
-                        'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'castanho',
+                        'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'caramelo',
                         'marrom', 'chumbo', 'mostarda', 'verde_jade', 'marrom_escuro', 'preto', 'preto_poa_branco',
                         'azul_marinho_poa_branco', 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
                         'vermelho_poa_azul_marinho'
@@ -189,7 +189,7 @@ const ProductsSection = () => {
                     name="Colar Eco"
                     description={["Elegante hoje, atemporal sempre."]}
                     price="R$ 85,00"
-                    imageSrc={["/assets/produtos/eco.webp", "/assets/produtos/eco2.webp"]}
+                    imageSrc={["/assets/produtos/eco.webp", "/assets/produtos/eco2.webp", "/assets/produtos/eco3.webp"]}
                     mobileImageSrc="/assets/produtos/eco.webp"
                     badgeText="Coleção Âmago"
                     reversed={false}
@@ -203,7 +203,7 @@ const ProductsSection = () => {
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao',
                         'rosa_bebe', 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
-                        'vermelho_figo', 'vinho', 'castanho', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
+                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
                         'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho']}
                     name="Pulseira Orvalho"
@@ -223,7 +223,7 @@ const ProductsSection = () => {
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao',
                         'rosa_bebe', 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
-                        'vermelho_figo', 'vinho', 'castanho', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
+                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
                         'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho']}
                     id="pulseiras"
@@ -241,15 +241,15 @@ const ProductsSection = () => {
                 {/* Produto Laço */}
                 <ProductCard
                     colorOptions={['terracota', 'verde_bandeira', 'marrom_escuro', 'vinho', 'preto', 'verde_militar',
-                        'verde_jade', 'azul_marinho', 'areia', 'mostarda', 'castanho', 'verde_limao', 'amarelo_manteiga',
+                        'verde_jade', 'azul_marinho', 'areia', 'mostarda', 'caramelo', 'verde_limao', 'amarelo_manteiga',
                         'vermelho_figo', 'marrom', 'rosa_bebe', 'chumbo', 'cinza', 'laranja', 'rami'
                     ]}
                     name="Pulseira Laço"
                     description={"Feito para destacar quem você é. "}
                     modalSubtitle="Escolha até duas cores"
                     price="R$ 55,00"
-                    imageSrc={["/assets/produtos/laço.webp", "/assets/produtos/laço2.webp"]}
-                    mobileImageSrc="/assets/produtos/laço.webp"
+                    imageSrc={["/assets/produtos/laco.webp", "/assets/produtos/laco2.webp"]}
+                    mobileImageSrc="/assets/produtos/laco.webp"
                     /* badgeText="Coleção Âmago" */
                     reversed={true}
                     imageClass="object-bottom"
@@ -261,7 +261,7 @@ const ProductsSection = () => {
                 <ProductCard
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                         'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho', 'azul_anil', 'azul_royal',
-                        'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'castanho',
+                        'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'caramelo',
                         'marrom', 'chumbo', 'mostarda', 'verde_jade', 'preto', 'preto_poa_branco',
                         'azul_marinho_poa_branco', 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
                         'vermelho_poa_azul_marinho'
@@ -281,7 +281,7 @@ const ProductsSection = () => {
                 <ProductCard
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                         'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho', 'azul_anil', 'azul_royal',
-                        'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'castanho',
+                        'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'caramelo',
                         'marrom', 'chumbo', 'mostarda', 'verde_jade', 'marrom_escuro', 'preto', 'preto_poa_branco',
                         'azul_marinho_poa_branco', 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
                         'vermelho_poa_azul_marinho']}
@@ -299,7 +299,7 @@ const ProductsSection = () => {
                 {/* Produto Brinco Amá */}
                 <ProductCard
                     colorOptions={['rami', 'azul_marinho', 'chumbo', 'verde_bandeira', 'areia', 'preto',
-                        'verde_jade', 'mostarda', 'marrom', 'marrom_escuro', 'castanho', 'vinho',
+                        'verde_jade', 'mostarda', 'marrom', 'marrom_escuro', 'caramelo', 'vinho',
                         'vermelho_figo', 'terracota', 'vermelho', 'rosa', 'roxo', 'azul_royal', 'verde_militar',
                         'rosa_bebe', 'azul_bebe', 'cinza'
 
