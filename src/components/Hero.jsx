@@ -15,14 +15,7 @@ const banners = [
         desktop: '/assets/traço_desktop.webp',
         mobile: '/assets/mobile/traço_mobile.webp'
     },
-    {
-        desktop: '/assets/angulo_desktop.webp',
-        mobile: '/assets/mobile/angulo_mobile.webp'
-    },
-    {
-        desktop: '/assets/ciclo_desktop.webp',
-        mobile: '/assets/mobile/ciclo_mobile.webp'
-    }
+
 ];
 
 const Hero = () => {
@@ -41,7 +34,7 @@ const Hero = () => {
 
     return (
         <div className="relative h-[85vh] md:h-[90vh] overflow-hidden w-full" style={{ backgroundColor: 'var(--color-off-white)' }}>
-            <AnimatePresence mode='wait'>
+            <AnimatePresence mode='wait' initial={false}>
                 <motion.div
                     key={current}
                     className="absolute inset-0 w-full h-full"
