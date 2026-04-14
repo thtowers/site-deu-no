@@ -54,8 +54,9 @@ async function convertToWebp() {
         console.log(`✅ Convertido: ${file} -> ${outputName}`);
         successCount++;
         
-        // Descomente a linha abaixo se quiser apagar a imagem original automaticamente
-        // await fs.unlink(filePath);
+        // Apaga a imagem original após criar o WebP
+        await fs.unlink(filePath);
+        console.log(`🗑️  Original apagada: ${file}`);
       } catch (err) {
         console.error(`❌ Erro ao converter ${file}:`, err.message);
       }
