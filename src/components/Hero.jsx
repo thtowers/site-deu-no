@@ -72,15 +72,6 @@ const Hero = () => {
                     <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
 
-                {/* Seta indicadora de scroll */}
-                <motion.div 
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 text-white/70"
-                    animate={{ y: [0, 10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                >
-                    <ChevronDown className="w-8 h-8 md:w-10 md:h-10 cursor-pointer hover:text-white transition-colors" />
-                </motion.div>
-
                 <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3 z-10">
                     {banners.map((_, idx) => (
                         <button
@@ -91,6 +82,17 @@ const Hero = () => {
                         />
                     ))}
                 </div>
+            </div>
+
+            {/* Seta indicadora de scroll */}
+            <div className="flex justify-center items-center py-4 w-full">
+                <motion.div 
+                    className="text-[#685744]/70"
+                    animate={{ y: [0, 10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                    <ChevronDown className="w-8 h-8 md:w-10 md:h-10 cursor-pointer hover:text-[#685744] transition-colors text-[#685744]" />
+                </motion.div>
             </div>
         </div>
     );

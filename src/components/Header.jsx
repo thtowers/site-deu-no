@@ -81,8 +81,11 @@ const Header = () => {
 
     // Renderização do header
     return (
-        <header className={`w-full shadow-sm sticky top-0 z-50 transition-all duration-500 ${isScrolled ? 'py-1 lg:py-2' : 'py-3'}`} style={{ backgroundColor: 'var(--color-off-white)' }}>
-            <div className="container mx-auto px-4 flex justify-between items-center">
+        <>
+            {/* Placeholder fixo para evitar a "tremidinha" (jitter layout shift) no scroll */}
+            <div className="h-[88px] md:h-[104px] lg:h-[120px] w-full shrink-0 pointer-events-none" />
+            <header className={`w-full shadow-sm fixed top-0 left-0 z-50 transition-all duration-500 ${isScrolled ? 'py-1 lg:py-2' : 'py-3'}`} style={{ backgroundColor: 'var(--color-off-white)' }}>
+                <div className="container mx-auto px-4 flex justify-between items-center">
                 <div className="flex items-center" style={{ color: 'var(--color-forest-dark)' }}>
                     {!logoError ? (
                         <img
@@ -250,7 +253,8 @@ const Header = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </header >
+        </header>
+        </>
     );
 };
 
