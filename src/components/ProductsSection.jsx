@@ -86,7 +86,7 @@ const ProductsSection = () => {
                     name="Colar Ângulo "
                     description={["Impacto sutil, elegância absoluta."]}
                     price="R$ 60,00"
-                    imageSrc={["/assets/produtos/angulo.webp", "/assets/produtos/angulo2.webp", "/assets/produtos/angulo3.webp"]}
+                    imageSrc={["/assets/produtos/angulo.webp", "/assets/produtos/angulo2.webp", "/assets/produtos/angulo3.webp", "/assets/produtos/angulo4.webp"]}
                     mobileImageSrc="/assets/produtos/angulo.webp"
                     badgeText="Coleção Âmago"
                     reversed={true}
