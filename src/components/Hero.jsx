@@ -34,7 +34,7 @@ const Hero = () => {
     }, []);
 
     useEffect(() => {
-        const duration = current === 0 ? 10000 : 5000; // 10 segundos para Âmago, 5 para os outros
+        const duration = 6000; // Ajustado para 6 segundos para não demorar demais na primeira imagem
         const timer = setTimeout(() => {
             next();
         }, duration);
@@ -47,14 +47,14 @@ const Hero = () => {
     return (
         <div className="relative w-full">
             <div className="relative h-[75vh] md:h-[85vh] overflow-hidden w-full" style={{ backgroundColor: 'var(--color-off-white)' }}>
-                <AnimatePresence mode='wait' initial={false}>
+                <AnimatePresence initial={false}>
                     <motion.div
                         key={current}
                         className="absolute inset-0 w-full h-full"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
+                        transition={{ duration: 1.2, ease: "easeInOut" }}
                     >
                         <picture>
                             <source media="(max-width: 1024px)" srcSet={banners[current].mobile} />
