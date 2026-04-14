@@ -212,7 +212,7 @@ const ProductsSection = () => {
                     imageSrc={["/assets/produtos/orvalho.webp", "/assets/produtos/orvalho2.webp"]}
                     mobileImageSrc="/assets/produtos/orvalho.webp"
                     /* badgeText="Coleção Âmago" */
-                    reversed={false}
+                    reversed={true}
                     imageClass="object-bottom"
                 />
 
@@ -233,7 +233,7 @@ const ProductsSection = () => {
                     imageSrc={["/assets/produtos/elo.webp", "/assets/produtos/elo2.webp"]}
                     mobileImageSrc="/assets/produtos/elo.webp"
                     /* badgeText="Coleção Âmago" */
-                    reversed={true}
+                    reversed={false}
                 />
 
                 <ElegantDivider />
@@ -272,7 +272,7 @@ const ProductsSection = () => {
                     imageSrc={["/assets/produtos/bae.webp", "/assets/produtos/bae2.webp"]}
                     mobileImageSrc="/assets/produtos/bae.webp"
                     badgeText="Coleção Âmago"
-                    reversed={true}
+                    reversed={false}
                 />
 
                 <ElegantDivider />
@@ -291,7 +291,7 @@ const ProductsSection = () => {
                     imageSrc={["/assets/produtos/doure.webp", "/assets/produtos/doure2.webp"]}
                     mobileImageSrc="/assets/produtos/doure.webp"
                     badgeText="Coleção Âmago"
-                    reversed={false}
+                    reversed={true}
                 />
 
                 <ElegantDivider />
