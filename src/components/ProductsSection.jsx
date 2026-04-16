@@ -209,7 +209,8 @@ const ProductsSection = () => {
                     name="Pulseira Orvalho"
                     description={["Quem tem estilo, sabe: é tudo sobre o ponto certo."]}
                     price="R$ 48,00"
-                    imageSrc={["/assets/produtos/orvalho.webp", "/assets/produtos/orvalho2.webp"]}
+                    imageSrc={["/assets/produtos/orvalho.webp", "/assets/produtos/orvalho2.webp",
+                        "/assets/produtos/orvalho3.webp"]}
                     mobileImageSrc="/assets/produtos/orvalho.webp"
                     /* badgeText="Coleção Âmago" */
                     reversed={true}
@@ -230,7 +231,8 @@ const ProductsSection = () => {
                     name="Pulseira Elo"
                     description={["Presença que se impõe, estilo que permanece."]}
                     price="R$ 50,00"
-                    imageSrc={["/assets/produtos/elo.webp", "/assets/produtos/elo2.webp"]}
+                    imageSrc={["/assets/produtos/elo3.webp", "/assets/produtos/elo2.webp", "/assets/produtos/elo.webp"
+                    ]}
                     mobileImageSrc="/assets/produtos/elo.webp"
                     /* badgeText="Coleção Âmago" */
                     reversed={false}
@@ -248,7 +250,7 @@ const ProductsSection = () => {
                     description={"Feito para destacar quem você é. "}
                     modalSubtitle="Escolha até duas cores"
                     price="R$ 55,00"
-                    imageSrc={["/assets/produtos/laco.webp", "/assets/produtos/laco2.webp"]}
+                    imageSrc={["/assets/produtos/laco3.webp", "/assets/produtos/laco2.webp", "/assets/produtos/laco.webp"]}
                     mobileImageSrc="/assets/produtos/laco.webp"
                     /* badgeText="Coleção Âmago" */
                     reversed={true}
@@ -269,7 +271,8 @@ const ProductsSection = () => {
                     name="Brinco Bae"
                     description={["Prova: o essencial também impõe presença."]}
                     price="R$ 30,00"
-                    imageSrc={["/assets/produtos/bae.webp", "/assets/produtos/bae2.webp"]}
+                    imageSrc={["/assets/produtos/bae.webp", "/assets/produtos/bae2.webp",
+                        "/assets/produtos/bae3.webp", "/assets/produtos/bae4.webp"]}
                     mobileImageSrc="/assets/produtos/bae.webp"
                     badgeText="Coleção Âmago"
                     reversed={false}
@@ -288,7 +291,7 @@ const ProductsSection = () => {
                     name="Brinco Douré"
                     description={["Menos dúvida, mais presença."]}
                     price="R$ 40,00"
-                    imageSrc={["/assets/produtos/doure.webp", "/assets/produtos/doure2.webp"]}
+                    imageSrc={["/assets/produtos/doure3.webp", "/assets/produtos/doure2.webp", "/assets/produtos/doure.webp"]}
                     mobileImageSrc="/assets/produtos/doure.webp"
                     badgeText="Coleção Âmago"
                     reversed={true}
@@ -308,7 +311,8 @@ const ProductsSection = () => {
                     name="Brinco Amá"
                     description={["Onde o atemporal encontra a sua força."]}
                     price="R$ 45,00"
-                    imageSrc={["/assets/produtos/ama.webp", "/assets/produtos/ama2.webp"]}
+                    imageSrc={["/assets/produtos/ama3.webp", "/assets/produtos/ama2.webp", "/assets/produtos/ama.webp"
+                    ]}
                     mobileImageSrc="/assets/produtos/ama.webp"
                     badgeText="Coleção Âmago"
                     reversed={false}
