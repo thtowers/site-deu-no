@@ -121,18 +121,24 @@ const ProductCard = ({
                                 {/* Botão para voltar para a imagem anterior */}
                                 <button
                                     onClick={prevImage}
-                                    className="btn-track-gallery-arrow absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white/40"
+                                    className="btn-track-gallery-arrow absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300"
+                                    style={{ backgroundColor: 'rgba(63, 77, 65, 0.85)' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(63, 77, 65, 1)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(63, 77, 65, 0.85)'}
                                     aria-label="Imagem anterior"
                                 >
-                                    <ChevronLeft size={24} />
+                                    <ChevronLeft size={22} />
                                 </button>
                                 {/* Botão para avançar para a próxima imagem */}
                                 <button
                                     onClick={nextImage}
-                                    className="btn-track-gallery-arrow absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white/40"
+                                    className="btn-track-gallery-arrow absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full backdrop-blur-md text-white opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300"
+                                    style={{ backgroundColor: 'rgba(63, 77, 65, 0.85)' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(63, 77, 65, 1)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(63, 77, 65, 0.85)'}
                                     aria-label="Próxima imagem"
                                 >
-                                    <ChevronRight size={24} />
+                                    <ChevronRight size={22} />
                                 </button>
 
                                 {/* Indicadores (Pontos) */}
