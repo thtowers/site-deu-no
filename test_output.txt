@@ -1,0 +1,43 @@
+
+> site-deu-no@0.0.0 test
+> vitest run
+
+
+ RUN  v4.1.4 /home/thiago/Documents/site-deu-no-main
+
+ ❯ src/components/__tests__/ProductCard.test.jsx (6 tests | 6 failed) 94ms
+     × deve renderizar o nome e o preço corretamente 66ms
+     × deve alternar entre as imagens ao clicar nas setas 6ms
+     × deve abrir o modal de cores e listar as cores corretas 5ms
+     × deve abrir o zoom da imagem ao clicar na miniatura de cor no modal 5ms
+     × deve fechar o modal de zoom ao clicar no botão fechar 5ms
+     × deve fechar o modal de cores ao clicar no botão fechar do modal de cores 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/__tests__/ProductCard.test.jsx > ProductCard Component > deve renderizar o nome e o preço corretamente
+ FAIL  src/components/__tests__/ProductCard.test.jsx > ProductCard Component > deve alternar entre as imagens ao clicar nas setas
+ FAIL  src/components/__tests__/ProductCard.test.jsx > ProductCard Component > deve abrir o modal de cores e listar as cores corretas
+ FAIL  src/components/__tests__/ProductCard.test.jsx > ProductCard Component > deve abrir o zoom da imagem ao clicar na miniatura de cor no modal
+ FAIL  src/components/__tests__/ProductCard.test.jsx > ProductCard Component > deve fechar o modal de zoom ao clicar no botão fechar
+ FAIL  src/components/__tests__/ProductCard.test.jsx > ProductCard Component > deve fechar o modal de cores ao clicar no botão fechar do modal de cores
+ReferenceError: IntersectionObserver is not defined
+ ❯ initIntersectionObserver node_modules/framer-motion/src/motion/features/viewport/observers.ts:54:33
+ ❯ observeIntersection node_modules/framer-motion/src/motion/features/viewport/observers.ts:68:38
+ ❯ InViewFeature.startObserver node_modules/framer-motion/src/motion/features/viewport/index.ts:66:28
+ ❯ InViewFeature.mount node_modules/framer-motion/src/motion/features/viewport/index.ts:74:13
+ ❯ HTMLVisualElement.updateFeatures node_modules/motion-dom/src/render/VisualElement.ts:656:28
+ ❯ node_modules/framer-motion/dist/es/motion/utils/use-visual-element.mjs:95:23
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:25989:20
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ commitHookEffectListMount node_modules/react-dom/cjs/react-dom-client.development.js:13249:29
+ ❯ commitHookLayoutEffects node_modules/react-dom/cjs/react-dom-client.development.js:13213:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  09:34:43
+   Duration  840ms (transform 59ms, setup 34ms, import 197ms, tests 94ms, environment 346ms)
+

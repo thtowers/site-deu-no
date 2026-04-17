@@ -1,16 +1,46 @@
-# React + Vite
+# Deunó - Joalheria Artesanal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é uma landing page premium para a joalheria Deunó, focada em exibir produtos exclusivos com uma experiência visual rica e interativa.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** + **Vite**
+- **Tailwind CSS 4**
+- **Framer Motion** (Animações e interações)
+- **Lucide React** (Ícones)
+- **Vitest** + **React Testing Library** (Testes Unitários)
 
-## React Compiler
+## 🧪 Testes Unitários
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Integramos o **DevTest** ao ciclo de desenvolvimento para garantir a qualidade e funcionalidade das interações críticas.
 
-## Expanding the ESLint configuration
+### O que é testado?
+Focamos no componente `ProductCard`, validando:
+- **Navegação de Galeria:** Transição entre múltiplas imagens do produto.
+- **Modal de Cores:** Acesso ao catálogo de cores disponíveis para cada peça.
+- **Zoom de Detalhes:** Funcionalidade de expansão de imagem para visualização detalhada.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Como rodar os testes
+Para executar a suíte de testes unitários:
+
+```bash
+npm run test
+```
+
+## 🛠️ Desenvolvimento
+
+### Instalação
+```bash
+npm install
+```
+
+### Rodar localmente
+```bash
+npm run dev
+```
+
+### Build para produção
+```bash
+npm run build
+```
+

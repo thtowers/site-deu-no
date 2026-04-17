@@ -71,6 +71,7 @@ const Hero = () => {
                             className="w-full h-auto block"
                             style={{ maxHeight: 'calc(100svh - 152px)', objectFit: 'cover', objectPosition: 'top center' }}
                         >
+                            <source src="/assets/produtos/video/video_principal.webm" type="video/webm" />
                             <source src="/assets/produtos/video/video_principal.mp4" type="video/mp4" />
                             Seu navegador não suporta vídeos.
                         </video>

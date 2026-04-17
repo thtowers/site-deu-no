@@ -233,7 +233,7 @@ const ProductsSection = () => {
                     price="R$ 50,00"
                     imageSrc={["/assets/produtos/elo3.webp", "/assets/produtos/elo2.webp", "/assets/produtos/elo.webp"
                     ]}
-                    mobileImageSrc="/assets/produtos/elo.webp"
+                    mobileImageSrc="/assets/produtos/elo3.webp"
                     /* badgeText="Coleção Âmago" */
                     reversed={false}
                 />
