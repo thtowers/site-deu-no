@@ -88,24 +88,39 @@ const ColecoeAnterioresPage = () => {
                 >
                     <div className="container mx-auto px-4">
 
-                        {/* ── Exemplo de ProductCard ── descomente e preencha quando tiver produtos:
-
                         <ProductCard
-                            id="nome-do-produto"
-                            name="Nome do Produto"
-                            description={["Descrição da peça."]}
-                            price="R$ 00,00"
-                            imageSrc={["/assets/produtos/nome.webp"]}
-                            badgeText="Coleção Anterior"
+                            id="Lume"
+                            name="Lume"
+                            description={["Não passa despercebido. Nem tenta."]}
+                            price="R$ 55,00"
+                            imageSrc={["/assets/produtos/luma4.webp", "/assets/produtos/luma3.webp", "/assets/produtos/lume.webp"]}
+                            mobileImageSrc="/assets/produtos/luma4.webp"
+                            colorOptions={['verde_militar', 'preto']}
                             reversed={false}
+                            imageClass="object-center"
                         />
-
                         <ElegantDivider />
 
-                        */}
-
-                        {/* Estado vazio — removido quando os primeiros produtos forem adicionados */}
-                        <EmptyState />
+                        <ProductCard
+                            id="Esfera"
+                            name="Esfera"
+                            description={["Um nó, infinitas combinações."]}
+                            price="R$ 65,00"
+                            imageSrc={["/assets/produtos/esfera.webp", "/assets/produtos/esfera1.webp", "/assets/produtos/esfera2.webp"]}
+                            mobileImageSrc="/assets/produtos/esfera.webp"
+                            colorOptions={[
+                                'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
+                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
+                                'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
+                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
+                                'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
+                                'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
+                                'vermelho_poa_azul_marinho'
+                            ]}
+                            badgeText="Coleção Anterior"
+                            reversed={true}
+                            imageClass="object-center"
+                        />
 
                     </div>
                 </section>
@@ -115,52 +130,5 @@ const ColecoeAnterioresPage = () => {
         </div>
     );
 };
-
-/* Componente de estado vazio exibido enquanto não há produtos cadastrados */
-const EmptyState = () => (
-    <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.3 }}
-        className="flex flex-col items-center justify-center py-24 md:py-36 text-center"
-    >
-        {/* Ícone decorativo */}
-        <div
-            className="w-20 h-20 rounded-full flex items-center justify-center mb-8 shadow-inner"
-            style={{ backgroundColor: 'rgba(63, 77, 65, 0.07)' }}
-        >
-            <svg
-                width="36" height="36" viewBox="0 0 24 24"
-                fill="none" stroke="#78877a" strokeWidth="1.2"
-                strokeLinecap="round" strokeLinejoin="round"
-            >
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-        </div>
-
-        <p
-            className="text-xs uppercase tracking-[0.3em] mb-3"
-            style={{ fontFamily: "'Poppins', sans-serif", color: '#a9b4aa' }}
-        >
-            Em breve
-        </p>
-
-        <h2
-            className="text-2xl md:text-3xl font-serif mb-4 tracking-tight"
-            style={{ fontFamily: "'Playfair Display', serif", color: '#3f4d41' }}
-        >
-            Produtos em preparação
-        </h2>
-
-        <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#78877a] to-transparent mx-auto mb-4" />
-
-        <p
-            className="max-w-sm text-base font-light leading-relaxed"
-            style={{ fontFamily: "'Poppins', sans-serif", color: '#a9b4aa' }}
-        >
-            As peças das coleções anteriores serão apresentadas aqui em breve.
-        </p>
-    </motion.div>
-);
 
 export default ColecoeAnterioresPage;
