@@ -20,91 +20,122 @@ const banners = [
 
 const Hero = () => {
     const [current, setCurrent] = useState(0);
+    const [isMobile, setIsMobile] = useState(false);
 
-    // Pre-carrega as imagens subsequentes do carrossel para que a transição ocorra sem atrasos
+    // Detecta se é mobile para decidir entre vídeo ou carrossel
     useEffect(() => {
-        banners.forEach((banner, index) => {
-            if (index !== 0) { // O primeiro banner já possui preload no index.html (maior prioridade)
-                const imgDesktop = new Image();
-                imgDesktop.src = banner.desktop;
-                const imgMobile = new Image();
-                imgMobile.src = banner.mobile;
-            }
-        });
+        const mediaQuery = window.matchMedia('(max-width: 1024px)');
+        setIsMobile(mediaQuery.matches);
+
+        const handler = (e) => setIsMobile(e.matches);
+        mediaQuery.addEventListener('change', handler);
+        return () => mediaQuery.removeEventListener('change', handler);
     }, []);
 
+    // Pre-carrega as imagens subsequentes do carrossel para Desktop
     useEffect(() => {
+        if (!isMobile) {
+            banners.forEach((banner, index) => {
+                if (index !== 0) {
+                    const imgDesktop = new Image();
+                    imgDesktop.src = banner.desktop;
+                }
+            });
+        }
+    }, [isMobile]);
+
+    useEffect(() => {
+        if (isMobile) return; // Não executa o timer no mobile (vídeo é fixo)
+
         const duration = 6000; // Ajustado para 6 segundos para não demorar demais na primeira imagem
         const timer = setTimeout(() => {
             next();
         }, duration);
         return () => clearTimeout(timer);
-    }, [current]);
+    }, [current, isMobile]);
 
     const next = () => startTransition(() => setCurrent((prev) => (prev + 1) % banners.length));
     const prev = () => startTransition(() => setCurrent((prev) => (prev - 1 + banners.length) % banners.length));
 
     return (
         <div className="relative w-full">
-            <div className="relative h-[75vh] md:h-[85vh] overflow-hidden w-full" style={{ backgroundColor: 'var(--color-off-white)' }}>
-                <AnimatePresence initial={false}>
-                    <motion.div
-                        key={current}
-                        className="absolute inset-0 w-full h-full"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 1.2, ease: "easeInOut" }}
-                    >
-                        <picture>
-                            <source media="(max-width: 1024px)" srcSet={banners[current].mobile} />
-                            <img
-                                src={banners[current].desktop}
-                                alt={`Banner ${current + 1}`}
-                                className="w-full h-full object-cover object-center"
-                                fetchPriority={current === 0 ? "high" : "auto"}
-                                loading={current === 0 ? "eager" : "lazy"}
-                                decoding="async"
-                            />
-                        </picture>
-                    </motion.div>
-                </AnimatePresence>
+            <div className="relative h-auto md:h-[85vh] overflow-hidden w-full" style={{ backgroundColor: 'var(--color-off-white)' }}>
+                {isMobile ? (
+                    /* Versão Mobile: Apenas Vídeo */
+                    <div className="w-full overflow-hidden" style={{ maxHeight: 'calc(100svh - 152px)' }}>
+                        <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-auto block"
+                            style={{ maxHeight: 'calc(100svh - 152px)', objectFit: 'cover', objectPosition: 'top center' }}
+                        >
+                            <source src="/assets/produtos/video/video_principal.webm" type="video/webm" />
+                            <source src="/assets/produtos/video/video_principal.mp4" type="video/mp4" />
+                            Seu navegador não suporta vídeos.
+                        </video>
+                    </div>
+                ) : (
+                    /* Versão Desktop: Carrossel de Banners */
+                    <>
+                        <AnimatePresence initial={false}>
+                            <motion.div
+                                key={current}
+                                className="absolute inset-0 w-full h-full"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 1.2, ease: "easeInOut" }}
+                            >
+                                <img
+                                    src={banners[current].desktop}
+                                    alt={`Banner ${current + 1}`}
+                                    className="w-full h-full object-cover object-center"
+                                    fetchPriority={current === 0 ? "high" : "auto"}
+                                    loading={current === 0 ? "eager" : "lazy"}
+                                    decoding="async"
+                                />
+                            </motion.div>
+                        </AnimatePresence>
 
-                <button
-                    onClick={prev}
-                    className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/50 p-2 md:p-3 rounded-full hover:bg-white/80 transition-colors z-10"
-                    aria-label="Anterior"
-                >
-                    <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-                </button>
-                <button
-                    onClick={next}
-                    className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/50 p-2 md:p-3 rounded-full hover:bg-white/80 transition-colors z-10"
-                    aria-label="Próximo"
-                >
-                    <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-                </button>
-
-                <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3 z-10">
-                    {banners.map((_, idx) => (
                         <button
-                            key={idx}
-                            onClick={() => startTransition(() => setCurrent(idx))}
-                            className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-colors ${idx === current ? 'bg-white' : 'bg-white/50'}`}
-                            aria-label={`Ir para slide ${idx + 1}`}
-                        />
-                    ))}
-                </div>
+                            onClick={prev}
+                            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/50 p-2 md:p-3 rounded-full hover:bg-white/80 transition-colors z-10 text-[#3f4d41]"
+                            aria-label="Anterior"
+                        >
+                            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+                        </button>
+                        <button
+                            onClick={next}
+                            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/50 p-2 md:p-3 rounded-full hover:bg-white/80 transition-colors z-10 text-[#3f4d41]"
+                            aria-label="Próximo"
+                        >
+                            <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+                        </button>
+
+                        <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3 z-10">
+                            {banners.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => startTransition(() => setCurrent(idx))}
+                                    className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-colors ${idx === current ? 'bg-white' : 'bg-white/50'}`}
+                                    aria-label={`Ir para slide ${idx + 1}`}
+                                />
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
 
             {/* Seta indicadora de scroll */}
             <div className="flex justify-center items-center py-4 w-full">
-                <motion.div 
-                    className="text-[#685744]/70"
+                <motion.div
+                    className="text-[#3f4d41]/70"
                     animate={{ y: [0, 10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                    <ChevronDown className="w-8 h-8 md:w-10 md:h-10 cursor-pointer hover:text-[#685744] transition-colors text-[#685744]" />
+                    <ChevronDown className="w-8 h-8 md:w-10 md:h-10 cursor-pointer hover:text-[#3f4d41] transition-colors text-[#3f4d41]" />
                 </motion.div>
             </div>
         </div>

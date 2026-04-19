@@ -94,7 +94,7 @@ const Header = () => {
             <div className="h-[88px] md:h-[104px] lg:h-[120px] w-full shrink-0 pointer-events-none" />
             <header className={`w-full shadow-sm fixed top-0 left-0 z-50 transition-all duration-500 ${isScrolled ? 'py-1 lg:py-2' : 'py-3'}`} style={{ backgroundColor: 'var(--color-off-white)' }}>
                 <div className="container mx-auto px-4 flex justify-between items-center">
-                <div className="flex items-center" style={{ color: 'var(--color-forest-dark)' }}>
+                <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center" style={{ color: 'var(--color-forest-dark)' }}>
                     {!logoError ? (
                         <img
                             src={logoPath}
@@ -111,7 +111,7 @@ const Header = () => {
                     ) : (
                         <span className="text-2xl font-bold font-serif">Deu Nó</span>
                     )}
-                </div>
+                </Link>
 
                 {/* Menu Desktop */}
                 <nav className="hidden md:flex gap-10 items-center">
