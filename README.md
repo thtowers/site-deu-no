@@ -53,5 +53,37 @@ Este projeto foi construído utilizando as ferramentas mais modernas do ecossist
 
 O site estará disponível no seu navegador no endereço padrão `http://localhost:5173/`.
 
+## 📁 Organização do Projeto
+
+A estrutura de diretórios foi pensada para manter o código modular e escalável:
+
+- `src/components/`: Componentes reutilizáveis de UI (ex: Header, Hero, ProductCard).
+- `src/pages/`: Componentes de páginas que representam rotas da aplicação (ex: ColecoeAnterioresPage).
+- `src/data/`: Dados estáticos da aplicação (ex: lista de produtos).
+- `public/assets/`: Ativos estáticos, como imagens, vídeos e fontes.
+- `src/index.css`: Arquivo de estilos globais.
+
+## 🏗️ Arquitetura e Filosofias
+
+O projeto adota práticas modernas de desenvolvimento Front-end:
+
+- **Componentização:** Divisão da interface em partes pequenas e independentes para facilitar a manutenção e o reuso de código.
+- **Mobile First:** A interface é projetada primordialmente para dispositivos móveis, garantindo uma excelente experiência independente da tela.
+- **Single Page Application (SPA):** Navegação fluida sem a necessidade de recarregar a página, resultando em melhor performance.
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Se você deseja contribuir com o **Deu Nó**, siga estes passos:
+
+1. Faça um Fork do projeto
+2. Crie uma Branch para sua feature (`git checkout -b feature/MinhaNovaFeature`)
+3. Faça o Commit de suas alterações (`git commit -m 'Feat: Adiciona nova funcionalidade incrivel'`)
+4. Faça o Push para a Branch (`git push origin feature/MinhaNovaFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença MIT. Sinta-se livre para usá-lo e modificá-lo.
+
 ---
 *Criado com dedicação para encantar e vender.*
