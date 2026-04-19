@@ -117,7 +117,6 @@ const ColecoeAnterioresPage = () => {
                                 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
                                 'vermelho_poa_azul_marinho'
                             ]}
-                            badgeText="Coleção Anterior"
                             reversed={true}
                             imageClass="object-center"
                         />
@@ -130,6 +129,7 @@ const ColecoeAnterioresPage = () => {
                             price="R$ 70,00"
                             imageSrc={["/assets/produtos/abraco.webp", "/assets/produtos/abraco2.webp"]}
                             mobileImageSrc="/assets/produtos/abraco.webp"
+                            modalSubtitle="Escolha até duas cores"
                             colorOptions={[
                                 'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                                 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
@@ -147,7 +147,7 @@ const ColecoeAnterioresPage = () => {
                         <ProductCard
                             id="Chave"
                             name="Chave"
-                            description={["Coleção Anterior"]}
+                            description={["Discreto o suficiente para o olhar. Inesquecível para a memória."]}
                             price="R$ 40,00"
                             imageSrc={["/assets/produtos/chave.webp", "/assets/produtos/chave2.webp"]}
                             mobileImageSrc="/assets/produtos/chave.webp"
@@ -168,10 +168,11 @@ const ColecoeAnterioresPage = () => {
                         <ProductCard
                             id="Círculo"
                             name="Círculo"
-                            description={["Coleção Anterior"]}
+                            description={["Elegância não se explica, se sente."]}
                             price="R$ 65,00"
                             imageSrc={["/assets/produtos/circulo.webp", "/assets/produtos/circulo2.webp"]}
                             mobileImageSrc="/assets/produtos/circulo.webp"
+                            modalSubtitle="Escolha até duas cores"
                             colorOptions={[
                                 'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                                 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
@@ -193,6 +194,7 @@ const ColecoeAnterioresPage = () => {
                             price="R$ 65,00"
                             imageSrc={["/assets/produtos/geranio.webp", "/assets/produtos/geranio2.webp"]}
                             mobileImageSrc="/assets/produtos/geranio.webp"
+                            modalSubtitle="Escolha até duas cores"
                             colorOptions={[
                                 'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                                 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',

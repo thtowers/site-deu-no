@@ -323,18 +323,18 @@ const ProductCard = ({
 
                             <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2 overscroll-contain custom-scrollbar">
                                 {colorsList.map(color => (
-                                    <div key={color.id} className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-[#faf9f7] to-white border border-[#e8e6e3] hover:shadow-md transition-shadow relative">
+                                    <div key={color.id} className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-[#faf9f7] to-white border border-[#e8e6e3] hover:shadow-md transition-shadow">
                                         <img
                                             src={color.imageSrc}
                                             alt={color.name}
-                                            className="w-12 h-12 rounded-full shadow-sm border border-white object-cover cursor-zoom-in hover:scale-110 transition-transform duration-300"
+                                            className="w-12 h-12 rounded-full shadow-sm border border-white object-cover cursor-zoom-in hover:scale-110 transition-transform duration-300 shrink-0"
                                             onClick={() => setExpandedImage(color.imageSrc)}
                                         />
-                                        <div>
-                                            <span className="block font-medium text-[#3f4d41] text-lg" style={{ fontFamily: "'Poppins', sans-serif" }}>{color.name}</span>
+                                        <div className="flex-1 pr-2">
+                                            <span className="block font-medium text-[#3f4d41] text-lg leading-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>{color.name}</span>
                                         </div>
                                         <button
-                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#a9b4aa] hover:text-[#3f4d41] transition-colors"
+                                            className="text-[#a9b4aa] hover:text-[#3f4d41] transition-colors shrink-0 p-1"
                                             onClick={() => setExpandedImage(color.imageSrc)}
                                             title="Ver detalhes"
                                         >
