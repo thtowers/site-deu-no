@@ -233,7 +233,7 @@ const ProductsSection = () => {
                     price="R$ 50,00"
                     imageSrc={["/assets/produtos/elo3.webp", "/assets/produtos/elo2.webp", "/assets/produtos/elo.webp"
                     ]}
-                    mobileImageSrc="/assets/produtos/elo.webp"
+                    mobileImageSrc="/assets/produtos/elo3.webp"
                     /* badgeText="Coleção Âmago" */
                     reversed={false}
                 />
@@ -251,7 +251,7 @@ const ProductsSection = () => {
                     modalSubtitle="Escolha até duas cores"
                     price="R$ 55,00"
                     imageSrc={["/assets/produtos/laco3.webp", "/assets/produtos/laco2.webp", "/assets/produtos/laco.webp"]}
-                    mobileImageSrc="/assets/produtos/laco.webp"
+                    mobileImageSrc="/assets/produtos/laco3.webp"
                     /* badgeText="Coleção Âmago" */
                     reversed={true}
                     imageClass="object-bottom"
@@ -292,7 +292,7 @@ const ProductsSection = () => {
                     description={["Menos dúvida, mais presença."]}
                     price="R$ 40,00"
                     imageSrc={["/assets/produtos/doure3.webp", "/assets/produtos/doure2.webp", "/assets/produtos/doure.webp"]}
-                    mobileImageSrc="/assets/produtos/doure.webp"
+                    mobileImageSrc="/assets/produtos/doure3.webp"
                     badgeText="Coleção Âmago"
                     reversed={true}
                 />
@@ -313,7 +313,7 @@ const ProductsSection = () => {
                     price="R$ 45,00"
                     imageSrc={["/assets/produtos/ama3.webp", "/assets/produtos/ama2.webp", "/assets/produtos/ama.webp"
                     ]}
-                    mobileImageSrc="/assets/produtos/ama.webp"
+                    mobileImageSrc="/assets/produtos/ama3.webp"
                     badgeText="Coleção Âmago"
                     reversed={false}
                 />

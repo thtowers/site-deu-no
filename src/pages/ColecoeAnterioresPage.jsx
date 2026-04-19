@@ -121,6 +121,90 @@ const ColecoeAnterioresPage = () => {
                             reversed={true}
                             imageClass="object-center"
                         />
+                        <ElegantDivider />
+
+                        <ProductCard
+                            id="Abraço"
+                            name="Abraço"
+                            description={["É corda, mas quem se apaixona é você que se prende."]}
+                            price="R$ 70,00"
+                            imageSrc={["/assets/produtos/abraco.webp", "/assets/produtos/abraco2.webp"]}
+                            mobileImageSrc="/assets/produtos/abraco.webp"
+                            colorOptions={[
+                                'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
+                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
+                                'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
+                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
+                                'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
+                                'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
+                                'vermelho_poa_azul_marinho'
+                            ]}
+                            reversed={false}
+                            imageClass="object-center"
+                        />
+                        <ElegantDivider />
+
+                        <ProductCard
+                            id="Chave"
+                            name="Chave"
+                            description={["Coleção Anterior"]}
+                            price="R$ 40,00"
+                            imageSrc={["/assets/produtos/chave.webp", "/assets/produtos/chave2.webp"]}
+                            mobileImageSrc="/assets/produtos/chave.webp"
+                            colorOptions={[
+                                'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
+                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
+                                'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
+                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
+                                'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
+                                'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
+                                'vermelho_poa_azul_marinho'
+                            ]}
+                            reversed={true}
+                            imageClass="object-center"
+                        />
+                        <ElegantDivider />
+
+                        <ProductCard
+                            id="Círculo"
+                            name="Círculo"
+                            description={["Coleção Anterior"]}
+                            price="R$ 65,00"
+                            imageSrc={["/assets/produtos/circulo.webp", "/assets/produtos/circulo2.webp"]}
+                            mobileImageSrc="/assets/produtos/circulo.webp"
+                            colorOptions={[
+                                'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
+                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
+                                'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
+                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
+                                'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
+                                'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
+                                'vermelho_poa_azul_marinho'
+                            ]}
+                            reversed={false}
+                            imageClass="object-center"
+                        />
+                        <ElegantDivider />
+
+                        <ProductCard
+                            id="Gerânio"
+                            name="Gerânio"
+                            description={["O encontro da modernidade com a ousadia."]}
+                            price="R$ 65,00"
+                            imageSrc={["/assets/produtos/geranio.webp", "/assets/produtos/geranio2.webp"]}
+                            mobileImageSrc="/assets/produtos/geranio.webp"
+                            colorOptions={[
+                                'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
+                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
+                                'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
+                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
+                                'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
+                                'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
+                                'vermelho_poa_azul_marinho'
+                            ]}
+                            reversed={true}
+                            imageClass="object-center"
+                        />
 
                     </div>
                 </section>
