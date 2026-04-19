@@ -21,9 +21,11 @@ const ProductCard = ({
     // Garantir que imageSrc seja sempre um array para facilitar a lógica
     const images = Array.isArray(imageSrc) ? imageSrc : [imageSrc];
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [direction, setDirection] = useState(0);
     const [showColorModal, setShowColorModal] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [expandedImage, setExpandedImage] = useState(null);
+    const isAnimating = React.useRef(false);
 
     const descString = Array.isArray(description) ? description.join('\n') : (description || '');
     const cleanDescription = descString.replace(/Outras opções de cores disponíveis/g, "").trim();
@@ -33,15 +35,38 @@ const ProductCard = ({
     const hasColorOptions = colorsList.length > 0;
     // Função para avançar para a próxima imagem
     const nextImage = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        if (e && e.preventDefault) { e.preventDefault(); e.stopPropagation(); }
+        if (isAnimating.current) return;
+        isAnimating.current = true;
+        setDirection(1);
         setCurrentIndex((prev) => (prev + 1) % images.length);
+        setTimeout(() => { isAnimating.current = false; }, 400);
     };
     // Função para voltar para a imagem anterior
     const prevImage = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        if (e && e.preventDefault) { e.preventDefault(); e.stopPropagation(); }
+        if (isAnimating.current) return;
+        isAnimating.current = true;
+        setDirection(-1);
         setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+        setTimeout(() => { isAnimating.current = false; }, 400);
+    };
+
+    const slideVariants = {
+        enter: (direction) => ({
+            x: direction > 0 ? 200 : -200,
+            opacity: 0
+        }),
+        center: {
+            zIndex: 1,
+            x: 0,
+            opacity: 1
+        },
+        exit: (direction) => ({
+            zIndex: 0,
+            x: direction < 0 ? 200 : -200,
+            opacity: 0
+        })
     };
     // URL base
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
@@ -82,22 +107,27 @@ const ProductCard = ({
                         <div className="absolute inset-0 bg-linear-to-br from-black/5 to-transparent z-10 pointer-events-none"></div>
 
                         {/* Animação de transição entre imagens */}
-                        <AnimatePresence initial={false}>
+                        <AnimatePresence initial={false} custom={direction}>
                             <motion.div
                                 key={currentIndex}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                drag="x"
+                                custom={direction}
+                                variants={slideVariants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{
+                                    x: { type: "spring", stiffness: 300, damping: 30 },
+                                    opacity: { duration: 0.3 }
+                                }}
+                                drag={images.length > 1 ? "x" : false}
                                 dragConstraints={{ left: 0, right: 0 }}
                                 dragElastic={0.7}
                                 onDragEnd={(_, info) => {
                                     const swipeThreshold = 50;
                                     if (info.offset.x < -swipeThreshold) {
-                                        nextImage({ preventDefault: () => { }, stopPropagation: () => { } });
+                                        nextImage();
                                     } else if (info.offset.x > swipeThreshold) {
-                                        prevImage({ preventDefault: () => { }, stopPropagation: () => { } });
+                                        prevImage();
                                     }
                                 }}
                                 className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing touch-none"
