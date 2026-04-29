@@ -160,6 +160,36 @@ const ProductsSection = () => {
 
                 <ElegantDivider />
 
+                {/* Produto Colar Domo  */}
+                <ProductCard
+                    colorOptions={['marrom', 'preto', 'terracota', 'areia', 'caramelo', 'verde_militar', 'mostarda']}
+                    id="colar-domo"
+                    name="Colar Domo"
+                    modalSubtitle="Resina na cor Tartaruga"
+                    description={["Design moderno com personalidade inconfundível."]}
+                    price="R$ 75,00"
+                    imageSrc={["/assets/produtos/domo2.webp", "/assets/produtos/domo.webp", "/assets/produtos/domo3.webp"]}
+                    mobileImageSrc="/assets/produtos/domo2.webp"
+                    badgeText="Coleção Âmago"
+                    reversed={true}
+                />
+
+                <ElegantDivider />
+
+                {/* Produto Colar Velo */}
+                <ProductCard
+                    colorOptions={['preto', 'azul_marinho', 'marrom']}
+                    name="Colar Velo"
+                    description={["Presença marcante com um toque de suavidade."]}
+                    price="R$ 75,00"
+                    imageSrc={["/assets/produtos/velo.webp", "/assets/produtos/velo2.webp", "/assets/produtos/velo3.webp", "/assets/produtos/velo4.webp"]}
+                    mobileImageSrc="/assets/produtos/velo.webp"
+                    badgeText="Coleção Âmago"
+                    reversed={false}
+                />
+
+                <ElegantDivider />
+
                 {/* Produto Ciclo */}
                 <ProductCard
                     colorOptions={['bordo_sf', 'azul_marinho_sf', 'bege_natural_sf',
@@ -317,7 +347,6 @@ const ProductsSection = () => {
                     badgeText="Coleção Âmago"
                     reversed={false}
                 />
-
 
             </div>
         </section>

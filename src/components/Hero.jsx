@@ -44,6 +44,9 @@ const Hero = () => {
         }
     }, [isMobile]);
 
+    const next = () => startTransition(() => setCurrent((prev) => (prev + 1) % banners.length));
+    const prev = () => startTransition(() => setCurrent((prev) => (prev - 1 + banners.length) % banners.length));
+
     useEffect(() => {
         if (isMobile) return; // Não executa o timer no mobile (vídeo é fixo)
 
@@ -53,9 +56,6 @@ const Hero = () => {
         }, duration);
         return () => clearTimeout(timer);
     }, [current, isMobile]);
-
-    const next = () => startTransition(() => setCurrent((prev) => (prev + 1) % banners.length));
-    const prev = () => startTransition(() => setCurrent((prev) => (prev - 1 + banners.length) % banners.length));
 
     return (
         <div className="relative w-full">
