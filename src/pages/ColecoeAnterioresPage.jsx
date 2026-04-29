@@ -112,7 +112,7 @@ const ColecoeAnterioresPage = () => {
                                 'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                                 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
                                 'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
-                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
+                                'terracota', 'vermelho_figo', 'caramelo', 'chumbo', 'mostarda',
                                 'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
                                 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
                                 'vermelho_poa_azul_marinho'
