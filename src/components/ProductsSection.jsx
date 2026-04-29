@@ -180,7 +180,7 @@ const ProductsSection = () => {
                 <ProductCard
                     colorOptions={['preto', 'azul_marinho', 'marrom']}
                     name="Colar Velo"
-                    description={["Presença marcante com um toque de suavidade."]}
+                    description={["Sofisticação que revela sua essência."]}
                     price="R$ 75,00"
                     imageSrc={["/assets/produtos/velo.webp", "/assets/produtos/velo2.webp", "/assets/produtos/velo3.webp", "/assets/produtos/velo4.webp"]}
                     mobileImageSrc="/assets/produtos/velo.webp"
