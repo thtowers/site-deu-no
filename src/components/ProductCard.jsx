@@ -480,7 +480,7 @@ const ProductCard = ({
                                     </div>
                                     <div>
                                         <span className="block font-medium text-[#3f4d41]" style={{ fontFamily: "'Poppins', sans-serif" }}>Cartão de Crédito</span>
-                                        <span className="text-xs text-[#78877a]">Cartão em até 3x <br /> Aceitamos cartão de crédito a partir de R$ 150</span>
+                                        <span className="text-xs text-[#78877a]">Parcelamento em até 3x em compras acima de R$ 150 </span>
                                     </div>
                                 </div>
                             </div>

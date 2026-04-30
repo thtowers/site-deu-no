@@ -272,7 +272,7 @@ const ProductsSection = () => {
 
                 {/* Produto Laço */}
                 <ProductCard
-                    colorOptions={['terracota', 'verde_bandeira', 'marrom_escuro', 'vinho', 'preto', 'verde_militar',
+                    colorOptions={['terracota', 'verde_bandeira', 'marrom_escuro', 'preto', 'verde_militar',
                         'verde_jade', 'azul_marinho', 'areia', 'mostarda', 'caramelo', 'verde_limao', 'amarelo_manteiga',
                         'vermelho_figo', 'marrom', 'rosa_bebe', 'chumbo', 'cinza', 'laranja', 'rami'
                     ]}
