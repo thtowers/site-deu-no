@@ -325,9 +325,12 @@ export const COLORS_CATALOG = {
         name: 'Bege Natural',
         imageSrc: '/assets/cores/bege_natural.svg',
 
+    },
+
+    areia_caramelo_mesclada: {
+        id: 'areia_caramelo_mesclada',
+        name: 'Areia e Caramelo Mesclada',
+        imageSrc: '/assets/cores/areia_caramelo_mesclada.webp',
+
     }
-
-
-
-
 }

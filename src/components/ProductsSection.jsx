@@ -105,7 +105,7 @@ const ProductsSection = () => {
                         'vermelho_figo', 'vinho', 'caramelo', 'marrom',
                         'chumbo', 'mostarda', 'verde_jade', 'preto_poa_branco',
                         'preto', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
-                        'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho'
+                        'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
                     ]}
                     name="Colar Ponto "
                     description={["Quem tem estilo, sabe: é tudo sobre o ponto certo."]}
@@ -146,7 +146,7 @@ const ProductsSection = () => {
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
                         'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
-                        'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho'
+                        'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
 
                     ]}
                     name="Colar Eixo"
@@ -213,7 +213,7 @@ const ProductsSection = () => {
                         'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'caramelo',
                         'marrom', 'chumbo', 'mostarda', 'verde_jade', 'marrom_escuro', 'preto', 'preto_poa_branco',
                         'azul_marinho_poa_branco', 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                        'vermelho_poa_azul_marinho'
+                        'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
 
                     ]}
                     name="Colar Eco"
@@ -235,9 +235,9 @@ const ProductsSection = () => {
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
                         'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
-                        'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho']}
+                        'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada']}
                     name="Pulseira Orvalho"
-                    description={["Quem tem estilo, sabe: é tudo sobre o ponto certo."]}
+                    description={["Sútil no olhar, marcante no sentir."]}
                     price="R$ 48,00"
                     imageSrc={["/assets/produtos/orvalho.webp", "/assets/produtos/orvalho2.webp",
                         "/assets/produtos/orvalho3.webp"]}
@@ -256,7 +256,7 @@ const ProductsSection = () => {
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
                         'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
-                        'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho']}
+                        'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada']}
                     id="pulseiras"
                     name="Pulseira Elo"
                     description={["Presença que se impõe, estilo que permanece."]}
@@ -291,13 +291,7 @@ const ProductsSection = () => {
 
                 {/* Produto Brinco Bae */}
                 <ProductCard
-                    colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
-                        'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho', 'azul_anil', 'azul_royal',
-                        'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'caramelo',
-                        'marrom', 'chumbo', 'mostarda', 'verde_jade', 'preto', 'preto_poa_branco',
-                        'azul_marinho_poa_branco', 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                        'vermelho_poa_azul_marinho'
-                    ]}
+                    colorOptions={['azul_marinho', 'preto', 'areia', 'vermelho_figo', 'cinza', 'mostarda', 'terracota', 'verde_militar', 'verde_bandeira', 'verde_jade', 'marrom_escuro', 'marrom', 'caramelo', 'rami', 'chumbo']}
                     name="Brinco Bae"
                     description={["Prova: o essencial também impõe presença."]}
                     price="R$ 30,00"
@@ -317,7 +311,7 @@ const ProductsSection = () => {
                         'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'caramelo',
                         'marrom', 'chumbo', 'mostarda', 'verde_jade', 'marrom_escuro', 'preto', 'preto_poa_branco',
                         'azul_marinho_poa_branco', 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                        'vermelho_poa_azul_marinho']}
+                        'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada']}
                     name="Brinco Douré"
                     description={["Menos dúvida, mais presença."]}
                     price="R$ 40,00"

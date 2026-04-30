@@ -470,7 +470,6 @@ const ProductCard = ({
                                     </div>
                                     <div>
                                         <span className="block font-medium text-[#3f4d41]" style={{ fontFamily: "'Poppins', sans-serif" }}>PIX</span>
-                                        <span className="text-xs text-[#78877a]">Liberação imediata</span>
                                     </div>
                                 </div>
 

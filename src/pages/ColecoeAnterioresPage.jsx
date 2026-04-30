@@ -90,7 +90,7 @@ const ColecoeAnterioresPage = () => {
 
                         <ProductCard
                             id="Lume"
-                            name="Lume"
+                            name="Colar Lume"
                             description={["Não passa despercebido. Nem tenta."]}
                             price="R$ 55,00"
                             imageSrc={["/assets/produtos/luma4.webp", "/assets/produtos/luma3.webp", "/assets/produtos/lume.webp"]}
@@ -103,7 +103,7 @@ const ColecoeAnterioresPage = () => {
 
                         <ProductCard
                             id="Esfera"
-                            name="Esfera"
+                            name="Colar Esfera"
                             description={["Um nó, infinitas combinações."]}
                             price="R$ 65,00"
                             imageSrc={["/assets/produtos/esfera.webp", "/assets/produtos/esfera1.webp", "/assets/produtos/esfera2.webp"]}
@@ -124,7 +124,7 @@ const ColecoeAnterioresPage = () => {
 
                         <ProductCard
                             id="Abraço"
-                            name="Abraço"
+                            name="Colar Abraço"
                             description={["É corda, mas quem se apaixona é você que se prende."]}
                             price="R$ 70,00"
                             imageSrc={["/assets/produtos/abraco.webp", "/assets/produtos/abraco2.webp"]}
@@ -137,7 +137,7 @@ const ColecoeAnterioresPage = () => {
                                 'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
                                 'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
                                 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                                'vermelho_poa_azul_marinho'
+                                'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
                             ]}
                             reversed={false}
                             imageClass="object-center"
@@ -146,7 +146,7 @@ const ColecoeAnterioresPage = () => {
 
                         <ProductCard
                             id="Chave"
-                            name="Chave"
+                            name="Colar Chave"
                             description={["Discreto o suficiente para o olhar. Inesquecível para a memória."]}
                             price="R$ 40,00"
                             imageSrc={["/assets/produtos/chave.webp", "/assets/produtos/chave2.webp"]}
@@ -158,7 +158,7 @@ const ColecoeAnterioresPage = () => {
                                 'terracota', 'vermelho_figo', 'caramelo', 'chumbo', 'mostarda',
                                 'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
                                 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                                'vermelho_poa_azul_marinho'
+                                'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
                             ]}
                             reversed={true}
                             imageClass="object-center"
@@ -167,7 +167,7 @@ const ColecoeAnterioresPage = () => {
 
                         <ProductCard
                             id="Círculo"
-                            name="Círculo"
+                            name="Colar Círculo"
                             description={["Elegância não se explica, se sente."]}
                             price="R$ 65,00"
                             imageSrc={["/assets/produtos/circulo.webp", "/assets/produtos/circulo2.webp"]}
@@ -180,7 +180,7 @@ const ColecoeAnterioresPage = () => {
                                 'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
                                 'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
                                 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                                'vermelho_poa_azul_marinho'
+                                'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
                             ]}
                             reversed={false}
                             imageClass="object-center"
@@ -189,7 +189,7 @@ const ColecoeAnterioresPage = () => {
 
                         <ProductCard
                             id="Gerânio"
-                            name="Gerânio"
+                            name="Colar Gerânio"
                             description={["O encontro da modernidade com a ousadia."]}
                             price="R$ 65,00"
                             imageSrc={["/assets/produtos/geranio.webp", "/assets/produtos/geranio2.webp"]}
@@ -202,7 +202,7 @@ const ColecoeAnterioresPage = () => {
                                 'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
                                 'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
                                 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                                'vermelho_poa_azul_marinho'
+                                'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
                             ]}
                             reversed={true}
                             imageClass="object-center"
