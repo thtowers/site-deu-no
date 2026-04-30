@@ -68,6 +68,8 @@ const Hero = () => {
                             loop
                             muted
                             playsInline
+                            preload="auto"
+                            poster="/assets/produtos/video/video_poster.webp"
                             className="w-full h-auto block"
                             style={{ maxHeight: 'calc(100svh - 152px)', objectFit: 'cover', objectPosition: 'top center' }}
                         >
