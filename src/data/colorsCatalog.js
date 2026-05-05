@@ -332,5 +332,12 @@ export const COLORS_CATALOG = {
         name: 'Areia e Caramelo Mesclada',
         imageSrc: '/assets/cores/areia_caramelo_mesclada.webp',
 
+    },
+
+    preto_dourado: {
+        id: 'preto_dourado',
+        name: 'Preto e Dourado',
+        imageSrc: '/assets/cores/preto_dourado.svg',
     }
 }
+
