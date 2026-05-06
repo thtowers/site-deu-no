@@ -337,7 +337,7 @@ export const COLORS_CATALOG = {
     preto_dourado: {
         id: 'preto_dourado',
         name: 'Preto e Dourado',
-        imageSrc: '/assets/cores/preto_dourado.svg',
+        imageSrc: '/assets/cores/preto_dourado.webp',
     }
 }
 

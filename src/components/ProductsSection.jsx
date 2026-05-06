@@ -47,7 +47,7 @@ const ProductsSection = () => {
 
                 {/* Produto Fluxo */}
                 <ProductCard
-                    colorOptions={['prata_e_dourado', 'preto_dourado']}
+                    colorOptions={['preto_dourado']}
                     name="Colar Fluxo"
                     description={"Um colar, infinitas versões de você"}
                     price=" R$ 45,00"
