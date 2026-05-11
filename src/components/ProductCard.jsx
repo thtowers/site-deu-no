@@ -16,6 +16,7 @@ const ProductCard = ({
     reversed = false,
     onImageError,
     colorOptions = [],
+    isOutOfStock = false,
     imageClass = "object-center"
 }) => {
     // Garantir que imageSrc seja sempre um array para facilitar a lógica
@@ -184,7 +185,7 @@ const ProductCard = ({
                             </>
                         )}
 
-                        {badgeText && (
+                        {badgeText && !isOutOfStock && (
                             <div className={`absolute top-4 md:top-6 ${reversed ? 'right-4 md:right-6' : 'left-4 md:left-6'} z-20`}>
                                 <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs font-semibold tracking-wider uppercase" style={{
                                     backgroundColor: 'rgba(250, 249, 247, 0.95)',
@@ -192,6 +193,18 @@ const ProductCard = ({
                                     color: '#3f4d41'
                                 }}>
                                     {badgeText}
+                                </span>
+                            </div>
+                        )}
+
+                        {isOutOfStock && (
+                            <div className={`absolute top-4 md:top-6 ${reversed ? 'right-4 md:right-6' : 'left-4 md:left-6'} z-20`}>
+                                <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs font-semibold tracking-wider uppercase" style={{
+                                    backgroundColor: 'rgba(239, 68, 68, 0.9)',
+                                    backdropFilter: 'blur(8px)',
+                                    color: '#ffffff'
+                                }}>
+                                    Esgotado no momento
                                 </span>
                             </div>
                         )}
@@ -255,13 +268,22 @@ const ProductCard = ({
                                         Investimento
                                     </span>
                                 </div>
-                                <div className="mt-2 text-left">
+                                <div className="mt-2 text-left flex flex-col sm:flex-row sm:items-center gap-3">
                                     <span className="text-3xl md:text-4xl lg:text-5xl font-serif" style={{
                                         fontFamily: "'Playfair Display', serif",
-                                        color: '#3f4d41'
+                                        color: isOutOfStock ? '#a9b4aa' : '#3f4d41',
+                                        textDecoration: isOutOfStock ? 'line-through' : 'none'
                                     }}>
                                         {price}
                                     </span>
+                                    {isOutOfStock && (
+                                        <span className="text-sm md:text-base font-medium italic" style={{
+                                            fontFamily: "'Poppins', sans-serif",
+                                            color: '#ef4444'
+                                        }}>
+                                            Reposição em breve
+                                        </span>
+                                    )}
                                 </div>
                             </div>
 
@@ -299,7 +321,7 @@ const ProductCard = ({
                                     }}
                                 >
                                     <img src="/assets/logo/digital_glyph_white.webp" alt="WhatsApp" className="w-4 h-4 md:w-5 md:h-5 object-contain relative z-10" />
-                                    <span className="relative z-10">Compre pelo WhatsApp</span>
+                                    <span className="relative z-10">{isOutOfStock ? 'Consultar Reposição' : 'Compre pelo WhatsApp'}</span>
                                 </a>
                             </div>
                         </div>

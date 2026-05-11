@@ -223,6 +223,7 @@ const ProductsSection = () => {
                     mobileImageSrc="/assets/produtos/eco.webp"
                     badgeText="Coleção Âmago"
                     reversed={false}
+                    isOutOfStock={true}
                     imageClass={["object-center", "object-center lg:object-left-bottom"]}
                 />
 
