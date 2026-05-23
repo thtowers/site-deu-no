@@ -20,7 +20,10 @@ const banners = [
 
 const Hero = () => {
     const [current, setCurrent] = useState(0);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(() => 
+        typeof window !== 'undefined' ? window.matchMedia('(max-width: 1024px)').matches : false
+    );
+    const [videoError, setVideoError] = useState(false);
 
     // Detecta se é mobile para decidir entre vídeo ou carrossel
     useEffect(() => {
@@ -48,7 +51,7 @@ const Hero = () => {
     const prev = () => startTransition(() => setCurrent((prev) => (prev - 1 + banners.length) % banners.length));
 
     useEffect(() => {
-        if (isMobile) return; // Não executa o timer no mobile (vídeo é fixo)
+        if (isMobile && !videoError) return; // Não executa o timer no mobile se o vídeo estiver carregando corretamente
 
         const duration = 6000; // Ajustado para 6 segundos para não demorar demais na primeira imagem
         const timer = setTimeout(() => {
@@ -60,9 +63,9 @@ const Hero = () => {
     return (
         <div className="relative w-full">
             <div className="relative h-auto md:h-[85vh] overflow-hidden w-full" style={{ backgroundColor: 'var(--color-off-white)' }}>
-                {isMobile ? (
+                {(isMobile && !videoError) ? (
                     /* Versão Mobile: Apenas Vídeo */
-                    <div className="w-full overflow-hidden" style={{ maxHeight: 'calc(100svh - 152px)' }}>
+                    <div className="w-full overflow-hidden aspect-[9/16] bg-zinc-100" style={{ maxHeight: 'calc(100svh - 152px)' }}>
                         <video
                             autoPlay
                             loop
@@ -70,8 +73,9 @@ const Hero = () => {
                             playsInline
                             preload="auto"
                             poster="/assets/produtos/video/video_poster.webp"
-                            className="w-full h-auto block"
-                            style={{ maxHeight: 'calc(100svh - 152px)', objectFit: 'cover', objectPosition: 'top center' }}
+                            onError={() => setVideoError(true)}
+                            className="w-full h-full block object-cover aspect-[9/16]"
+                            style={{ maxHeight: 'calc(100svh - 152px)', objectPosition: 'top center' }}
                         >
                             <source src="/assets/produtos/video/video_principal2.webm" type="video/webm" />
                             <source src="/assets/produtos/video/video_principal2.mp4" type="video/mp4" />
@@ -91,7 +95,7 @@ const Hero = () => {
                                 transition={{ duration: 1.2, ease: "easeInOut" }}
                             >
                                 <img
-                                    src={banners[current].desktop}
+                                    src={isMobile ? banners[current].mobile : banners[current].desktop}
                                     alt={`Banner ${current + 1}`}
                                     className="w-full h-full object-cover object-center"
                                     fetchPriority={current === 0 ? "high" : "auto"}

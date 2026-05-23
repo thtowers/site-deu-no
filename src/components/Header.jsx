@@ -205,30 +205,34 @@ const Header = () => {
                     </button>
                 </div>
 
-                {/* Mobile Menu */}
+                {/* Menu Mobile - Agora posicionado absolutamente abaixo do header */}
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
-                            className="md:hidden border-t overflow-hidden"
-                            style={{ backgroundColor: 'var(--color-off-white)', borderColor: 'var(--color-gray-light)' }}
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                            className="md:hidden absolute top-full left-0 w-full overflow-hidden shadow-2xl"
+                            style={{ 
+                                backgroundColor: 'var(--color-off-white)', 
+                                borderTop: '1px solid rgba(0,0,0,0.05)',
+                                zIndex: 40 
+                            }}
                         >
                             <motion.nav
-                                className="flex flex-col p-6 gap-6"
+                                className="flex flex-col p-8 gap-6"
                                 variants={listVariants}
                                 initial="hidden"
                                 animate="visible"
                             >
-                                {/* Menu Items */}
+                                {/* Itens do Menu com animação de "saída" do header */}
                                 {menuItems.map((item) => (
                                     <motion.a
                                         key={item.name}
                                         href={resolveHref(item.href)}
                                         variants={itemVariants}
-                                        className="font-medium text-lg py-1 border-b border-transparent transition-all"
+                                        className="font-serif text-2xl py-2 border-b border-transparent transition-all tracking-wide"
                                         style={{ color: 'var(--color-olive-medium)' }}
                                         onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-forest-dark)'}
                                         onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-olive-medium)'}
@@ -243,7 +247,7 @@ const Header = () => {
                                     <Link
                                         to="/colecoes-anteriores"
                                         onClick={() => setIsOpen(false)}
-                                        className="font-medium text-lg py-1 border-b border-transparent transition-all block"
+                                        className="font-serif text-2xl py-2 border-b border-transparent transition-all block tracking-wide"
                                         style={{
                                             color: location.pathname === '/colecoes-anteriores'
                                                 ? 'var(--color-forest-dark)'
@@ -256,43 +260,44 @@ const Header = () => {
                                     </Link>
                                 </motion.div>
 
-                                {/* Divider */}
-                                <div className="w-full h-px bg-linear-to-r from-transparent via-gray-300 to-transparent my-2"></div>
+                                {/* Divisor Elegante */}
+                                <motion.div 
+                                    variants={itemVariants}
+                                    className="w-12 h-px bg-[var(--color-olive-medium)] opacity-30 my-4"
+                                />
 
                                 {/* Redes Sociais - Mobile */}
                                 <motion.div
                                     variants={itemVariants}
-                                    className="flex justify-center gap-8 pt-4"
+                                    className="flex gap-8 pt-2"
                                 >
                                     <a
                                         href="https://www.instagram.com/usedeuno?igsh=NWhvMnB3ZjB3NWs%3D"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex flex-col items-center gap-2 group"
+                                        className="group"
                                         aria-label="Instagram"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         <img
                                             src="/assets/logo/instagram_glyph_gradient.webp"
                                             alt="Instagram"
-                                            className="w-8 h-8 group-hover:scale-110 transition-transform"
+                                            className="w-7 h-7 opacity-80 group-hover:opacity-100 transition-opacity"
                                         />
-                                        <span className="text-xs" style={{ color: 'var(--color-olive-medium)' }}>Instagram</span>
                                     </a>
                                     <a
                                         href="https://shopee.com.br/usedeuno"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex flex-col items-center gap-2 group"
+                                        className="group"
                                         aria-label="Shopee"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         <img
                                             src="/assets/logo/shopee.webp"
                                             alt="Shopee"
-                                            className="h-8 w-auto object-contain group-hover:scale-110 transition-transform"
+                                            className="h-7 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
                                         />
-                                        <span className="text-xs" style={{ color: 'var(--color-olive-medium)' }}>Shopee</span>
                                     </a>
                                 </motion.div>
                             </motion.nav>

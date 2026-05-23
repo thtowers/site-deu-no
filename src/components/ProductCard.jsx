@@ -244,7 +244,7 @@ const ProductCard = ({
                             {hasColorOptions && (
                                 <div className="pt-2 pb-1">
                                     <button
-                                        onClick={() => setShowColorModal(true)}
+                                        onClick={() => React.startTransition(() => setShowColorModal(true))}
                                         className="group flex flex-row items-center gap-3 px-5 py-2.5 text-sm font-medium tracking-wide border border-[#e8e6e3] rounded-full hover:border-[#78877a] hover:bg-[#faf9f7] transition-all duration-300 shadow-sm hover:shadow-md bg-white w-fit"
                                         style={{ fontFamily: "'Poppins', sans-serif", color: '#566658' }}
                                     >
@@ -290,7 +290,7 @@ const ProductCard = ({
                             {/* Formas de pagamento */}
                             <div className="-mt-2 mb-2">
                                 <button
-                                    onClick={() => setShowPaymentModal(true)}
+                                    onClick={() => React.startTransition(() => setShowPaymentModal(true))}
                                     className="text-[10px] md:text-xs uppercase tracking-widest font-medium border-b border-[#a9b4aa]/30 hover:border-[#3f4d41] transition-all pb-0.5 w-fit"
                                     style={{ fontFamily: "'Poppins', sans-serif", color: '#a9b4aa' }}
                                     onMouseEnter={(e) => e.currentTarget.style.color = '#3f4d41'}
@@ -340,7 +340,7 @@ const ProductCard = ({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
-                        onClick={() => setShowColorModal(false)}
+                        onClick={() => React.startTransition(() => setShowColorModal(false))}
                         style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
                     >
                         <motion.div
@@ -352,7 +352,7 @@ const ProductCard = ({
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button
-                                onClick={() => setShowColorModal(false)}
+                                onClick={() => React.startTransition(() => setShowColorModal(false))}
                                 className="absolute top-4 right-4 p-2 text-[#78877a] hover:text-[#3f4d41] transition-colors rounded-full hover:bg-black/5"
                                 aria-label="Fechar"
                             >
@@ -453,7 +453,7 @@ const ProductCard = ({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
-                        onClick={() => setShowPaymentModal(false)}
+                        onClick={() => React.startTransition(() => setShowPaymentModal(false))}
                         style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
                     >
                         <motion.div
@@ -465,7 +465,7 @@ const ProductCard = ({
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button
-                                onClick={() => setShowPaymentModal(false)}
+                                onClick={() => React.startTransition(() => setShowPaymentModal(false))}
                                 className="absolute top-4 right-4 p-2 text-[#78877a] hover:text-[#3f4d41] transition-colors rounded-full hover:bg-black/5"
                                 aria-label="Fechar"
                             >

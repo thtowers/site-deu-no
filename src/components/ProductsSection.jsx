@@ -47,12 +47,12 @@ const ProductsSection = () => {
 
                 {/* Produto Fluxo */}
                 <ProductCard
-                    colorOptions={['preto_dourado']}
+                    colorOptions={['preto_dourado', 'prata_e_dourado']}
                     name="Colar Fluxo"
                     description={"Um colar, infinitas versões de você"}
                     price=" R$ 45,00"
-                    imageSrc={["/assets/produtos/fluxo.webp", "/assets/produtos/fluxo2.webp", "/assets/produtos/fluxo3.webp"]}
-                    mobileImageSrc="/assets/produtos/fluxo.webp"
+                    imageSrc={["/assets/produtos/Fluxo4.webp", "/assets/produtos/Fluxo5.webp", "/assets/produtos/fluxo3.webp"]}
+                    mobileImageSrc="/assets/produtos/Fluxo4.webp"
                     badgeText="Coleção Âmago"
                     onImageError={handleImageError}
                     reversed={true}
@@ -102,7 +102,7 @@ const ProductsSection = () => {
                         'verde_militar', 'azul_petroleo', 'verde_bandeira',
                         'azul_marinho', 'azul_anil', 'azul_royal', 'roxo',
                         'rosa', 'laranja', 'vermelho', 'terracota',
-                        'vermelho_figo', 'vinho', 'caramelo', 'marrom',
+                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'marrom_escuro',
                         'chumbo', 'mostarda', 'verde_jade', 'preto_poa_branco',
                         'preto', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
                         'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
@@ -144,7 +144,7 @@ const ProductsSection = () => {
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao',
                         'rosa_bebe', 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
-                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
+                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'marrom_escuro', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
                         'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
 
@@ -234,7 +234,7 @@ const ProductsSection = () => {
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao',
                         'rosa_bebe', 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
-                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
+                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'marrom_escuro', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
                         'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada']}
                     name="Pulseira Orvalho"
@@ -255,7 +255,7 @@ const ProductsSection = () => {
                     colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao',
                         'rosa_bebe', 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
                         'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota',
-                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'chumbo', 'mostarda', 'verde_jade',
+                        'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'marrom_escuro', 'chumbo', 'mostarda', 'verde_jade',
                         'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco',
                         'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada']}
                     id="pulseiras"
