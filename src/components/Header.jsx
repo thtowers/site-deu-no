@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -194,6 +194,22 @@ const Header = () => {
                                 Loja Virtual
                             </span>
                         </a>
+                        <a
+                            href="/vendas/"
+                            className="group flex flex-col items-center gap-1 transition-all hover:scale-105"
+                            aria-label="Admin"
+                        >
+                            <Lock className="w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity text-[var(--color-olive-medium)] group-hover:text-[var(--color-forest-dark)]" />
+                            <span
+                                className="text-xs tracking-wide opacity-70 group-hover:opacity-100 transition-opacity"
+                                style={{
+                                    fontFamily: "'Cormorant Garamond', serif",
+                                    color: 'var(--color-olive-medium)'
+                                }}
+                            >
+                                Admin
+                            </span>
+                        </a>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -258,6 +274,20 @@ const Header = () => {
                                     >
                                         Coleções Anteriores
                                     </Link>
+                                </motion.div>
+
+                                {/* Link mobile para Área Admin */}
+                                <motion.div variants={itemVariants}>
+                                    <a
+                                        href="/vendas/"
+                                        onClick={() => setIsOpen(false)}
+                                        className="font-serif text-2xl py-2 border-b border-transparent transition-all flex items-center gap-2 tracking-wide"
+                                        style={{ color: 'var(--color-olive-medium)' }}
+                                        onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-forest-dark)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-olive-medium)'}
+                                    >
+                                        <Lock className="w-5 h-5" /> Área Admin
+                                    </a>
                                 </motion.div>
 
                                 {/* Divisor Elegante */}
