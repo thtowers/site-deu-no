@@ -120,6 +120,7 @@ const App = {
     
     this.popularSelectProdutosFormVenda();
     this.popularSelectsCategorias();
+    this.atualizarDatalistClientesFormVenda();
   },
 
   // 4. ROTEADOR SPA (INTERNA DAS ABAS)
@@ -779,6 +780,37 @@ const App = {
       });
     }
 
+    // Monitora seleção de cliente no input para identificar segmentação automática (Varejo/Atacado)
+    const inputCliente = document.getElementById('venda-cliente');
+    if (inputCliente) {
+      inputCliente.addEventListener('input', () => {
+        const nomeDigitado = inputCliente.value.trim().toLowerCase();
+        if (!nomeDigitado) return;
+
+        // Tenta encontrar o cliente pelo nome completo
+        const clienteEncontrado = this.state.clientes.find(c => c.nome.trim().toLowerCase() === nomeDigitado);
+        if (clienteEncontrado && clienteEncontrado.tipo_cliente) {
+          const hiddenTipo = document.getElementById('venda-tipo-cliente');
+          if (hiddenTipo && hiddenTipo.value !== clienteEncontrado.tipo_cliente) {
+            hiddenTipo.value = clienteEncontrado.tipo_cliente;
+            hiddenTipo.dispatchEvent(new Event('change'));
+
+            // Atualiza visualmente os botões do Segmented Control
+            const segmentedButtons = document.querySelectorAll('.segmented-control .segmented-btn');
+            segmentedButtons.forEach(b => {
+              if (b.getAttribute('data-value') === clienteEncontrado.tipo_cliente) {
+                b.classList.add('active');
+              } else {
+                b.classList.remove('active');
+              }
+            });
+            
+            this.showToast('Cliente Identificado', `Canal de venda ajustado automaticamente para "${clienteEncontrado.tipo_cliente.toUpperCase()}"!`, 'info');
+          }
+        }
+      });
+    }
+
     document.getElementById('form-produto')?.addEventListener('submit', (e) => this.handleSubmitProduto(e));
     document.getElementById('form-produto')?.addEventListener('reset', () => {
       const valInvest = document.getElementById('calc-invest-val');
@@ -904,15 +936,12 @@ const App = {
     // Evento de alteração no tipo de cliente (canal de venda)
     if (hiddenTipo) {
       hiddenTipo.addEventListener('change', () => {
-        const tipo = hiddenTipo.value;
-        if (tipo === 'atacado') {
-          inputValorVenda.removeAttribute('readonly');
-          inputValorVenda.style.borderColor = 'var(--purple)';
-        } else {
-          inputValorVenda.setAttribute('readonly', 'true');
-          inputValorVenda.style.borderColor = 'var(--border)';
-          this.sincronizarProdutoSelecionadoFormVenda();
-        }
+        // O campo agora é sempre readonly para evitar edições manuais
+        inputValorVenda.setAttribute('readonly', 'true');
+        inputValorVenda.style.borderColor = 'var(--border)';
+        
+        // Recalcula o valor da venda com base no novo canal selecionado (varejo ou atacado)
+        this.sincronizarProdutoSelecionadoFormVenda();
       });
     }
 
@@ -952,7 +981,27 @@ const App = {
     });
 
     document.getElementById('btn-add-ficha-insumo')?.addEventListener('click', () => {
-      this.adicionarLinhaFichaTecnica();
+      this.abrirModalBuscaInsumo('nova');
+    });
+
+    // Eventos do Modal de Seleção de Insumos (Ficha Técnica)
+    const buscaInput = document.getElementById('busca-insumo-termo');
+    if (buscaInput) {
+      buscaInput.addEventListener('input', () => this.renderizarListaBuscaInsumos());
+    }
+
+    const tagButtons = document.querySelectorAll('#busca-insumo-categorias .btn-tag');
+    tagButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tagButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.renderizarListaBuscaInsumos();
+      });
+    });
+
+    document.getElementById('btn-close-modal-selecionar-insumo')?.addEventListener('click', () => {
+      const modal = document.getElementById('modal-selecionar-insumo');
+      if (modal) modal.classList.remove('active');
     });
   },
 
@@ -1220,7 +1269,57 @@ const App = {
         }
       }
 
+      // Verifica se o produto consome corda genérica
+      const vendaCorGroup = document.getElementById('venda-cor-corda-group');
+      const selectCorCorda = document.getElementById('venda-cor-corda');
+      
+      const consomeCordaGenerica = prod.composicao && prod.composicao.some(item => item.insumo_id === 'i_corda_generica');
+      
+      if (consomeCordaGenerica) {
+        if (vendaCorGroup) {
+          vendaCorGroup.style.display = 'block';
+          this.popularSelectCoresCorda();
+          if (selectCorCorda) {
+            selectCorCorda.setAttribute('required', 'true');
+          }
+        }
+      } else {
+        if (vendaCorGroup) {
+          vendaCorGroup.style.display = 'none';
+          if (selectCorCorda) {
+            selectCorCorda.removeAttribute('required');
+            selectCorCorda.value = '';
+          }
+        }
+      }
+
       this.calcularMargemFormVendaAtacado();
+    }
+  },
+
+  popularSelectCoresCorda() {
+    const select = document.getElementById('venda-cor-corda');
+    if (!select) return;
+
+    const valorAtual = select.value;
+    select.innerHTML = '<option value="">-- Selecione a Cor da Corda --</option>';
+    
+    // Filtrar apenas insumos do tipo 'corda' e que não sejam o genérico
+    const insumosCores = this.state.insumos.filter(ins => ins.tipo === 'corda' && ins.id !== 'i_corda_generica');
+    
+    // Ordenar alfabeticamente pelo nome (que é "Corda [cor]")
+    insumosCores.sort((a, b) => a.nome.localeCompare(b.nome));
+
+    insumosCores.forEach(ins => {
+      const option = document.createElement('option');
+      option.value = ins.id;
+      // Mostrar estoque atual no texto da option para ajudar na decisão do usuário
+      option.textContent = `${ins.nome.replace('Corda ', '')} (Estoque: ${ins.estoque_atual}m)`;
+      select.appendChild(option);
+    });
+
+    if (valorAtual) {
+      select.value = valorAtual;
     }
   },
 
@@ -1424,12 +1523,29 @@ const App = {
     const nome = document.getElementById('prod-nome').value.trim();
     const categoria = document.getElementById('prod-categoria').value;
     const custo = parseFloat(document.getElementById('prod-custo').value);
-    const maoObra = parseFloat(document.getElementById('prod-mao-obra').value);
+    const maoObraInput = document.getElementById('prod-mao-obra');
+    const maoObraRaw = maoObraInput ? maoObraInput.value.trim() : '';
+    const maoObra = parseFloat(maoObraRaw);
     const valorVenda = parseFloat(document.getElementById('prod-venda').value);
     const valorVendaAtacado = parseFloat(document.getElementById('prod-venda-atacado').value) || 0;
     const margemDesejadaVarejo = parseFloat(document.getElementById('prod-margem-desejada').value) || 0;
     const margemDesejadaAtacado = parseFloat(document.getElementById('prod-margem-atacado').value) || 0;
     const estoque = parseInt(document.getElementById('prod-estoque').value) || 0;
+
+    // Validação explícita de campo de mão de obra vazio/indefinido
+    if (maoObraRaw === '' || isNaN(maoObra)) {
+      this.showToast('Mão de Obra Requerida', 'Por favor, defina um valor para o campo "Valor Mão de Obra (R$)".', 'warning');
+      if (maoObraInput) {
+        maoObraInput.focus();
+        maoObraInput.style.borderColor = 'var(--danger)';
+      }
+      return;
+    }
+
+    // Resetar cor de borda caso esteja válida
+    if (maoObraInput) {
+      maoObraInput.style.borderColor = '';
+    }
 
     if (!nome || !categoria || isNaN(custo) || isNaN(maoObra) || isNaN(valorVenda) || isNaN(valorVendaAtacado)) {
       this.showToast('Formulário Inválido', 'Por favor, preencha todos os dados.', 'danger');
@@ -1537,11 +1653,30 @@ const App = {
 
       // Baixa proporcional de insumos baseada na composição da peça
       if (prod && prod.composicao && prod.composicao.length > 0) {
+        const corCordaIdSelected = document.getElementById('venda-cor-corda')?.value;
+
         for (const item of prod.composicao) {
-          const insumo = this.state.insumos.find(i => i.id === item.insumo_id);
+          let insumoIdABaixar = item.insumo_id;
+          
+          // Se for o insumo genérico de corda e houver uma cor selecionada, direcionamos a baixa para a cor!
+          if (item.insumo_id === 'i_corda_generica' && corCordaIdSelected) {
+            insumoIdABaixar = corCordaIdSelected;
+          }
+
+          const insumo = this.state.insumos.find(i => i.id === insumoIdABaixar);
           if (insumo) {
-            insumo.estoque_atual = Math.max(0, insumo.estoque_atual - (item.quantidade * quantidade));
+            const quantidadeConsumida = item.quantidade * quantidade;
+            insumo.estoque_atual = Math.max(0, insumo.estoque_atual - quantidadeConsumida);
             await DB.salvarInsumo(insumo);
+
+            // Alerta proativo imediato de estoque crítico
+            if (insumo.estoque_atual <= insumo.estoque_minimo) {
+              this.showToast(
+                'Alerta de Estoque', 
+                `A corda "${insumo.nome.replace('Corda ', '')}" atingiu o limite crítico (Restam apenas ${insumo.estoque_atual}m)!`, 
+                'danger'
+              );
+            }
           }
         }
       }
@@ -1604,6 +1739,18 @@ const App = {
 
     // Limpar avisos e relógios
     document.getElementById('venda-estoque-warn').innerHTML = '';
+    
+    // Limpar seleção de cor de corda e ocultar contêiner
+    const selectCorCorda = document.getElementById('venda-cor-corda');
+    if (selectCorCorda) {
+      selectCorCorda.value = '';
+      selectCorCorda.removeAttribute('required');
+    }
+    const vendaCorGroup = document.getElementById('venda-cor-corda-group');
+    if (vendaCorGroup) {
+      vendaCorGroup.style.display = 'none';
+    }
+
     this.inicializarDataFormVenda();
   },
 
@@ -1965,12 +2112,20 @@ const App = {
     });
 
     row.innerHTML = `
-      <select class="form-control ficha-insumo-select" style="flex: 2; font-size: 11px; padding: 6px 8px; height: 35px;" required>
+      <!-- Select real escondido para manter compatibilidade com a lógica existente -->
+      <select class="form-control ficha-insumo-select" style="display: none;" required>
         ${optionsHtml}
       </select>
-      <input type="number" class="form-control ficha-insumo-qtd" placeholder="Qtd" min="0.01" step="0.01" style="flex: 1; font-size: 11px; padding: 6px 8px; height: 35px;" value="${quantidade}" required>
+      
+      <!-- Caixa de toque bonita que exibe o insumo selecionado -->
+      <div class="ficha-insumo-trigger" style="flex: 2; font-size: 11px; padding: 6px 10px; height: 35px; border: 1px solid var(--border-dim); border-radius: var(--radius-sm); background: var(--bg-card); display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; min-width: 0;">
+        <span class="ficha-insumo-label" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">-- Escolha o Insumo --</span>
+        <i class="fas fa-search" style="color: var(--text-muted); font-size: 10px; margin-left: 4px; flex-shrink: 0;"></i>
+      </div>
+      
+      <input type="number" class="form-control ficha-insumo-qtd" placeholder="Qtd" min="0.01" step="0.01" style="flex: 1; font-size: 11px; padding: 6px 8px; height: 35px; max-width: 80px;" value="${quantidade}" required>
       <span class="ficha-insumo-custo" style="font-size: 11px; font-weight: 600; min-width: 65px; text-align: right; color: var(--text-secondary);">R$ 0.00</span>
-      <button type="button" class="btn-delete-ficha-insumo" style="background: none; border: none; color: var(--danger); cursor: pointer; padding: 0 4px; font-size: 13px;">
+      <button type="button" class="btn-delete-ficha-insumo" style="background: none; border: none; color: var(--danger); cursor: pointer; padding: 0 4px; font-size: 13px; flex-shrink: 0;">
         <i class="fas fa-trash"></i>
       </button>
     `;
@@ -1978,6 +2133,7 @@ const App = {
     container.appendChild(row);
 
     const selectEl = row.querySelector('.ficha-insumo-select');
+    const triggerEl = row.querySelector('.ficha-insumo-trigger');
     const qtdEl = row.querySelector('.ficha-insumo-qtd');
     const custoEl = row.querySelector('.ficha-insumo-custo');
     const deleteBtn = row.querySelector('.btn-delete-ficha-insumo');
@@ -1989,6 +2145,13 @@ const App = {
     const atualizarCustoLinha = () => {
       const selectedOption = selectEl.options[selectEl.selectedIndex];
       const preco = parseFloat(selectedOption?.getAttribute('data-preco')) || 0;
+      const labelText = selectedOption ? selectedOption.text : '-- Escolha o Insumo --';
+      
+      const labelEl = row.querySelector('.ficha-insumo-label');
+      if (labelEl) {
+        labelEl.textContent = labelText.split(' - R$')[0]; // Nome limpo sem o preço repetido para economizar espaço
+      }
+
       const qtd = parseFloat(qtdEl.value) || 0;
       const custoLinha = preco * qtd;
       custoEl.textContent = custoLinha.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -1997,6 +2160,11 @@ const App = {
 
     selectEl.addEventListener('change', atualizarCustoLinha);
     qtdEl.addEventListener('input', atualizarCustoLinha);
+
+    // Abre o modal de busca ao clicar na caixa do insumo
+    triggerEl.addEventListener('click', () => {
+      this.abrirModalBuscaInsumo(row);
+    });
 
     deleteBtn.addEventListener('click', () => {
       row.remove();
@@ -2026,9 +2194,104 @@ const App = {
     const elCusto = document.getElementById('prod-custo');
     if (elCusto) {
       elCusto.value = custoTotalInsumos.toFixed(2);
-      // Disparar o evento input para recalcular as margens e lucros do produto acabado
       elCusto.dispatchEvent(new Event('input'));
     }
+  },
+
+  abrirModalBuscaInsumo(alvo = 'nova') {
+    this.state.linhaFichaAtiva = alvo;
+    
+    const buscaInput = document.getElementById('busca-insumo-termo');
+    if (buscaInput) buscaInput.value = '';
+
+    const tagButtons = document.querySelectorAll('#busca-insumo-categorias .btn-tag');
+    tagButtons.forEach(b => {
+      if (b.getAttribute('data-tipo') === 'todos') {
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
+    });
+
+    this.renderizarListaBuscaInsumos();
+
+    const modal = document.getElementById('modal-selecionar-insumo');
+    if (modal) modal.classList.add('active');
+  },
+
+  renderizarListaBuscaInsumos() {
+    const listaEl = document.getElementById('busca-insumo-lista');
+    if (!listaEl) return;
+
+    const termo = (document.getElementById('busca-insumo-termo')?.value || '').toLowerCase().trim();
+    const btnAtivo = document.querySelector('#busca-insumo-categorias .btn-tag.active');
+    const tipoFiltro = btnAtivo ? btnAtivo.getAttribute('data-tipo') : 'todos';
+
+    const insumosFiltrados = this.state.insumos.filter(ins => {
+      // Oculta todas as cordas com cor na seleção de Ficha Técnica,
+      // permitindo escolher APENAS o insumo genérico "Corda (Sem Cor)".
+      if (ins.tipo === 'corda' && ins.id !== 'i_corda_generica') {
+        return false;
+      }
+
+      const bateTermo = !termo || 
+        ins.nome.toLowerCase().includes(termo) || 
+        (ins.especificacao && ins.especificacao.toLowerCase().includes(termo)) ||
+        (ins.tipo && ins.tipo.toLowerCase().includes(termo));
+      
+      const bateTipo = tipoFiltro === 'todos' || ins.tipo === tipoFiltro;
+
+      return bateTermo && bateTipo;
+    });
+
+    if (insumosFiltrados.length === 0) {
+      listaEl.innerHTML = `
+        <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px;">
+          <i class="fas fa-box-open" style="font-size: 28px; display: block; margin-bottom: 10px; color: var(--border);"></i>
+          Nenhum insumo encontrado.
+        </div>
+      `;
+      return;
+    }
+
+    listaEl.innerHTML = '';
+    insumosFiltrados.forEach(ins => {
+      const card = document.createElement('div');
+      card.className = 'busca-insumo-card';
+      
+      card.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 3px; max-width: 72%;">
+          <span style="font-weight: 600; font-size: 13px; color: var(--accent);">${ins.nome}</span>
+          <span style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 4px;">
+            <i class="fas fa-tags" style="font-size: 9px; color: var(--text-muted);"></i> 
+            ${ins.tipo.toUpperCase()} &bull; ${ins.especificacao}
+          </span>
+        </div>
+        <div style="text-align: right; display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-weight: 700; font-size: 13px; color: var(--text-gold);">${ins.preco_custo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+          <span style="font-size: 10px; color: var(--text-muted);">por ${ins.unidade_medida === 'metro' ? 'm' : ins.unidade_medida === 'grama' ? 'g' : 'un'}</span>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        const modal = document.getElementById('modal-selecionar-insumo');
+        
+        if (this.state.linhaFichaAtiva === 'nova') {
+          this.adicionarLinhaFichaTecnica(ins.id, 1);
+        } else {
+          const row = this.state.linhaFichaAtiva;
+          const selectEl = row.querySelector('.ficha-insumo-select');
+          if (selectEl) {
+            selectEl.value = ins.id;
+            selectEl.dispatchEvent(new Event('change'));
+          }
+        }
+        
+        if (modal) modal.classList.remove('active');
+      });
+
+      listaEl.appendChild(card);
+    });
   },
 
   // 16. TOAST NOTIFICATIONS
@@ -2068,6 +2331,31 @@ const App = {
         toast.remove();
       }, 300);
     }, 4000);
+  },
+
+  atualizarDatalistClientesFormVenda() {
+    const datalist = document.getElementById('venda-clientes-datalist');
+    if (!datalist) return;
+
+    datalist.innerHTML = '';
+    
+    // Ordenar clientes por nome em ordem alfabética
+    const clientesOrdenados = [...this.state.clientes].sort((a, b) => a.nome.localeCompare(b.nome));
+
+    clientesOrdenados.forEach(c => {
+      const option = document.createElement('option');
+      option.value = c.nome;
+      
+      const details = [];
+      if (c.tipo_cliente) details.push(c.tipo_cliente.toUpperCase());
+      if (c.telefone) details.push(c.telefone);
+      
+      if (details.length > 0) {
+        option.textContent = details.join(' | ');
+      }
+      
+      datalist.appendChild(option);
+    });
   }
 };
 

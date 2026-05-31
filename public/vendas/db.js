@@ -460,7 +460,27 @@ const DB = {
 
   // 6. OPERAÇÕES DE INSUMOS (CRUD)
   async getInsumos() {
-    return this.getLocalData(LOCAL_KEYS.INSUMOS).sort((a, b) => a.nome.localeCompare(b.nome) || a.especificacao.localeCompare(b.especificacao));
+    const insumos = this.getLocalData(LOCAL_KEYS.INSUMOS);
+    
+    // Garante que a corda genérica exista no banco mesmo que o usuário já tenha semeado anteriormente
+    const temGenerico = insumos.some(i => i.id === 'i_corda_generica');
+    if (!temGenerico) {
+      const insumoCordaGenerica = {
+        id: 'i_corda_generica',
+        nome: 'Corda (Sem Cor)',
+        tipo: 'corda',
+        especificacao: 'Náutica 4mm',
+        preco_custo: 4.00,
+        unidade_medida: 'metro',
+        estoque_atual: 9999,
+        estoque_minimo: 0,
+        created_at: new Date().toISOString()
+      };
+      insumos.push(insumoCordaGenerica);
+      this.setLocalData(LOCAL_KEYS.INSUMOS, insumos);
+    }
+
+    return insumos.sort((a, b) => a.nome.localeCompare(b.nome) || a.especificacao.localeCompare(b.especificacao));
   },
 
   async salvarInsumo(insumo) {
@@ -504,17 +524,108 @@ const DB = {
       ]);
     }
 
-    // Seeder de Insumos
-    const insumosExistentes = this.getLocalData(LOCAL_KEYS.INSUMOS);
-    if (insumosExistentes.length === 0) {
-      console.log("Semeando insumos locais padrão...");
-      this.setLocalData(LOCAL_KEYS.INSUMOS, [
-        { id: 'i1', nome: 'Corda Náutica 4mm', tipo: 'corda', especificacao: 'Verde Militar', preco_custo: 5.00, unidade_medida: 'metro', estoque_atual: 50, estoque_minimo: 10, created_at: new Date().toISOString() },
-        { id: 'i2', nome: 'Corda Náutica 4mm', tipo: 'corda', especificacao: 'Caramelo', preco_custo: 5.00, unidade_medida: 'metro', estoque_atual: 40, estoque_minimo: 10, created_at: new Date().toISOString() },
-        { id: 'i3', nome: 'Argola de Metal 20mm', tipo: 'argola', especificacao: 'Ouro', preco_custo: 1.20, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 20, created_at: new Date().toISOString() },
-        { id: 'i4', nome: 'Argola de Metal 20mm', tipo: 'argola', especificacao: 'Prata', preco_custo: 1.00, unidade_medida: 'unidade', estoque_atual: 80, estoque_minimo: 20, created_at: new Date().toISOString() },
-        { id: 'i5', nome: 'Resina Pingente Domo', tipo: 'resina', especificacao: 'Tartaruga', preco_custo: 8.50, unidade_medida: 'unidade', estoque_atual: 15, estoque_minimo: 5, created_at: new Date().toISOString() }
-      ]);
+    // Seeder de Insumos - Exclusivo do arquivo insumo.md
+    let insumosExistentes = this.getLocalData(LOCAL_KEYS.INSUMOS);
+    
+    // Lista de cores oficiais extraída de src/data/colorsCatalog.js
+    const coresCatalogo = [
+      "Amarelo Manteiga", "Areia", "Areia com Poá marrom", "Areia com Poá marrom escuro",
+      "Areia e Caramelo Mesclada", "Azul Anil", "Azul Bebê", "Azul Marinho",
+      "Azul Marinho com Poá branco", "Azul Petróleo", "Azul Royal", "Bege",
+      "Bege Natural", "Bordô", "Branco", "Caramelo", "Chumbo", "Cinza",
+      "Laranja", "Marrom", "Marrom Escuro", "Mostarda", "Prata e Dourado", "Preto",
+      "Preto com Poá branco", "Preto e Dourado", "Rami", "Rami Branco", "Rosa",
+      "Rosa Bebê", "Roxo", "Terracota", "Turquesa", "Verde", "Verde Bandeira",
+      "Verde Escuro", "Verde Jade", "Verde Limão", "Verde Militar",
+      "Verde Militar com Poá branco", "Vermelho", "Vermelho com Poá azul marinho",
+      "Vermelho Figo", "Vermelho Vivo", "Vinho"
+    ];
+
+    // Gerar os insumos de cordas dinamicamente a partir das cores do catálogo (Preço: R$ 4,00 / metro)
+    const insumoCordaGenerica = {
+      id: 'i_corda_generica',
+      nome: 'Corda (Sem Cor)',
+      tipo: 'corda',
+      especificacao: 'Náutica 4mm',
+      preco_custo: 4.00,
+      unidade_medida: 'metro',
+      estoque_atual: 9999, // Estoque alto para não alertar a si mesma
+      estoque_minimo: 0,
+      created_at: new Date().toISOString()
+    };
+
+    const insumosCordas = [
+      insumoCordaGenerica,
+      ...coresCatalogo.map((cor, index) => ({
+        id: `i_corda_${index + 1}`,
+        nome: `Corda ${cor}`,
+        tipo: 'corda',
+        especificacao: 'Náutica 4mm',
+        preco_custo: 4.00,
+        unidade_medida: 'metro',
+        estoque_atual: 100,
+        estoque_minimo: 10,
+        created_at: new Date().toISOString()
+      }))
+    ];
+
+    // Insumos restantes extraídos de vendas/planilha/insumo.md (Embalagem, Metais, Resinas e Acabamentos)
+    const insumosRestantes = [
+      { id: 'i_plan_2', nome: 'Embalagem', tipo: 'embalagem', especificacao: 'Padrão', preco_custo: 3.00, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      
+      // Metais
+      { id: 'i_plan_3', nome: 'Tubo 19mm', tipo: 'metal', especificacao: 'Código: 660-5', preco_custo: 3.44, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_4', nome: 'PIRCING', tipo: 'metal', especificacao: 'Código: 345-7', preco_custo: 6.49, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_5', nome: 'Base Colar 119mm', tipo: 'metal', especificacao: 'Código: 1808-32', preco_custo: 11.40, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_6', nome: 'Pingente Red com Strass 40mm', tipo: 'metal', especificacao: 'Código: 584-22', preco_custo: 12.24, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_7', nome: 'Tubo 36mm', tipo: 'metal', especificacao: 'Código: PAIQ194-6', preco_custo: 5.69, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_8', nome: 'Pingente Coração', tipo: 'metal', especificacao: 'Código: 384-21', preco_custo: 5.64, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_9', nome: 'Base Organica Colar 102mm', tipo: 'metal', especificacao: 'Código: MOLC165-102', preco_custo: 16.20, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_10', nome: 'Passador 24mm', tipo: 'metal', especificacao: 'Código: 1254-22', preco_custo: 10.18, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_11', nome: 'Base Argola Brinco 35mm', tipo: 'metal', especificacao: 'Código: MOB179-34', preco_custo: 18.82, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_12', nome: 'Base Brinco 9,80mm', tipo: 'metal', especificacao: 'Código: MOB67-10', preco_custo: 5.80, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_13', nome: 'Passador 22mm', tipo: 'metal', especificacao: 'Código: 1255-22', preco_custo: 9.21, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_14', nome: 'Passador duplo 23mm', tipo: 'metal', especificacao: 'Código: 1147-21', preco_custo: 3.38, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      
+      // Resina
+      { id: 'i_plan_15', nome: 'GOTA', tipo: 'resina', especificacao: 'Padrão', preco_custo: 12.50, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_16', nome: 'BOLA OVAL', tipo: 'resina', especificacao: 'Padrão', preco_custo: 2.80, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_17', nome: 'ENTREMEIO CARIOC', tipo: 'resina', especificacao: 'Padrão', preco_custo: 8.90, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_18', nome: 'CASCALHO CARIOCA', tipo: 'resina', especificacao: 'Padrão', preco_custo: 3.25, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      
+      // Acabamento
+      { id: 'i_plan_19', nome: 'Cola', tipo: 'acabamento', especificacao: 'Código: CP4540', preco_custo: 1.00, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_20', nome: 'Mão de obra', tipo: 'acabamento', especificacao: 'Padrão', preco_custo: 10.00, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_21', nome: 'Pingente Strass 8mm', tipo: 'acabamento', especificacao: 'Código: 205-26', preco_custo: 1.07, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_22', nome: 'Terminal 21mm', tipo: 'acabamento', especificacao: 'Código: POIQ119-11', preco_custo: 4.38, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_23', nome: 'Corrente argola', tipo: 'acabamento', especificacao: 'Código: CR-65', preco_custo: 0.17, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_24', nome: 'Fech Lagosta 14mm', tipo: 'acabamento', especificacao: 'Código: FIM357-14', preco_custo: 3.04, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_25', nome: 'Corrente', tipo: 'acabamento', especificacao: 'Código: CR-436', preco_custo: 1.00, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_26', nome: 'Terminal 13mm', tipo: 'acabamento', especificacao: 'Código: 971-9', preco_custo: 3.46, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_27', nome: 'Terminal 30mm', tipo: 'acabamento', especificacao: 'Código: 293-24', preco_custo: 7.48, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_28', nome: 'Argola 13mm', tipo: 'acabamento', especificacao: 'Código: AR10-15', preco_custo: 0.43, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_29', nome: 'Caneca 20mm', tipo: 'acabamento', especificacao: 'Código: PGIR224-12', preco_custo: 3.78, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_30', nome: 'Chapa', tipo: 'acabamento', especificacao: 'Código: AC71-45', preco_custo: 0.74, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() },
+      { id: 'i_plan_31', nome: 'Corrente Cartier', tipo: 'acabamento', especificacao: 'Código: CR-424', preco_custo: 0.27, unidade_medida: 'unidade', estoque_atual: 100, estoque_minimo: 10, created_at: new Date().toISOString() }
+    ];
+
+    const insumosPlanilha = [...insumosCordas, ...insumosRestantes];
+
+    // Força a atualização dos insumos limpando versões antigas do banco local
+    const DB_VERSION_KEY = 'site_semijoias_insumos_version';
+    const VERSAO_ATUAL = 'v6';
+    const versaoSalva = localStorage.getItem(DB_VERSION_KEY);
+
+    if (versaoSalva !== VERSAO_ATUAL) {
+      console.log(`Nova versão de banco de insumos detectada (${VERSAO_ATUAL}). Forçando atualização...`);
+      this.setLocalData(LOCAL_KEYS.INSUMOS, insumosPlanilha);
+      localStorage.setItem(DB_VERSION_KEY, VERSAO_ATUAL);
+      insumosExistentes = insumosPlanilha;
+    } else if (insumosExistentes.length === 0) {
+      console.log("Semeando exclusivamente os insumos reais do arquivo insumo.md...");
+      this.setLocalData(LOCAL_KEYS.INSUMOS, insumosPlanilha);
+      localStorage.setItem(DB_VERSION_KEY, VERSAO_ATUAL);
+      insumosExistentes = insumosPlanilha;
     }
 
     if (produtosExistentes.length > 0 || vendasExistentes.length > 0) {

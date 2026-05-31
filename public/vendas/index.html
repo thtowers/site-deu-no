@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Estilos Personalizados Premium -->
-  <link rel="stylesheet" href="/vendas/style.css">
+  <link rel="stylesheet" href="/vendas/style.css?v=2.0">
 </head>
 <body>
 
@@ -297,9 +297,19 @@
                 <span class="form-helper" id="venda-estoque-warn"></span>
               </div>
 
+              <!-- Seleção Dinâmica de Cor da Corda (Exibida somente se a peça usar corda genérica) -->
+              <div class="form-group" id="venda-cor-corda-group" style="display: none; margin-top: 12px; border: 1px solid rgba(212, 175, 55, 0.2); padding: 12px; border-radius: var(--radius-sm); background: rgba(212, 175, 55, 0.01);">
+                <label class="form-label" for="venda-cor-corda" style="color: var(--accent); font-weight: 600;"><i class="fas fa-palette"></i> Cor da Corda Utilizada *</label>
+                <select id="venda-cor-corda" class="form-control touch-select" style="height: 42px;">
+                  <!-- Preenchido via JavaScript com as cores do estoque -->
+                </select>
+                <span class="form-helper" style="font-size: 10px; color: var(--text-muted);">A baixa de estoque será direcionada especificamente para a cor escolhida.</span>
+              </div>
+
               <div class="form-group">
                 <label class="form-label" for="venda-cliente">Nome do Cliente *</label>
-                <input type="text" id="venda-cliente" class="form-control" placeholder="Mariana Silva" required style="height: 42px;">
+                <input type="text" id="venda-cliente" class="form-control" list="venda-clientes-datalist" placeholder="Digite ou selecione o cliente..." required style="height: 42px;">
+                <datalist id="venda-clientes-datalist"></datalist>
               </div>
 
               <div class="form-row-touch">
@@ -547,10 +557,10 @@
             <select id="filtro-insumos-tipo" class="select-filter">
               <option value="todos">Todos Materiais</option>
               <option value="corda">Cordas</option>
-              <option value="argola">Argolas</option>
-              <option value="fecho">Fechos</option>
+              <option value="embalagem">Embalagens</option>
+              <option value="metal">Metais</option>
               <option value="resina">Resinas</option>
-              <option value="outro">Outros</option>
+              <option value="acabamento">Acabamentos</option>
             </select>
             
             <button class="btn btn-primary" id="btn-abrir-insumo-modal">
@@ -697,15 +707,36 @@
             <span style="font-size: 10px; font-weight: 700; color: var(--text-gold); text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 4px;">
               <i class="fas fa-coins" style="margin-right: 4px;"></i> Custos de Produção
             </span>
-            <div class="form-row" style="margin-bottom: 0; gap: 16px;">
+            <div class="form-row" style="margin-bottom: 14px; gap: 16px;">
               <div class="form-group" style="margin-bottom: 0; gap: 6px;">
                 <label class="form-label" style="font-size: 11px;" for="prod-custo">Custo da Peça (Insumos) (R$) *</label>
-                <input type="number" id="prod-custo" class="form-control" step="0.01" placeholder="15.00" required>
+                <input type="number" id="prod-custo" class="form-control" step="0.01" placeholder="0.00" readonly required style="background: rgba(0,0,0,0.025); font-weight: 600;">
               </div>
               
               <div class="form-group" style="margin-bottom: 0; gap: 6px;">
                 <label class="form-label" style="font-size: 11px;" for="prod-mao-obra">Valor Mão de Obra (R$) *</label>
                 <input type="number" id="prod-mao-obra" class="form-control" step="0.01" placeholder="5.00" required>
+              </div>
+            </div>
+
+            <!-- Ficha Técnica / Composição (Insumos da Peça) Integrada -->
+            <div style="margin-top: 14px; padding: 12px; background: rgba(0,0,0,0.01); border: 1px solid rgba(0,0,0,0.05); border-radius: 6px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 6px; margin-bottom: 10px;">
+                <span style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 4px;">
+                  <i class="fas fa-receipt"></i> Ficha Técnica (Composição de Insumos)
+                </span>
+                <button type="button" class="btn btn-secondary" id="btn-add-ficha-insumo" style="padding: 4px 10px; font-size: 11px; height: auto;">
+                  <i class="fas fa-plus"></i> Adicionar
+                </button>
+              </div>
+              
+              <!-- Lista de Insumos da Ficha Técnica -->
+              <div id="ficha-insumos-container" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; padding-right: 4px;">
+                <!-- Linhas de composição injetadas dinamicamente -->
+              </div>
+              
+              <div id="ficha-insumos-empty" style="text-align: center; color: var(--text-muted); font-size: 11px; padding: 8px 0;">
+                Nenhum insumo associado a este produto.
               </div>
             </div>
           </div>
@@ -755,27 +786,6 @@
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" for="prod-foto-file">Ou Enviar Foto</label>
               <input type="file" id="prod-foto-file" class="form-control" accept="image/*" style="padding: 9px 12px; height: 45px;">
-            </div>
-          </div>
-
-          <!-- Ficha Técnica / Composição (Insumos da Peça) -->
-          <div style="margin-bottom: 16px; padding: 14px; background: rgba(0,0,0,0.015); border: 1px solid var(--border); border-radius: 8px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 6px; margin-bottom: 12px;">
-              <span style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 4px;">
-                <i class="fas fa-receipt"></i> Ficha Técnica (Composição de Insumos)
-              </span>
-              <button type="button" class="btn btn-secondary" id="btn-add-ficha-insumo" style="padding: 4px 10px; font-size: 11px; height: auto;">
-                <i class="fas fa-plus"></i> Adicionar
-              </button>
-            </div>
-            
-            <!-- Lista de Insumos da Ficha Técnica -->
-            <div id="ficha-insumos-container" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; padding-right: 4px;">
-              <!-- Linhas de composição injetadas dinamicamente -->
-            </div>
-            
-            <div id="ficha-insumos-empty" style="text-align: center; color: var(--text-muted); font-size: 11px; padding: 8px 0;">
-              Nenhum insumo associado a este produto.
             </div>
           </div>
 
@@ -923,10 +933,10 @@
               <label class="form-label" for="insumo-tipo">Tipo de Material *</label>
               <select id="insumo-tipo" class="form-control" required>
                 <option value="corda">Corda</option>
-                <option value="argola">Argola</option>
-                <option value="fecho">Fecho</option>
+                <option value="embalagem">Embalagem</option>
+                <option value="metal">Metal</option>
                 <option value="resina">Resina</option>
-                <option value="outro">Outro</option>
+                <option value="acabamento">Acabamento</option>
               </select>
             </div>
             
@@ -972,6 +982,39 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- 6. MODAL SELECIONAR INSUMO (Ficha Técnica) -->
+  <div class="modal-overlay" id="modal-selecionar-insumo">
+    <div class="modal-box" style="max-width: 500px; display: flex; flex-direction: column; max-height: 85vh; padding: 0;">
+      <div class="modal-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-dim);">
+        <h3 class="modal-title" style="font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-search" style="color: var(--accent);"></i> Selecionar Insumo</h3>
+        <button class="btn-close-modal" id="btn-close-modal-selecionar-insumo" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px;"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; flex: 1;">
+        
+        <!-- Barra de Busca e Filtro de Tipo -->
+        <div style="display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;">
+          <input type="text" id="busca-insumo-termo" class="form-control" placeholder="Buscar pelo nome ou especificação..." style="font-size: 13px; padding: 10px 12px; height: 40px; width: 100%;">
+          
+          <!-- Filtro de categorias rápido (Scroll horizontal amigável para touch) -->
+          <div id="busca-insumo-categorias" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+            <button type="button" class="btn-tag active" data-tipo="todos">Todos</button>
+            <button type="button" class="btn-tag" data-tipo="corda">Cordas</button>
+            <button type="button" class="btn-tag" data-tipo="metal">Metais</button>
+            <button type="button" class="btn-tag" data-tipo="resina">Resinas</button>
+            <button type="button" class="btn-tag" data-tipo="acabamento">Acabamentos</button>
+            <button type="button" class="btn-tag" data-tipo="embalagem">Embalagens</button>
+          </div>
+        </div>
+
+        <!-- Lista de insumos com scroll interno -->
+        <div id="busca-insumo-lista" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 2px; max-height: 45vh;">
+          <!-- Linhas de insumos geradas dinamicamente -->
+        </div>
+
+      </div>
     </div>
   </div>
 

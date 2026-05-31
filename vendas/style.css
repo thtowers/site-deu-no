@@ -1524,3 +1524,444 @@ h1, h2, h3, h4, .brand-title {
     box-shadow: 0 0 0 0 rgba(170, 124, 17, 0);
   }
 }
+
+/* ==========================================
+   MELHORIAS DE RESPONSIVIDADE MOBILE PREMIUM 
+   ========================================== */
+@media (max-width: 768px) {
+  /* 1. Transformação da Sidebar em Bottom Navigation Bar (Tab Bar estilo App Nativo) */
+  .sidebar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    height: 64px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #1a221b !important; /* Cor luxuosa original */
+    border-right: none !important;
+    border-top: 1px solid rgba(170, 124, 17, 0.15) !important;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15) !important;
+    z-index: 9999 !important;
+    border-radius: 16px 16px 0 0 !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease !important;
+  }
+
+  /* Esconde a barra de abas inferior com animação de slide-down quando algum modal estiver ativo */
+  body:has(.modal-overlay.active) .sidebar {
+    transform: translateY(100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .sidebar > .brand-section {
+    display: none !important; /* Oculta logo no mobile */
+  }
+
+  .sidebar > div:last-child {
+    display: none !important; /* Oculta div de Logout e copyright no mobile para não quebrar o layout horizontal */
+  }
+
+  .sidebar .nav-menu {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  /* Exibir apenas as 5 abas principais no mobile para não espremer */
+  .nav-item {
+    margin: 0 !important;
+    flex: 1 !important;
+    text-align: center !important;
+  }
+
+  .nav-item[data-target="sec-registrar-venda"],
+  .nav-item[data-target="sec-clientes"],
+  .nav-item[data-target="sec-config"] {
+    display: none !important; /* Oculta abas secundárias no celular */
+  }
+
+  .nav-item a {
+    flex-direction: column !important;
+    gap: 4px !important;
+    padding: 8px 0 !important;
+    font-size: 10px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    justify-content: center !important;
+    height: 56px !important;
+  }
+
+  .nav-item a i {
+    font-size: 18px !important;
+    margin: 0 !important;
+  }
+
+  .nav-item span {
+    display: block !important;
+    font-size: 8px !important;
+    font-weight: 600 !important;
+    margin-top: 2px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .nav-item.active a, .nav-item a:hover {
+    background: none !important;
+    color: var(--text-gold) !important;
+  }
+
+  /* Ajuste do Conteúdo Principal para dar espaço à Bottom Bar */
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 16px 16px 88px 16px !important;
+    min-height: calc(100vh - 64px) !important;
+  }
+
+  /* 2. Grid do Dashboard e Resumos compactados em 2 Colunas */
+  .financial-summary-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .financial-summary-card {
+    padding: 14px !important;
+  }
+
+  .financial-summary-card h3 {
+    font-size: 11px !important;
+  }
+
+  .financial-summary-card .value {
+    font-size: 20px !important;
+  }
+
+  /* 3. Tabela de Produtos Responsiva no Mobile (Layout de Cards Premium) */
+  #sec-produtos table.data-table,
+  #sec-produtos table.data-table thead,
+  #sec-produtos table.data-table tbody,
+  #sec-produtos table.data-table tr,
+  #sec-produtos table.data-table td {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  #sec-produtos table.data-table thead {
+    display: none !important; /* Esconde cabeçalho de coluna no celular */
+  }
+
+  #sec-produtos table.data-table tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  #sec-produtos table.data-table tr {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-dim) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 16px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+    margin: 0 !important;
+    transition: transform 0.2s ease !important;
+  }
+
+  #sec-produtos table.data-table td {
+    border: none !important;
+    padding: 8px 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-align: right !important;
+    font-size: 13px !important;
+    border-bottom: 1px dashed rgba(212, 175, 55, 0.08) !important;
+  }
+
+  /* Foto do produto centralizada */
+  #sec-produtos table.data-table td:nth-child(1) {
+    justify-content: center !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 8px !important;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15) !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(1)::before {
+    content: "Foto da Peça:" !important;
+    font-weight: 700 !important;
+    color: var(--accent) !important;
+    margin-right: auto !important;
+    font-size: 11px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  #sec-produtos table.data-table td:nth-child(2)::before {
+    content: "Peça:" !important;
+    font-weight: 700 !important;
+    color: var(--accent) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(3)::before {
+    content: "Categoria:" !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(4)::before {
+    content: "SKU:" !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(5)::before {
+    content: "Custo Insumos:" !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(6)::before {
+    content: "Venda Varejo:" !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(7)::before {
+    content: "Venda Atacado:" !important;
+    font-weight: 700 !important;
+    color: var(--text-gold) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(8)::before {
+    content: "Lucro Varejo (Margem):" !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(9)::before {
+    content: "Lucro Atacado (Margem):" !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(10)::before {
+    content: "Estoque Físico:" !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin-right: auto !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(11) {
+    border-bottom: none !important;
+    padding-top: 14px !important;
+    justify-content: flex-end !important;
+    gap: 16px !important;
+  }
+
+  #sec-produtos table.data-table td:nth-child(11)::before {
+    content: "Ações da Peça:" !important;
+    font-weight: 700 !important;
+    color: var(--accent) !important;
+    margin-right: auto !important;
+  }
+
+  /* Tabela de Insumos */
+  #sec-insumos table th:nth-child(2), #sec-insumos table td:nth-child(2), /* Tipo */
+  #sec-insumos table th:nth-child(5), #sec-insumos table td:nth-child(5), /* Unidade */
+  #sec-insumos table th:nth-child(7), #sec-insumos table td:nth-child(7)  /* Mínimo */ {
+    display: none !important;
+  }
+
+  /* Tabela de Vendas */
+  #sec-vendas table th:nth-child(2), #sec-vendas table td:nth-child(2), /* SKU */
+  #sec-vendas table th:nth-child(4), #sec-vendas table td:nth-child(4), /* Cliente */
+  #sec-vendas table th:nth-child(5), #sec-vendas table td:nth-child(5), /* Canal */
+  #sec-vendas table th:nth-child(6), #sec-vendas table td:nth-child(6), /* Pagamento */
+  #sec-vendas table th:nth-child(9), #sec-vendas table td:nth-child(9)  /* Lucro Líq. */ {
+    display: none !important;
+  }
+
+  .table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .data-table th, .data-table td {
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+  }
+
+  /* 4. Otimização de Modais em Tela Cheia no Mobile (Flexbox Estrito e Footer Fixado) */
+  .modal-overlay {
+    padding: 0 !important;
+  }
+
+  .modal-box {
+    max-width: 100% !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .modal-box form {
+    display: flex !important;
+    flex-direction: column !important;
+    height: calc(100vh - 60px) !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+
+  .modal-header {
+    padding: 16px 20px !important;
+    flex-shrink: 0 !important;
+    border-bottom: 1px solid var(--border-dim) !important;
+  }
+
+  .modal-title {
+    font-size: 18px !important;
+  }
+
+  .modal-body {
+    padding: 16px 20px !important;
+    flex: 1 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-height: none !important;
+  }
+
+  .modal-footer {
+    padding: 16px 20px !important;
+    flex-shrink: 0 !important;
+    border-top: 1px solid var(--border-dim) !important;
+    background: var(--bg-card) !important;
+  }
+
+  /* 5. Empilhar Grid de Formulários e Controles */
+  .form-row, .form-row-touch {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .profit-calculator-box {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .profit-calculator-box .calc-item {
+    grid-column: span 1 !important;
+    text-align: left !important;
+    padding: 4px 0 !important;
+    border-bottom: 1px solid rgba(0,0,0,0.03) !important;
+  }
+
+  .profit-calculator-box .calc-item:last-child {
+    border-bottom: none !important;
+  }
+
+  .control-bar {
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+
+  .control-bar .filter-group {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .control-bar .filter-group select, 
+  .control-bar .filter-group button {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* KPI do Dashboard em 1 Coluna em telas minúsculas */
+  .financial-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .top-header h1 {
+    font-size: 20px !important;
+  }
+}
+
+/* ==========================================================================
+   11. ESTILOS DO MODAL DE SELEÇÃO INTERATIVA DE INSUMOS
+   ========================================================================== */
+.btn-tag {
+  font-size: 11px !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--border-dim) !important;
+  background: var(--bg-card) !important;
+  color: var(--text-secondary) !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 0.2s ease !important;
+  font-weight: 500 !important;
+  user-select: none !important;
+}
+
+.btn-tag.active {
+  border-color: var(--accent) !important;
+  background: rgba(212, 175, 55, 0.1) !important;
+  color: var(--accent) !important;
+  font-weight: 600 !important;
+}
+
+.busca-insumo-card {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 12px !important;
+  border: 1px solid var(--border-dim) !important;
+  border-radius: var(--radius-md) !important;
+  background: var(--bg-card) !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  user-select: none !important;
+}
+
+.busca-insumo-card:hover, .busca-insumo-card:active {
+  border-color: var(--accent) !important;
+  background: rgba(212, 175, 55, 0.03) !important;
+  transform: translateY(-1px) !important;
+}
+
+.ficha-insumo-trigger {
+  transition: border-color 0.2s ease, background 0.2s ease !important;
+}
+
+.ficha-insumo-trigger:hover, .ficha-insumo-trigger:active {
+  border-color: var(--accent) !important;
+  background: rgba(212, 175, 55, 0.02) !important;
+}
