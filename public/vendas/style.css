@@ -1729,7 +1729,7 @@ h1, h2, h3, h4, .brand-title {
   }
 
   #sec-produtos table.data-table td:nth-child(5)::before {
-    content: "Custo Insumos:" !important;
+    content: "Custo Materiais:" !important;
     font-weight: 600 !important;
     color: var(--text-secondary) !important;
     margin-right: auto !important;
@@ -1792,11 +1792,10 @@ h1, h2, h3, h4, .brand-title {
   }
 
   /* Tabela de Vendas */
-  #sec-vendas table th:nth-child(2), #sec-vendas table td:nth-child(2), /* SKU */
-  #sec-vendas table th:nth-child(4), #sec-vendas table td:nth-child(4), /* Cliente */
-  #sec-vendas table th:nth-child(5), #sec-vendas table td:nth-child(5), /* Canal */
-  #sec-vendas table th:nth-child(6), #sec-vendas table td:nth-child(6), /* Pagamento */
-  #sec-vendas table th:nth-child(9), #sec-vendas table td:nth-child(9)  /* Lucro Líq. */ {
+  #sec-vendas table th:nth-child(4), #sec-vendas table td:nth-child(4), /* Canal */
+  #sec-vendas table th:nth-child(5), #sec-vendas table td:nth-child(5), /* Pagamento */
+  #sec-vendas table th:nth-child(6), #sec-vendas table td:nth-child(6), /* Qtd */
+  #sec-vendas table th:nth-child(8), #sec-vendas table td:nth-child(8)  /* Lucro Real */ {
     display: none !important;
   }
 
@@ -1900,6 +1899,30 @@ h1, h2, h3, h4, .brand-title {
   .control-bar .filter-group select, 
   .control-bar .filter-group button {
     width: 100% !important;
+  }
+
+  /* Detalhes de KPI Responsivos */
+  #det-fat-table-desktop-wrapper,
+  #det-luc-table-desktop-wrapper,
+  #det-col-table-desktop-wrapper,
+  #det-tkt-table-desktop-wrapper,
+  #det-var-table-desktop-wrapper,
+  #det-ata-table-desktop-wrapper,
+  #det-top-table-desktop-wrapper,
+  #det-rlu-table-desktop-wrapper,
+  #det-cat-table-desktop-wrapper {
+    display: none !important;
+  }
+  #det-fat-cards-mobile,
+  #det-luc-cards-mobile,
+  #det-col-cards-mobile,
+  #det-tkt-cards-mobile,
+  #det-var-cards-mobile,
+  #det-ata-cards-mobile,
+  #det-top-cards-mobile,
+  #det-rlu-cards-mobile,
+  #det-cat-cards-mobile {
+    display: flex !important;
   }
 }
 

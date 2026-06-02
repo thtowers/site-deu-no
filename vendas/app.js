@@ -220,10 +220,10 @@ const App = {
     const topProdutoNome = topProduto ? topProduto[0] : 'Nenhum';
     const topProdutoQtd = topProduto ? `${topProduto[1]} un` : '0 un';
 
-    // Calcular peça com maior lucro real acumulado no mês atual
+    // Calcular cliente com maior lucro real acumulado no mês atual
     const rankingLucro = {};
     vendasMes.forEach(v => {
-      rankingLucro[v.produto_nome] = (rankingLucro[v.produto_nome] || 0) + parseFloat(v.lucro);
+      rankingLucro[v.cliente_nome] = (rankingLucro[v.cliente_nome] || 0) + parseFloat(v.lucro);
     });
     const topLucro = Object.entries(rankingLucro).sort((a, b) => b[1] - a[1])[0];
     const topLucroNome = topLucro ? topLucro[0] : 'Nenhum';
@@ -458,7 +458,7 @@ const App = {
 
       case 'lucro_liquido': {
         const lucLiq = vendasMaio.reduce((sum, v) => sum + parseFloat(v.lucro), 0);
-        resposta = `O lucro líquido de Maio foi de <strong>R$ ${lucLiq.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong> (já descontados os custos de insumos e mão de obra de cada peça).`;
+        resposta = `O lucro líquido de Maio foi de <strong>R$ ${lucLiq.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong> (já descontados os custos de materiais e mão de obra de cada peça).`;
         break;
       }
     }
@@ -707,12 +707,179 @@ const App = {
 
   // 12. BINDAGEM DE EVENTOS
   bindEvents() {
-    document.getElementById('btn-abrir-venda-modal')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.navegarParaAba('sec-registrar-venda');
+    ['btn-abrir-venda-modal', 'btn-abrir-venda-modal-sec'].forEach(id => {
+      document.getElementById(id)?.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.navegarParaAba('sec-registrar-venda');
+      });
     });
     this.addModalTrigger('btn-abrir-produto-modal', 'modal-produto', false);
     this.addModalTrigger('btn-abrir-cliente-modal', 'modal-cliente', false);
+
+    // Clique no Card de Faturamento para abrir detalhamento
+    document.getElementById('kpi-card-faturamento')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarFaturamentoDetalhado();
+      
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-faturamento-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Clique no Card de Lucro para abrir detalhamento
+    document.getElementById('kpi-card-lucro')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarLucroDetalhado();
+      
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-lucro-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Clique no Card de Colares Vendidos
+    document.getElementById('kpi-card-colares')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarColaresDetalhado();
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-colares-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Clique no Card de Ticket Médio
+    document.getElementById('kpi-card-ticket')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarTicketDetalhado();
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-ticket-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Clique no Card de Vendido no Varejo
+    document.getElementById('kpi-card-varejo')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarVarejoDetalhado();
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-varejo-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Clique no Card de Vendido no Atacado
+    document.getElementById('kpi-card-atacado')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarAtacadoDetalhado();
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-atacado-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Clique no Card de Produto Mais Vendido
+    document.getElementById('kpi-card-produto-top')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarProdutoTopDetalhado();
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-produto-top-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Clique no Card de Melhor Lucro Real
+    document.getElementById('kpi-card-produto-lucro')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarProdutoLucroDetalhado();
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-produto-lucro-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Clique no Card de Melhor Categoria
+    document.getElementById('kpi-card-categoria-top')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.renderizarCategoriaTopDetalhado();
+      const sections = document.querySelectorAll('.app-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const targetSec = document.getElementById('sec-categoria-top-detalhado');
+      if (targetSec) targetSec.classList.add('active');
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-target') === 'sec-dashboard') {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Botão Voltar do Faturamento Detalhado
+    document.querySelectorAll('.btn-voltar-dashboard').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.navegarParaAba('sec-dashboard');
+      });
+    });
 
     document.getElementById('btn-abrir-categorias-modal')?.addEventListener('click', () => {
       const modal = document.getElementById('modal-categorias');
@@ -890,6 +1057,32 @@ const App = {
 
     document.getElementById('btn-exportar-csv-vendas')?.addEventListener('click', () => this.exportarVendasParaCSV());
     document.getElementById('btn-imprimir-pdf-vendas')?.addEventListener('click', () => window.print());
+    document.getElementById('btn-limpar-vendas')?.addEventListener('click', () => {
+      document.getElementById('modal-confirmacao-limpar-vendas')?.classList.add('active');
+    });
+
+    const modalLimpar = document.getElementById('modal-confirmacao-limpar-vendas');
+    if (modalLimpar) {
+      modalLimpar.querySelector('.btn-close-modal')?.addEventListener('click', () => {
+        modalLimpar.classList.remove('active');
+      });
+      modalLimpar.querySelector('.btn-cancelar-limpar')?.addEventListener('click', () => {
+        modalLimpar.classList.remove('active');
+      });
+      modalLimpar.querySelector('.btn-confirmar-limpar')?.addEventListener('click', async () => {
+        try {
+          await DB.limparTodasVendas();
+          this.state.vendas = [];
+          this.showToast('Vendas Limpas', 'Todas as vendas foram excluídas com sucesso!', 'success');
+          this.atualizarDashboard();
+          this.renderizarTabelaVendas();
+          modalLimpar.classList.remove('active');
+        } catch (err) {
+          console.error(err);
+          this.showToast('Erro ao Limpar', 'Não foi possível limpar o histórico de vendas.', 'danger');
+        }
+      });
+    }
 
     // === CONTROLES TOUCH DE VENDAS ===
     // Stepper de Quantidade (+ / -)
@@ -976,11 +1169,11 @@ const App = {
       if (elId) elId.value = '';
       const elTitulo = document.getElementById('modal-insumo-titulo');
       const elSubmit = document.getElementById('btn-submit-insumo');
-      if (elTitulo) elTitulo.textContent = 'Cadastrar Novo Insumo';
-      if (elSubmit) elSubmit.textContent = 'Cadastrar Insumo';
+      if (elTitulo) elTitulo.textContent = 'Cadastrar Novo Material';
+      if (elSubmit) elSubmit.textContent = 'Cadastrar Material';
     });
 
-    document.getElementById('btn-add-ficha-insumo')?.addEventListener('click', () => {
+    document.getElementById('btn-add-ficha-material')?.addEventListener('click', () => {
       this.abrirModalBuscaInsumo('nova');
     });
 
@@ -1901,7 +2094,7 @@ const App = {
         <tr>
           <td colspan="9" class="empty-state" style="text-align: center; padding: 24px; color: var(--text-muted);">
             <i class="fas fa-box-open" style="font-size: 24px; margin-bottom: 8px; display: block; color: var(--text-gold);"></i>
-            Nenhum insumo encontrado com os filtros atuais.
+            Nenhum material encontrado com os filtros atuais.
           </td>
         </tr>
       `;
@@ -1941,10 +2134,10 @@ const App = {
         <td><span class="badge ${badgeClass}">${statusTexto}</span></td>
         <td style="text-align: center;">
           <div style="display: flex; gap: 8px; justify-content: center;">
-            <button class="btn btn-secondary btn-touch-icon btn-editar-insumo" data-id="${insumo.id}" title="Editar Insumo" style="padding: 6px 10px; height: auto;">
+            <button class="btn btn-secondary btn-touch-icon btn-editar-insumo" data-id="${insumo.id}" title="Editar Material" style="padding: 6px 10px; height: auto;">
               <i class="fas fa-edit"></i>
             </button>
-            <button class="btn btn-danger btn-touch-icon btn-deletar-insumo" data-id="${insumo.id}" title="Apagar Insumo" style="padding: 6px 10px; height: auto; background: var(--danger); border-color: var(--danger); color: white;">
+            <button class="btn btn-danger btn-touch-icon btn-deletar-insumo" data-id="${insumo.id}" title="Apagar Material" style="padding: 6px 10px; height: auto; background: var(--danger); border-color: var(--danger); color: white;">
               <i class="fas fa-trash"></i>
             </button>
           </div>
@@ -2003,7 +2196,7 @@ const App = {
       if (elEstoqueAtual) elEstoqueAtual.value = insumo.estoque_atual;
       if (elEstoqueMinimo) elEstoqueMinimo.value = insumo.estoque_minimo;
 
-      if (elTitulo) elTitulo.textContent = 'Editar Insumo';
+      if (elTitulo) elTitulo.textContent = 'Editar Material';
       if (elSubmit) elSubmit.textContent = 'Salvar Alterações';
     } else {
       // Novo
@@ -2011,8 +2204,8 @@ const App = {
       if (elEstoqueAtual) elEstoqueAtual.value = 10;
       if (elEstoqueMinimo) elEstoqueMinimo.value = 5;
 
-      if (elTitulo) elTitulo.textContent = 'Cadastrar Novo Insumo';
-      if (elSubmit) elSubmit.textContent = 'Cadastrar Insumo';
+      if (elTitulo) elTitulo.textContent = 'Cadastrar Novo Material';
+      if (elSubmit) elSubmit.textContent = 'Cadastrar Material';
     }
 
     modal.classList.add('active');
@@ -2030,7 +2223,7 @@ const App = {
     const estoqueMinimo = parseFloat(document.getElementById('insumo-estoque-minimo').value) || 0;
 
     if (!nome || !tipo || !especificacao || isNaN(precoCusto)) {
-      this.showToast('Campos Inválidos', 'Por favor, confira os dados do insumo.', 'danger');
+      this.showToast('Campos Inválidos', 'Por favor, confira os dados do material.', 'danger');
       return;
     }
 
@@ -2058,13 +2251,13 @@ const App = {
       if (modal) modal.classList.remove('active');
       document.getElementById('form-insumo').reset();
 
-      const msgTitulo = isEdicao ? 'Insumo Atualizado' : 'Insumo Cadastrado';
+      const msgTitulo = isEdicao ? 'Material Atualizado' : 'Material Cadastrado';
       const msgCorpo = isEdicao ? `"${nome}" foi atualizado com sucesso!` : `"${nome}" foi cadastrado com sucesso!`;
       this.showToast(msgTitulo, msgCorpo, 'success');
       this.atualizarDashboard();
     } catch (err) {
       console.error("Erro ao salvar insumo:", err);
-      this.showToast('Erro ao Salvar', 'Não foi possível registrar o insumo.', 'danger');
+      this.showToast('Erro ao Salvar', 'Não foi possível registrar o material.', 'danger');
     }
   },
 
@@ -2072,16 +2265,16 @@ const App = {
     const insumo = this.state.insumos.find(i => i.id === id);
     if (!insumo) return;
 
-    if (confirm(`Deseja realmente excluir o insumo "${insumo.nome} (${insumo.especificacao})"?`)) {
+    if (confirm(`Deseja realmente excluir o material "${insumo.nome} (${insumo.especificacao})"?`)) {
       try {
         await DB.deletarInsumo(id);
         await this.carregarDados();
         this.renderizarTabelaInsumos();
-        this.showToast('Insumo Removido', 'O insumo foi excluído com sucesso.', 'success');
+        this.showToast('Material Removido', 'O material foi excluído com sucesso.', 'success');
         this.atualizarDashboard();
       } catch (err) {
         console.error("Erro ao deletar insumo:", err);
-        this.showToast('Erro ao Excluir', 'Não foi possível remover o insumo.', 'danger');
+        this.showToast('Erro ao Excluir', 'Não foi possível remover o material.', 'danger');
       }
     }
   },
@@ -2094,7 +2287,7 @@ const App = {
     if (emptyEl) emptyEl.style.display = 'none';
 
     if (this.state.insumos.length === 0) {
-      this.showToast('Nenhum Insumo', 'Cadastre insumos na aba de Insumos antes de compor a peça!', 'warning');
+      this.showToast('Nenhum Material', 'Cadastre materiais na aba de Materiais antes de compor a peça!', 'warning');
       return;
     }
 
@@ -2106,7 +2299,7 @@ const App = {
     row.style.marginBottom = '8px';
 
     // Gerar options dos insumos cadastrados
-    let optionsHtml = '<option value="">-- Escolha o Insumo --</option>';
+    let optionsHtml = '<option value="">-- Escolha o Material --</option>';
     this.state.insumos.forEach(ins => {
       optionsHtml += `<option value="${ins.id}" data-preco="${ins.preco_custo}" data-unidade="${ins.unidade_medida}">${ins.nome} (${ins.especificacao}) - ${ins.preco_custo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}/${ins.unidade_medida === 'metro' ? 'm' : ins.unidade_medida === 'grama' ? 'g' : 'un'}</option>`;
     });
@@ -2119,7 +2312,7 @@ const App = {
       
       <!-- Caixa de toque bonita que exibe o insumo selecionado -->
       <div class="ficha-insumo-trigger" style="flex: 2; font-size: 11px; padding: 6px 10px; height: 35px; border: 1px solid var(--border-dim); border-radius: var(--radius-sm); background: var(--bg-card); display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; min-width: 0;">
-        <span class="ficha-insumo-label" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">-- Escolha o Insumo --</span>
+        <span class="ficha-insumo-label" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">-- Escolha o Material --</span>
         <i class="fas fa-search" style="color: var(--text-muted); font-size: 10px; margin-left: 4px; flex-shrink: 0;"></i>
       </div>
       
@@ -2145,7 +2338,7 @@ const App = {
     const atualizarCustoLinha = () => {
       const selectedOption = selectEl.options[selectEl.selectedIndex];
       const preco = parseFloat(selectedOption?.getAttribute('data-preco')) || 0;
-      const labelText = selectedOption ? selectedOption.text : '-- Escolha o Insumo --';
+      const labelText = selectedOption ? selectedOption.text : '-- Escolha o Material --';
       
       const labelEl = row.querySelector('.ficha-insumo-label');
       if (labelEl) {
@@ -2248,7 +2441,7 @@ const App = {
       listaEl.innerHTML = `
         <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px;">
           <i class="fas fa-box-open" style="font-size: 28px; display: block; margin-bottom: 10px; color: var(--border);"></i>
-          Nenhum insumo encontrado.
+          Nenhum material encontrado.
         </div>
       `;
       return;
@@ -2355,6 +2548,1191 @@ const App = {
       }
       
       datalist.appendChild(option);
+    });
+  },
+
+  renderizarFaturamentoDetalhado() {
+    const vendas = this.state.vendas;
+    const produtos = this.state.produtos;
+    
+    // Análise focada em Maio/2026
+    const mesAnalise = 4; // Maio (Base 0)
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise;
+    });
+
+    const faturamentoMes = vendasMes.reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
+    const totalVarejo = vendasMes.filter(v => v.tipo_cliente === 'varejo').reduce((sum, v) => sum + v.valor_venda, 0);
+    const totalAtacado = vendasMes.filter(v => v.tipo_cliente === 'atacado').reduce((sum, v) => sum + v.valor_venda, 0);
+    const ticketMedio = vendasMes.length > 0 ? faturamentoMes / vendasMes.length : 0;
+
+    // Atualizar KPIs
+    this.setDOMText('det-fat-total', `R$ ${faturamentoMes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-fat-varejo', `R$ ${totalVarejo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-fat-atacado', `R$ ${totalAtacado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-fat-transacoes', `${vendasMes.length}`);
+    this.setDOMText('det-fat-ticket', `R$ ${ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+
+    // Renderizar tabela e cards
+    const tbody = document.getElementById('det-fat-table-body');
+    const mobileContainer = document.getElementById('det-fat-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (vendasMes.length === 0) {
+      const emptyState = `
+        <tr>
+          <td colspan="7" class="empty-state" style="text-align: center; padding: 32px; color: var(--text-muted);">
+            <i class="fas fa-receipt" style="font-size: 28px; margin-bottom: 8px; display: block; color: var(--accent);"></i>
+            Nenhuma transação registrada neste mês.
+          </td>
+        </tr>
+      `;
+      tbody.innerHTML = emptyState;
+      mobileContainer.innerHTML = `
+        <div style="text-align: center; padding: 32px; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border);">
+          <i class="fas fa-receipt" style="font-size: 28px; margin-bottom: 8px; display: block; color: var(--accent);"></i>
+          Nenhuma transação registrada neste mês.
+        </div>
+      `;
+      return;
+    }
+
+    const vendasOrdenadas = [...vendasMes].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    vendasOrdenadas.forEach(v => {
+      const dt = new Date(v.created_at);
+      const dataStr = dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      
+      const prod = produtos.find(p => p.id === v.produto_id);
+      const fotoUrl = prod && prod.foto ? prod.foto : '/assets/cores/bordo_sf.svg';
+      const sku = prod && prod.sku ? prod.sku : 'SKU-N/D';
+
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="color: var(--text-secondary); font-size: 13px;">${dataStr}</td>
+        <td style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+          <img src="${fotoUrl}" style="width: 28px; height: 28px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div>
+            <div>${v.produto_nome}</div>
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: normal;">${sku}</span>
+          </div>
+        </td>
+        <td style="color: var(--text-secondary); font-size: 13px;">${v.cliente_nome}</td>
+        <td>
+          <span class="badge ${v.tipo_cliente === 'varejo' ? 'badge-success' : 'badge-warning'}" style="font-size: 11px;">
+            ${v.tipo_cliente === 'varejo' ? 'Varejo' : 'Atacado'}
+          </span>
+        </td>
+        <td>
+          <span style="font-size: 11px; font-weight: 500; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 4px;">
+            <i class="${v.pagamento === 'PIX' ? 'fab fa-pix' : v.pagamento === 'Cartão' ? 'fas fa-credit-card' : 'fas fa-money-bill-wave'}" style="font-size: 10px; color: var(--text-muted);"></i>
+            ${v.pagamento}
+          </span>
+        </td>
+        <td style="text-align: right; font-weight: 500;">${v.quantidade} un</td>
+        <td style="text-align: right; font-weight: 700; color: var(--accent);">R$ ${parseFloat(v.valor_venda).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-size: 11px; color: var(--text-muted);">${dataStr}</span>
+          <span style="font-weight: 700; color: var(--text-gold); font-size: 14px;">R$ ${parseFloat(v.valor_venda).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="${fotoUrl}" style="width: 42px; height: 42px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${v.produto_nome}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Cliente: <strong>${v.cliente_nome}</strong></div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+          <div style="display: flex; gap: 6px;">
+            <span class="badge ${v.tipo_cliente === 'varejo' ? 'badge-success' : 'badge-warning'}" style="font-size: 9px; padding: 3px 6px;">
+              ${v.tipo_cliente === 'varejo' ? 'Varejo' : 'Atacado'}
+            </span>
+            <span style="font-size: 10px; background: rgba(0,0,0,0.03); padding: 3px 6px; border-radius: 4px; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 3px; border: 1px solid var(--border-dim);">
+              <i class="${v.pagamento === 'PIX' ? 'fab fa-pix' : v.pagamento === 'Cartão' ? 'fas fa-credit-card' : 'fas fa-money-bill-wave'}" style="font-size: 8px;"></i>
+              ${v.pagamento}
+            </span>
+          </div>
+          <span style="font-size: 11px; font-weight: 500; color: var(--text-secondary);">${v.quantidade} un</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
+    });
+  },
+
+  renderizarLucroDetalhado() {
+    const vendas = this.state.vendas;
+    const produtos = this.state.produtos;
+    
+    const mesAnalise = 4; // Maio
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise;
+    });
+
+    const receitaTotal = vendasMes.reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
+    const lucroTotal = vendasMes.reduce((sum, v) => sum + parseFloat(v.lucro), 0);
+
+    let custoMaterialTotal = 0;
+    let custoMaoObraTotal = 0;
+
+    vendasMes.forEach(v => {
+      const prod = produtos.find(p => p.id === v.produto_id);
+      const custoMatUnitario = prod ? parseFloat(prod.custo) || 0 : 0;
+      const custoMOUntario = prod ? parseFloat(prod.mao_obra) || 0 : 0;
+      custoMaterialTotal += custoMatUnitario * v.quantidade;
+      custoMaoObraTotal += custoMOUntario * v.quantidade;
+    });
+
+    const margemMedia = receitaTotal > 0 ? (lucroTotal / receitaTotal) * 100 : 0;
+
+    // Atualizar KPIs
+    this.setDOMText('det-luc-receita', `R$ ${receitaTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-luc-materiais', `R$ ${custoMaterialTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-luc-mao-obra', `R$ ${custoMaoObraTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-luc-liquido', `R$ ${lucroTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-luc-margem', `${margemMedia.toFixed(1)}%`);
+
+    // Renderizar tabela e cards
+    const tbody = document.getElementById('det-luc-table-body');
+    const mobileContainer = document.getElementById('det-luc-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (vendasMes.length === 0) {
+      const emptyState = `
+        <tr>
+          <td colspan="8" class="empty-state" style="text-align: center; padding: 32px; color: var(--text-muted);">
+            <i class="fas fa-wallet" style="font-size: 28px; margin-bottom: 8px; display: block; color: var(--accent);"></i>
+            Nenhuma transação registrada neste mês.
+          </td>
+        </tr>
+      `;
+      tbody.innerHTML = emptyState;
+      mobileContainer.innerHTML = `
+        <div style="text-align: center; padding: 32px; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border);">
+          <i class="fas fa-wallet" style="font-size: 28px; margin-bottom: 8px; display: block; color: var(--accent);"></i>
+          Nenhuma transação registrada neste mês.
+        </div>
+      `;
+      return;
+    }
+
+    const vendasOrdenadas = [...vendasMes].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    vendasOrdenadas.forEach(v => {
+      const dt = new Date(v.created_at);
+      const dataStr = dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      
+      const prod = produtos.find(p => p.id === v.produto_id);
+      const fotoUrl = prod && prod.foto ? prod.foto : '/assets/cores/bordo_sf.svg';
+      const sku = prod && prod.sku ? prod.sku : 'SKU-N/D';
+
+      const custoMatUnitario = prod ? parseFloat(prod.custo) || 0 : 0;
+      const custoMOUntario = prod ? parseFloat(prod.mao_obra) || 0 : 0;
+      const custoMatLinha = custoMatUnitario * v.quantidade;
+      const custoMOLinha = custoMOUntario * v.quantidade;
+
+      const valorVenda = parseFloat(v.valor_venda) || 0;
+      const lucroReal = parseFloat(v.lucro) || 0;
+      const margemLinha = valorVenda > 0 ? (lucroReal / valorVenda) * 100 : 0;
+
+      let badgeClass = 'badge-success';
+      if (margemLinha < 25) {
+        badgeClass = 'badge-danger';
+      } else if (margemLinha < 45) {
+        badgeClass = 'badge-warning';
+      }
+
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="color: var(--text-secondary); font-size: 13px;">${dataStr}</td>
+        <td style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+          <img src="${fotoUrl}" style="width: 28px; height: 28px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div>
+            <div>${v.produto_nome}</div>
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: normal;">${sku} &bull; ${v.quantidade} un</span>
+          </div>
+        </td>
+        <td style="color: var(--text-secondary); font-size: 13px;">${v.cliente_nome}</td>
+        <td style="text-align: right; color: var(--danger); font-size: 13px;">R$ ${custoMatLinha.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--warning); font-size: 13px;">R$ ${custoMOLinha.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; font-weight: 500; font-size: 13px;">R$ ${valorVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; font-weight: 700; color: var(--success); font-size: 13px;">R$ ${lucroReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right;">
+          <span class="badge ${badgeClass}" style="font-size: 11px;">${margemLinha.toFixed(1)}%</span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-size: 11px; color: var(--text-muted);">${dataStr}</span>
+          <span class="badge ${badgeClass}" style="font-size: 10px; padding: 3px 8px;">Margem: ${margemLinha.toFixed(1)}%</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="${fotoUrl}" style="width: 42px; height: 42px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${v.produto_nome}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Cliente: <strong>${v.cliente_nome}</strong> &bull; ${v.quantidade} un</div>
+          </div>
+        </div>
+        
+        <div style="background: rgba(0,0,0,0.015); padding: 8px 12px; border-radius: 6px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; font-size: 11px; margin-top: 2px; border: 1px solid var(--border-dim);">
+          <div>
+            <div style="color: var(--text-muted); font-size: 9px; text-transform: uppercase;">Custo Mat.</div>
+            <div style="color: var(--danger); font-weight: 600; margin-top: 1px;">R$ ${custoMatLinha.toFixed(2)}</div>
+          </div>
+          <div>
+            <div style="color: var(--text-muted); font-size: 9px; text-transform: uppercase;">Custo M.O.</div>
+            <div style="color: var(--warning); font-weight: 600; margin-top: 1px;">R$ ${custoMOLinha.toFixed(2)}</div>
+          </div>
+          <div>
+            <div style="color: var(--text-muted); font-size: 9px; text-transform: uppercase;">Venda Bruta</div>
+            <div style="color: var(--text-primary); font-weight: 600; margin-top: 1px;">R$ ${valorVenda.toFixed(2)}</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 6px;">
+          <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">Lucro Líquido Real:</span>
+          <span style="font-weight: 700; color: var(--success); font-size: 14px;">R$ ${lucroReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
+    });
+  },
+
+  renderizarColaresDetalhado() {
+    const vendas = this.state.vendas;
+    const produtos = this.state.produtos;
+    
+    const mesAnalise = 4; // Maio
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise;
+    });
+
+    const vendasColares = vendasMes.filter(v => {
+      const prod = produtos.find(p => p.id === v.produto_id);
+      const cat = prod && prod.categoria ? prod.categoria.toLowerCase() : '';
+      return cat.includes('colar');
+    });
+
+    const totalPecas = vendasColares.reduce((sum, v) => sum + parseInt(v.quantidade || 0), 0);
+    const receitaTotal = vendasColares.reduce((sum, v) => sum + parseFloat(v.valor_venda || 0), 0);
+    const lucroTotal = vendasColares.reduce((sum, v) => sum + parseFloat(v.lucro || 0), 0);
+    const ticketMedio = totalPecas > 0 ? receitaTotal / totalPecas : 0;
+
+    // Atualizar sub-KPIs
+    this.setDOMText('det-col-pecas', `${totalPecas} peças`);
+    this.setDOMText('det-col-receita', `R$ ${receitaTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-col-lucro', `R$ ${lucroTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-col-ticket', `R$ ${ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+
+    const tbody = document.getElementById('det-col-table-body');
+    const mobileContainer = document.getElementById('det-col-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (vendasColares.length === 0) {
+      const emptyState = `
+        <tr>
+          <td colspan="8" class="empty-state" style="text-align: center; padding: 32px; color: var(--text-muted);">
+            <i class="fas fa-gem" style="font-size: 28px; margin-bottom: 8px; display: block; color: var(--accent);"></i>
+            Nenhum colar vendido neste mês.
+          </td>
+        </tr>
+      `;
+      tbody.innerHTML = emptyState;
+      mobileContainer.innerHTML = `
+        <div style="text-align: center; padding: 32px; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border);">
+          <i class="fas fa-gem" style="font-size: 28px; margin-bottom: 8px; display: block; color: var(--accent);"></i>
+          Nenhum colar vendido neste mês.
+        </div>
+      `;
+      return;
+    }
+
+    const ordenadas = [...vendasColares].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    ordenadas.forEach(v => {
+      const dt = new Date(v.created_at);
+      const dataStr = dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      
+      const prod = produtos.find(p => p.id === v.produto_id);
+      const fotoUrl = prod && prod.foto ? prod.foto : '/assets/cores/bordo_sf.svg';
+      const sku = prod && prod.sku ? prod.sku : 'SKU-N/D';
+
+      const valorVenda = parseFloat(v.valor_venda) || 0;
+      const lucroReal = parseFloat(v.lucro) || 0;
+      const margemLinha = valorVenda > 0 ? (lucroReal / valorVenda) * 100 : 0;
+
+      let badgeClass = 'badge-success';
+      if (margemLinha < 25) {
+        badgeClass = 'badge-danger';
+      } else if (margemLinha < 45) {
+        badgeClass = 'badge-warning';
+      }
+
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="color: var(--text-secondary); font-size: 13px;">${dataStr}</td>
+        <td style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+          <img src="${fotoUrl}" style="width: 28px; height: 28px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div>
+            <div>${v.produto_nome}</div>
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: normal;">${sku}</span>
+          </div>
+        </td>
+        <td style="color: var(--text-secondary); font-size: 13px;">${v.cliente_nome}</td>
+        <td>
+          <span class="badge ${v.tipo_cliente === 'varejo' ? 'badge-success' : 'badge-warning'}" style="font-size: 11px;">
+            ${v.tipo_cliente === 'varejo' ? 'Varejo' : 'Atacado'}
+          </span>
+        </td>
+        <td style="text-align: right; font-weight: 500;">${v.quantidade} un</td>
+        <td style="text-align: right; font-weight: 500;">R$ ${valorVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; font-weight: 700; color: var(--success);">R$ ${lucroReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right;">
+          <span class="badge ${badgeClass}" style="font-size: 11px;">${margemLinha.toFixed(1)}%</span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-size: 11px; color: var(--text-muted);">${dataStr}</span>
+          <span class="badge ${badgeClass}" style="font-size: 10px; padding: 3px 8px;">Margem: ${margemLinha.toFixed(1)}%</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="${fotoUrl}" style="width: 42px; height: 42px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${v.produto_nome}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Cliente: <strong>${v.cliente_nome}</strong> &bull; ${v.quantidade} un</div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+          <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">Valor Venda:</span>
+          <span style="font-weight: 700; color: var(--accent); font-size: 14px;">R$ ${valorVenda.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 6px;">
+          <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">Lucro Líquido:</span>
+          <span style="font-weight: 700; color: var(--success); font-size: 14px;">R$ ${lucroReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
+    });
+  },
+
+  renderizarTicketDetalhado() {
+    const vendas = this.state.vendas;
+    const produtos = this.state.produtos;
+    
+    const mesAnalise = 4; // Maio
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise;
+    });
+
+    const faturamentoGeral = vendasMes.reduce((sum, v) => sum + parseFloat(v.valor_venda || 0), 0);
+    const pecasGerais = vendasMes.reduce((sum, v) => sum + parseInt(v.quantidade || 0), 0);
+    const ticketGeral = pecasGerais > 0 ? faturamentoGeral / pecasGerais : 0;
+
+    // Agrupar por produto
+    const prodMap = {};
+    vendasMes.forEach(v => {
+      if (!prodMap[v.produto_id]) {
+        prodMap[v.produto_id] = {
+          id: v.produto_id,
+          nome: v.produto_nome,
+          quantidade: 0,
+          faturamento: 0,
+          lucro: 0
+        };
+      }
+      prodMap[v.produto_id].quantidade += parseInt(v.quantidade || 0);
+      prodMap[v.produto_id].faturamento += parseFloat(v.valor_venda || 0);
+      prodMap[v.produto_id].lucro += parseFloat(v.lucro || 0);
+    });
+
+    const ranking = Object.values(prodMap).map(p => {
+      const prodData = produtos.find(prod => prod.id === p.id);
+      const custoMatUnitario = prodData ? parseFloat(prodData.custo) || 0 : 0;
+      const custoMOUntario = prodData ? parseFloat(prodData.mao_obra) || 0 : 0;
+      const custoTotalUnitario = custoMatUnitario + custoMOUntario;
+      const custosTotais = custoTotalUnitario * p.quantidade;
+      return {
+        ...p,
+        sku: prodData && prodData.sku ? prodData.sku : 'SKU-N/D',
+        categoria: prodData && prodData.categoria ? prodData.categoria : 'Sem cat.',
+        foto: prodData && prodData.foto ? prodData.foto : '/assets/cores/bordo_sf.svg',
+        ticket: p.quantidade > 0 ? p.faturamento / p.quantidade : 0,
+        custosTotais: custosTotais
+      };
+    }).sort((a, b) => b.ticket - a.ticket);
+
+    const lider = ranking.length > 0 ? ranking[0] : null;
+
+    // Atualizar sub-KPIs
+    this.setDOMText('det-tkt-geral', `R$ ${ticketGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-tkt-lider', lider ? lider.nome : 'Nenhum');
+    this.setDOMText('det-tkt-receita', `R$ ${faturamentoGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+
+    const tbody = document.getElementById('det-tkt-table-body');
+    const mobileContainer = document.getElementById('det-tkt-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (ranking.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="empty-state" style="text-align: center; padding:32px;">Nenhum produto vendido.</td></tr>';
+      mobileContainer.innerHTML = '<div style="text-align:center; padding:32px;">Nenhum produto vendido.</div>';
+      return;
+    }
+
+    ranking.forEach((p, idx) => {
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight: 700; color: var(--text-gold); text-align: center;">#${idx + 1}</td>
+        <td style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+          <img src="${p.foto}" style="width: 28px; height: 28px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div>
+            <div>${p.nome}</div>
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: normal;">${p.sku}</span>
+          </div>
+        </td>
+        <td style="color: var(--text-secondary); font-size: 13px;">${p.categoria}</td>
+        <td style="text-align: right; font-weight: 500;">${p.quantidade} un</td>
+        <td style="text-align: right; font-weight: 500;">R$ ${p.faturamento.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--danger);">R$ ${p.custosTotais.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--success); font-weight: 600;">R$ ${p.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; font-weight: 700; color: var(--info);">R$ ${p.ticket.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-weight: 700; color: var(--text-gold);">Ranking #${idx + 1}</span>
+          <span class="badge badge-info" style="font-size: 10px; padding: 3px 8px;">Ticket: R$ ${p.ticket.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="${p.foto}" style="width: 42px; height: 42px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.nome}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Categoria: ${p.categoria} &bull; ${p.quantidade} un</div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Faturamento total:</span>
+          <span style="font-weight: 600; color: var(--text-primary);">R$ ${p.faturamento.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 6px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Lucro Acumulado:</span>
+          <span style="font-weight: 700; color: var(--success);">R$ ${p.lucro.toFixed(2)}</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
+    });
+  },
+
+  renderizarVarejoDetalhado() {
+    const vendas = this.state.vendas;
+    const produtos = this.state.produtos;
+    
+    const mesAnalise = 4; // Maio
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise && v.tipo_cliente === 'varejo';
+    });
+
+    const receitaTotal = vendasMes.reduce((sum, v) => sum + parseFloat(v.valor_venda || 0), 0);
+    const pecasTotais = vendasMes.reduce((sum, v) => sum + parseInt(v.quantidade || 0), 0);
+    const ticketMedio = pecasTotais > 0 ? receitaTotal / pecasTotais : 0;
+    const lucroTotal = vendasMes.reduce((sum, v) => sum + parseFloat(v.lucro || 0), 0);
+
+    // Agrupar por produto
+    const prodMap = {};
+    vendasMes.forEach(v => {
+      if (!prodMap[v.produto_id]) {
+        prodMap[v.produto_id] = {
+          id: v.produto_id,
+          nome: v.produto_nome,
+          quantidade: 0,
+          faturamento: 0,
+          lucro: 0
+        };
+      }
+      prodMap[v.produto_id].quantidade += parseInt(v.quantidade || 0);
+      prodMap[v.produto_id].faturamento += parseFloat(v.valor_venda || 0);
+      prodMap[v.produto_id].lucro += parseFloat(v.lucro || 0);
+    });
+
+    const ranking = Object.values(prodMap).map(p => {
+      const prodData = produtos.find(prod => prod.id === p.id);
+      const custoMatUnitario = prodData ? parseFloat(prodData.custo) || 0 : 0;
+      const custoMOUntario = prodData ? parseFloat(prodData.mao_obra) || 0 : 0;
+      const custosTotais = (custoMatUnitario + custoMOUntario) * p.quantidade;
+      const margem = p.faturamento > 0 ? (p.lucro / p.faturamento) * 100 : 0;
+      return {
+        ...p,
+        sku: prodData && prodData.sku ? prodData.sku : 'SKU-N/D',
+        foto: prodData && prodData.foto ? prodData.foto : '/assets/cores/bordo_sf.svg',
+        custosTotais: custosTotais,
+        margem: margem
+      };
+    }).sort((a, b) => b.faturamento - a.faturamento);
+
+    // Atualizar sub-KPIs
+    this.setDOMText('det-var-receita', `R$ ${receitaTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-var-pecas', `${pecasTotais} un`);
+    this.setDOMText('det-var-ticket', `R$ ${ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-var-lucro', `R$ ${lucroTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+
+    const tbody = document.getElementById('det-var-table-body');
+    const mobileContainer = document.getElementById('det-var-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (ranking.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="empty-state" style="text-align: center; padding:32px;">Nenhum produto vendido no varejo.</td></tr>';
+      mobileContainer.innerHTML = '<div style="text-align:center; padding:32px;">Nenhum produto vendido no varejo.</div>';
+      return;
+    }
+
+    ranking.forEach((p, idx) => {
+      let badgeClass = 'badge-success';
+      if (p.margem < 25) {
+        badgeClass = 'badge-danger';
+      } else if (p.margem < 45) {
+        badgeClass = 'badge-warning';
+      }
+
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight: 700; color: var(--text-gold); text-align: center;">#${idx + 1}</td>
+        <td style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+          <img src="${p.foto}" style="width: 28px; height: 28px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div>${p.nome}</div>
+        </td>
+        <td style="color: var(--text-secondary); font-size: 13px;">${p.sku}</td>
+        <td style="text-align: right; font-weight: 500;">${p.quantidade} un</td>
+        <td style="text-align: right; font-weight: 500;">R$ ${p.faturamento.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--danger);">R$ ${p.custosTotais.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--success); font-weight: 600;">R$ ${p.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right;">
+          <span class="badge ${badgeClass}" style="font-size: 11px;">${p.margem.toFixed(1)}%</span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-weight: 700; color: var(--text-gold);">Ranking Varejo #${idx + 1}</span>
+          <span class="badge ${badgeClass}" style="font-size: 10px; padding: 3px 8px;">Margem: ${p.margem.toFixed(1)}%</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="${p.foto}" style="width: 42px; height: 42px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.nome}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">${p.sku} &bull; ${p.quantidade} un</div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Receita Varejo:</span>
+          <span style="font-weight: 600; color: var(--text-primary);">R$ ${p.faturamento.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 6px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Lucro Real Varejo:</span>
+          <span style="font-weight: 700; color: var(--success);">R$ ${p.lucro.toFixed(2)}</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
+    });
+  },
+
+  renderizarAtacadoDetalhado() {
+    const vendas = this.state.vendas;
+    const produtos = this.state.produtos;
+    
+    const mesAnalise = 4; // Maio
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise && v.tipo_cliente === 'atacado';
+    });
+
+    const receitaTotal = vendasMes.reduce((sum, v) => sum + parseFloat(v.valor_venda || 0), 0);
+    const pecasTotais = vendasMes.reduce((sum, v) => sum + parseInt(v.quantidade || 0), 0);
+    const ticketMedio = pecasTotais > 0 ? receitaTotal / pecasTotais : 0;
+    const lucroTotal = vendasMes.reduce((sum, v) => sum + parseFloat(v.lucro || 0), 0);
+
+    // Agrupar por produto
+    const prodMap = {};
+    vendasMes.forEach(v => {
+      if (!prodMap[v.produto_id]) {
+        prodMap[v.produto_id] = {
+          id: v.produto_id,
+          nome: v.produto_nome,
+          quantidade: 0,
+          faturamento: 0,
+          lucro: 0
+        };
+      }
+      prodMap[v.produto_id].quantidade += parseInt(v.quantidade || 0);
+      prodMap[v.produto_id].faturamento += parseFloat(v.valor_venda || 0);
+      prodMap[v.produto_id].lucro += parseFloat(v.lucro || 0);
+    });
+
+    const ranking = Object.values(prodMap).map(p => {
+      const prodData = produtos.find(prod => prod.id === p.id);
+      const custoMatUnitario = prodData ? parseFloat(prodData.custo) || 0 : 0;
+      const custoMOUntario = prodData ? parseFloat(prodData.mao_obra) || 0 : 0;
+      const custosTotais = (custoMatUnitario + custoMOUntario) * p.quantidade;
+      const margem = p.faturamento > 0 ? (p.lucro / p.faturamento) * 100 : 0;
+      return {
+        ...p,
+        sku: prodData && prodData.sku ? prodData.sku : 'SKU-N/D',
+        foto: prodData && prodData.foto ? prodData.foto : '/assets/cores/bordo_sf.svg',
+        custosTotais: custosTotais,
+        margem: margem
+      };
+    }).sort((a, b) => b.faturamento - a.faturamento);
+
+    // Atualizar sub-KPIs
+    this.setDOMText('det-ata-receita', `R$ ${receitaTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-ata-pecas', `${pecasTotais} un`);
+    this.setDOMText('det-ata-ticket', `R$ ${ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-ata-lucro', `R$ ${lucroTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+
+    const tbody = document.getElementById('det-ata-table-body');
+    const mobileContainer = document.getElementById('det-ata-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (ranking.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="empty-state" style="text-align: center; padding:32px;">Nenhum produto vendido no atacado.</td></tr>';
+      mobileContainer.innerHTML = '<div style="text-align:center; padding:32px;">Nenhum produto vendido no atacado.</div>';
+      return;
+    }
+
+    ranking.forEach((p, idx) => {
+      let badgeClass = 'badge-success';
+      if (p.margem < 25) {
+        badgeClass = 'badge-danger';
+      } else if (p.margem < 45) {
+        badgeClass = 'badge-warning';
+      }
+
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight: 700; color: var(--text-gold); text-align: center;">#${idx + 1}</td>
+        <td style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+          <img src="${p.foto}" style="width: 28px; height: 28px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div>${p.nome}</div>
+        </td>
+        <td style="color: var(--text-secondary); font-size: 13px;">${p.sku}</td>
+        <td style="text-align: right; font-weight: 500;">${p.quantidade} un</td>
+        <td style="text-align: right; font-weight: 500;">R$ ${p.faturamento.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--danger);">R$ ${p.custosTotais.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--success); font-weight: 600;">R$ ${p.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right;">
+          <span class="badge ${badgeClass}" style="font-size: 11px;">${p.margem.toFixed(1)}%</span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-weight: 700; color: var(--text-gold);">Ranking Atacado #${idx + 1}</span>
+          <span class="badge ${badgeClass}" style="font-size: 10px; padding: 3px 8px;">Margem: ${p.margem.toFixed(1)}%</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="${p.foto}" style="width: 42px; height: 42px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.nome}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">${p.sku} &bull; ${p.quantidade} un</div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Receita Atacado:</span>
+          <span style="font-weight: 600; color: var(--text-primary);">R$ ${p.faturamento.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 6px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Lucro Real Atacado:</span>
+          <span style="font-weight: 700; color: var(--success);">R$ ${p.lucro.toFixed(2)}</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
+    });
+  },
+
+  renderizarProdutoTopDetalhado() {
+    const vendas = this.state.vendas;
+    const produtos = this.state.produtos;
+    
+    const mesAnalise = 4; // Maio
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise;
+    });
+
+    const totalPecasGerais = vendasMes.reduce((sum, v) => sum + parseInt(v.quantidade || 0), 0);
+
+    // Agrupar por produto
+    const prodMap = {};
+    vendasMes.forEach(v => {
+      if (!prodMap[v.produto_id]) {
+        prodMap[v.produto_id] = {
+          id: v.produto_id,
+          nome: v.produto_nome,
+          quantidade: 0,
+          faturamento: 0,
+          lucro: 0
+        };
+      }
+      prodMap[v.produto_id].quantidade += parseInt(v.quantidade || 0);
+      prodMap[v.produto_id].faturamento += parseFloat(v.valor_venda || 0);
+      prodMap[v.produto_id].lucro += parseFloat(v.lucro || 0);
+    });
+
+    const ranking = Object.values(prodMap).map(p => {
+      const prodData = produtos.find(prod => prod.id === p.id);
+      const part = totalPecasGerais > 0 ? (p.quantidade / totalPecasGerais) * 100 : 0;
+      return {
+        ...p,
+        sku: prodData && prodData.sku ? prodData.sku : 'SKU-N/D',
+        categoria: prodData && prodData.categoria ? prodData.categoria : 'Sem cat.',
+        foto: prodData && prodData.foto ? prodData.foto : '/assets/cores/bordo_sf.svg',
+        participacao: part
+      };
+    }).sort((a, b) => b.quantidade - a.quantidade);
+
+    const campeao = ranking.length > 0 ? ranking[0] : null;
+
+    // Atualizar sub-KPIs
+    this.setDOMText('det-top-total-pecas', `${totalPecasGerais} un`);
+    this.setDOMText('det-top-campeao', campeao ? campeao.nome : 'Nenhum');
+    this.setDOMText('det-top-campeao-qtd', campeao ? `${campeao.quantidade} un` : '0 un');
+
+    const tbody = document.getElementById('det-top-table-body');
+    const mobileContainer = document.getElementById('det-top-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (ranking.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-state" style="text-align: center; padding:32px;">Nenhum produto vendido.</td></tr>';
+      mobileContainer.innerHTML = '<div style="text-align:center; padding:32px;">Nenhum produto vendido.</div>';
+      return;
+    }
+
+    ranking.forEach((p, idx) => {
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight: 700; color: var(--text-gold); text-align: center;">#${idx + 1}</td>
+        <td style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+          <img src="${p.foto}" style="width: 28px; height: 28px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div>
+            <div>${p.nome}</div>
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: normal;">${p.sku}</span>
+          </div>
+        </td>
+        <td style="color: var(--text-secondary); font-size: 13px;">${p.categoria}</td>
+        <td style="text-align: right; font-weight: 700; color: var(--accent);">${p.quantidade} un</td>
+        <td style="text-align: right; font-weight: 500;">R$ ${p.faturamento.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--success); font-weight: 600;">R$ ${p.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; font-weight: 600; color: var(--info);">${p.participacao.toFixed(1)}%</td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-weight: 700; color: var(--text-gold);">Pos #${idx + 1} &bull; ${p.participacao.toFixed(1)}% do vol</span>
+          <span class="badge badge-warning" style="font-size: 10px; padding: 3px 8px;">Volume: ${p.quantidade} un</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="${p.foto}" style="width: 42px; height: 42px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-dim);" onerror="this.src='/assets/cores/bordo_sf.svg'">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.nome}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Categoria: ${p.categoria}</div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Faturamento Gerado:</span>
+          <span style="font-weight: 600; color: var(--text-primary);">R$ ${p.faturamento.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 6px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Lucro Real Gerado:</span>
+          <span style="font-weight: 700; color: var(--success);">R$ ${p.lucro.toFixed(2)}</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
+    });
+  },
+
+  renderizarProdutoLucroDetalhado() {
+    const vendas = this.state.vendas;
+    
+    const mesAnalise = 4; // Maio
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise;
+    });
+
+    const lucroTotalGeral = vendasMes.reduce((sum, v) => sum + parseFloat(v.lucro || 0), 0);
+    const receitaTotalGeral = vendasMes.reduce((sum, v) => sum + parseFloat(v.valor_venda || 0), 0);
+    const margemMediaGeral = receitaTotalGeral > 0 ? (lucroTotalGeral / receitaTotalGeral) * 100 : 0;
+
+    // Agrupar por cliente
+    const clienteMap = {};
+    vendasMes.forEach(v => {
+      const nome = v.cliente_nome || 'Consumidor';
+      if (!clienteMap[nome]) {
+        clienteMap[nome] = {
+          nome: nome,
+          quantidade: 0,
+          faturamento: 0,
+          lucro: 0
+        };
+      }
+      clienteMap[nome].quantidade += parseInt(v.quantidade || 0);
+      clienteMap[nome].faturamento += parseFloat(v.valor_venda || 0);
+      clienteMap[nome].lucro += parseFloat(v.lucro || 0);
+    });
+
+    const ranking = Object.values(clienteMap).map(c => {
+      const margem = c.faturamento > 0 ? (c.lucro / c.faturamento) * 100 : 0;
+      const custoTotal = c.faturamento - c.lucro;
+      return {
+        ...c,
+        custosTotais: custoTotal,
+        margem: margem
+      };
+    }).sort((a, b) => b.lucro - a.lucro);
+
+    const estrela = ranking.length > 0 ? ranking[0] : null;
+
+    // Atualizar sub-KPIs
+    this.setDOMText('det-rlu-total', `R$ ${lucroTotalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    this.setDOMText('det-rlu-lider', estrela ? estrela.nome : 'Nenhum');
+    this.setDOMText('det-rlu-margem-geral', `${margemMediaGeral.toFixed(1)}%`);
+
+    const tbody = document.getElementById('det-rlu-table-body');
+    const mobileContainer = document.getElementById('det-rlu-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (ranking.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-state" style="text-align: center; padding:32px;">Nenhum cliente registrado.</td></tr>';
+      mobileContainer.innerHTML = '<div style="text-align:center; padding:32px;">Nenhum cliente registrado.</div>';
+      return;
+    }
+
+    ranking.forEach((p, idx) => {
+      let badgeClass = 'badge-success';
+      if (p.margem < 25) {
+        badgeClass = 'badge-danger';
+      } else if (p.margem < 45) {
+        badgeClass = 'badge-warning';
+      }
+
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight: 700; color: var(--text-gold); text-align: center;">#${idx + 1}</td>
+        <td style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">
+            ${p.nome.charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <div>${p.nome}</div>
+          </div>
+        </td>
+        <td style="text-align: right; font-weight: 500;">${p.quantidade} un</td>
+        <td style="text-align: right; font-weight: 500;">R$ ${p.faturamento.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--danger);">R$ ${p.custosTotais.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--success); font-weight: 700; font-size: 13px;">R$ ${p.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right;">
+          <span class="badge ${badgeClass}" style="font-size: 11px;">${p.margem.toFixed(1)}%</span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-weight: 700; color: var(--text-gold);">Rentabilidade #${idx + 1}</span>
+          <span class="badge ${badgeClass}" style="font-size: 10px; padding: 3px 8px;">Margem: ${p.margem.toFixed(1)}%</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <div style="width: 42px; height: 42px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold;">
+            ${p.nome.charAt(0).toUpperCase()}
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.nome}</div>
+            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Peças compradas &bull; ${p.quantidade} un</div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Receita / Custos:</span>
+          <span style="font-weight: 600; color: var(--text-primary);">R$ ${p.faturamento.toFixed(2)} / R$ ${p.custosTotais.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 6px; font-size: 11px;">
+          <span style="color: var(--text-secondary); font-weight: 500;">Lucro Líquido Acumulado:</span>
+          <span style="font-weight: 700; color: var(--success); font-size: 14px;">R$ ${p.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
+    });
+  },
+
+  renderizarCategoriaTopDetalhado() {
+    const vendas = this.state.vendas;
+    const produtos = this.state.produtos;
+    
+    const mesAnalise = 4; // Maio
+    const anoAnalise = 2026;
+
+    const vendasMes = vendas.filter(v => {
+      const dt = new Date(v.created_at);
+      return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise;
+    });
+
+    // Agrupar por categoria
+    const catMap = {};
+    vendasMes.forEach(v => {
+      const prodData = produtos.find(prod => prod.id === v.produto_id);
+      const catName = prodData && prodData.categoria ? prodData.categoria : 'Sem categoria';
+      if (!catMap[catName]) {
+        catMap[catName] = {
+          nome: catName,
+          quantidade: 0,
+          faturamento: 0,
+          lucro: 0,
+          custos: 0
+        };
+      }
+      const custoMatUnitario = prodData ? parseFloat(prodData.custo) || 0 : 0;
+      const custoMOUntario = prodData ? parseFloat(prodData.mao_obra) || 0 : 0;
+      const custoTotalUnitario = custoMatUnitario + custoMOUntario;
+      const custosTotais = custoTotalUnitario * parseInt(v.quantidade || 0);
+
+      catMap[catName].quantidade += parseInt(v.quantidade || 0);
+      catMap[catName].faturamento += parseFloat(v.valor_venda || 0);
+      catMap[catName].lucro += parseFloat(v.lucro || 0);
+      catMap[catName].custos += custosTotais;
+    });
+
+    const ranking = Object.values(catMap).map(c => {
+      const margem = c.faturamento > 0 ? (c.lucro / c.faturamento) * 100 : 0;
+      return {
+        ...c,
+        margem: margem
+      };
+    }).sort((a, b) => b.faturamento - a.faturamento);
+
+    const lider = ranking.length > 0 ? ranking[0] : null;
+    const liderLucro = [...ranking].sort((a, b) => b.lucro - a.lucro)[0] || null;
+
+    // Atualizar sub-KPIs
+    this.setDOMText('det-cat-lider', lider ? lider.nome : 'Nenhuma');
+    this.setDOMText('det-cat-lider-receita', lider ? `R$ ${lider.faturamento.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'R$ 0,00');
+    this.setDOMText('det-cat-lider-lucro', liderLucro ? `R$ ${liderLucro.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'R$ 0,00');
+
+    const tbody = document.getElementById('det-cat-table-body');
+    const mobileContainer = document.getElementById('det-cat-cards-mobile');
+
+    if (!tbody || !mobileContainer) return;
+
+    tbody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    if (ranking.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-state" style="text-align: center; padding:32px;">Nenhuma categoria vendida.</td></tr>';
+      mobileContainer.innerHTML = '<div style="text-align:center; padding:32px;">Nenhuma categoria vendida.</div>';
+      return;
+    }
+
+    ranking.forEach((c, idx) => {
+      let badgeClass = 'badge-success';
+      if (c.margem < 25) {
+        badgeClass = 'badge-danger';
+      } else if (c.margem < 45) {
+        badgeClass = 'badge-warning';
+      }
+
+      // Desktop Row
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight: 700; color: var(--text-gold); text-align: center;">#${idx + 1}</td>
+        <td style="font-weight: 600; color: var(--text-primary); font-size: 14px;">${c.nome}</td>
+        <td style="text-align: right; font-weight: 500;">${c.quantidade} peças</td>
+        <td style="text-align: right; font-weight: 600; color: var(--info);">R$ ${c.faturamento.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--danger);">R$ ${c.custos.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right; color: var(--success); font-weight: 700;">R$ ${c.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="text-align: right;">
+          <span class="badge ${badgeClass}" style="font-size: 11px;">${c.margem.toFixed(1)}%</span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Mobile Card
+      const card = document.createElement('div');
+      card.style.background = 'var(--bg-primary)';
+      card.style.border = '1px solid var(--border-dim)';
+      card.style.borderRadius = 'var(--radius-md)';
+      card.style.padding = '14px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '8px';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed var(--border-dim); padding-bottom: 8px; margin-bottom: 2px;">
+          <span style="font-weight: 700; color: var(--text-gold);">Categoria #${idx + 1} &bull; ${c.nome}</span>
+          <span class="badge ${badgeClass}" style="font-size: 10px; padding: 3px 8px;">Margem: ${c.margem.toFixed(1)}%</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Quantidade:</span>
+          <span style="font-weight: 600; color: var(--text-primary);">${c.quantidade} peças</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+          <span style="color: var(--text-secondary);">Faturamento Total:</span>
+          <span style="font-weight: 600; color: var(--info);">R$ ${c.faturamento.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.03); padding-top: 6px; font-size: 11px;">
+          <span style="color: var(--text-secondary); font-weight: 500;">Lucro Líquido Acumulado:</span>
+          <span style="font-weight: 700; color: var(--success); font-size: 14px;">R$ ${c.lucro.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </div>
+      `;
+      mobileContainer.appendChild(card);
     });
   }
 };

@@ -20,8 +20,7 @@
       <div class="login-logo">
         <img src="/assets/logo/deu_no_favicon.webp" alt="Deu Nó" style="height: 80px; mix-blend-mode: multiply; filter: contrast(1.15) brightness(1.1); margin: 0 auto;">
       </div>
-      <h2 class="login-title" style="margin-top: 10px;">Deu Nó</h2>
-      <p class="login-subtitle">Área Restrita Administrativa</p>
+      <p class="login-subtitle" style="margin-top: 10px;">Área Restrita Administrativa</p>
       
       <form id="form-login">
         <div class="form-group">
@@ -71,7 +70,7 @@
           <a href="#"><i class="fas fa-users"></i><span>Clientes</span></a>
         </li>
         <li class="nav-item" data-target="sec-insumos">
-          <a href="#"><i class="fas fa-dolly"></i><span>Insumos</span></a>
+          <a href="#"><i class="fas fa-dolly"></i><span>Materiais</span></a>
         </li>
         <li class="nav-item" data-target="sec-financeiro">
           <a href="#"><i class="fas fa-coins"></i><span>Financeiro</span></a>
@@ -98,7 +97,7 @@
       <!-- CABEÇALHO DO CONTEÚDO -->
       <header class="top-header">
         <div class="page-title-area">
-          <h2 id="current-page-title">Painel de Inteligência</h2>
+          <h2 id="current-page-title">Painel de Controle</h2>
           <p id="current-page-desc">Monitore custos, lucros e o faturamento do negócio de semijoias.</p>
         </div>
         
@@ -117,7 +116,7 @@
         
         <!-- KPIs Principais -->
         <div class="kpi-grid">
-          <div class="kpi-card kpi-gold">
+          <div class="kpi-card kpi-gold" id="kpi-card-faturamento" style="cursor: pointer;">
             <div class="kpi-header">
               <span class="kpi-title">Faturamento no Mês</span>
               <div class="kpi-icon"><i class="fas fa-chart-line"></i></div>
@@ -128,7 +127,7 @@
             </div>
           </div>
 
-          <div class="kpi-card">
+          <div class="kpi-card" id="kpi-card-lucro" style="cursor: pointer;">
             <div class="kpi-header">
               <span class="kpi-title">Lucro Líquido no Mês</span>
               <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-wallet"></i></div>
@@ -139,7 +138,7 @@
             </div>
           </div>
 
-          <div class="kpi-card">
+          <div class="kpi-card" id="kpi-card-colares" style="cursor: pointer;">
             <div class="kpi-header">
               <span class="kpi-title">Colares Vendidos</span>
               <div class="kpi-icon"><i class="fas fa-gem"></i></div>
@@ -150,7 +149,7 @@
             </div>
           </div>
 
-          <div class="kpi-card">
+          <div class="kpi-card" id="kpi-card-ticket" style="cursor: pointer;">
             <div class="kpi-header">
               <span class="kpi-title">Ticket Médio</span>
               <div class="kpi-icon"><i class="fas fa-calculator"></i></div>
@@ -161,7 +160,7 @@
             </div>
           </div>
 
-          <div class="kpi-card">
+          <div class="kpi-card" id="kpi-card-varejo" style="cursor: pointer;">
             <div class="kpi-header">
               <span class="kpi-title">Vendido no Varejo</span>
               <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-shopping-bag"></i></div>
@@ -172,7 +171,7 @@
             </div>
           </div>
 
-          <div class="kpi-card">
+          <div class="kpi-card" id="kpi-card-atacado" style="cursor: pointer;">
             <div class="kpi-header">
               <span class="kpi-title">Vendido no Atacado</span>
               <div class="kpi-icon" style="color: var(--purple);"><i class="fas fa-boxes-packing"></i></div>
@@ -183,7 +182,7 @@
             </div>
           </div>
 
-          <div class="kpi-card">
+          <div class="kpi-card" id="kpi-card-produto-top" style="cursor: pointer;">
             <div class="kpi-header">
               <span class="kpi-title">Produto Mais Vendido</span>
               <div class="kpi-icon" style="color: var(--warning);"><i class="fas fa-crown"></i></div>
@@ -194,9 +193,9 @@
             </div>
           </div>
 
-          <div class="kpi-card">
+          <div class="kpi-card" id="kpi-card-produto-lucro" style="cursor: pointer;">
             <div class="kpi-header">
-              <span class="kpi-title">Melhor Lucro Real</span>
+              <span class="kpi-title">Melhor Cliente (Lucro)</span>
               <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-sack-dollar"></i></div>
             </div>
             <div class="kpi-value" id="kpi-produto-lucro" style="font-size: 15px; line-height: 1.25; padding-top: 4px; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--success);">Carregando...</div>
@@ -205,7 +204,7 @@
             </div>
           </div>
 
-          <div class="kpi-card">
+          <div class="kpi-card" id="kpi-card-categoria-top" style="cursor: pointer;">
             <div class="kpi-header">
               <span class="kpi-title">Melhor Categoria</span>
               <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-tag"></i></div>
@@ -423,12 +422,18 @@
               <option value="Cartão">Cartão</option>
               <option value="Dinheiro">Dinheiro</option>
             </select>
+            <button class="btn btn-primary" id="btn-abrir-venda-modal-sec" style="height: 38px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600;">
+              <i class="fas fa-plus"></i> Registrar Transação
+            </button>
             
             <button class="btn btn-secondary" id="btn-exportar-csv-vendas" style="height: 38px;">
               <i class="fas fa-file-csv"></i> Excel (CSV)
             </button>
             <button class="btn btn-secondary" id="btn-imprimir-pdf-vendas" style="height: 38px;">
               <i class="fas fa-print"></i> PDF
+            </button>
+            <button class="btn btn-danger" id="btn-limpar-vendas" style="height: 38px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; background: var(--danger); border-color: var(--danger);">
+              <i class="fas fa-trash-can"></i> Limpar Vendas
             </button>
           </div>
         </div>
@@ -488,7 +493,7 @@
                   <th>Peça</th>
                   <th>Categoria</th>
                   <th>SKU</th>
-                  <th>Custo (Insumo)</th>
+                  <th>Custo (Material)</th>
                   <th>Venda Varejo</th>
                   <th>Venda Atacado</th>
                   <th>Lucro Varejo (Margem)</th>
@@ -550,7 +555,7 @@
         <div class="control-bar">
           <div class="search-input-wrapper">
             <i class="fas fa-magnifying-glass"></i>
-            <input type="text" id="busca-insumos" class="input-search" placeholder="Buscar por insumo ou cor...">
+            <input type="text" id="busca-insumos" class="input-search" placeholder="Buscar por material ou cor...">
           </div>
           
           <div class="filter-group">
@@ -564,7 +569,7 @@
             </select>
             
             <button class="btn btn-primary" id="btn-abrir-insumo-modal">
-              <i class="fas fa-plus"></i> Novo Insumo
+              <i class="fas fa-plus"></i> Novo Material
             </button>
           </div>
         </div>
@@ -574,7 +579,7 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Nome do Insumo</th>
+                  <th>Nome do Material</th>
                   <th>Tipo</th>
                   <th>Especificação (Cor/Tam)</th>
                   <th>Preço de Custo</th>
@@ -611,7 +616,7 @@
                 <span class="summary-detail-value" id="fin-faturamento-total" style="color: var(--info);">R$ 0,00</span>
               </div>
               <div class="summary-detail-item">
-                <span class="summary-detail-label">Custo Acumulado (Insumos/Peças):</span>
+                <span class="summary-detail-label">Custo Acumulado (Materiais/Peças):</span>
                 <span class="summary-detail-value" id="fin-custo-total" style="color: var(--danger);">R$ 0,00</span>
               </div>
               <div class="summary-detail-item">
@@ -627,6 +632,709 @@
                 <span class="summary-detail-value highlight" id="fin-margem-geral" style="color: var(--accent);">0.0%</span>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. SEÇÃO DETALHE FATURAMENTO DO MÊS -->
+      <section id="sec-faturamento-detalhado" class="app-section">
+        <!-- Cabeçalho da Seção -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-chart-line" style="color: var(--accent);"></i> Faturamento de Maio/2026
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px;">Mês Corrente</span>
+        </div>
+
+        <!-- Mini Grid de Sub-KPIs -->
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(170, 124, 17, 0.05) 100%); border: 1px solid rgba(212, 175, 55, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Faturamento Total</span>
+              <div class="kpi-icon" style="color: var(--text-gold);"><i class="fas fa-dollar-sign"></i></div>
+            </div>
+            <div class="kpi-value" id="det-fat-total" style="font-size: 22px; font-weight: 700; color: var(--text-gold);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Vendas no Varejo</span>
+              <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-user"></i></div>
+            </div>
+            <div class="kpi-value" id="det-fat-varejo" style="font-size: 22px; font-weight: 700; color: var(--info);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Vendas no Atacado</span>
+              <div class="kpi-icon" style="color: var(--purple);"><i class="fas fa-boxes-packing"></i></div>
+            </div>
+            <div class="kpi-value" id="det-fat-atacado" style="font-size: 22px; font-weight: 700; color: var(--purple);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Transações Realizadas</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-receipt"></i></div>
+            </div>
+            <div class="kpi-value" id="det-fat-transacoes" style="font-size: 22px; font-weight: 700; color: var(--success);">0</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Ticket Médio</span>
+              <div class="kpi-icon" style="color: var(--accent);"><i class="fas fa-calculator"></i></div>
+            </div>
+            <div class="kpi-value" id="det-fat-ticket" style="font-size: 22px; font-weight: 700; color: var(--accent);">R$ 0,00</div>
+          </div>
+        </div>
+
+        <!-- Seção de Lista de Transações Detalhada -->
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-list-check" style="margin-right: 8px; color: var(--accent);"></i>Detalhamento de Transações do Mês</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);" id="det-fat-periodo">Filtro aplicado: Maio de 2026</span>
+          </div>
+
+          <!-- Desktop Table view -->
+          <div class="table-wrapper" id="det-fat-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Produto / Peça</th>
+                    <th>Cliente</th>
+                    <th>Canal</th>
+                    <th>Forma de Pagamento</th>
+                    <th style="text-align: right;">Quantidade</th>
+                    <th style="text-align: right;">Valor Pago</th>
+                  </tr>
+                </thead>
+                <tbody id="det-fat-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Mobile Cards list (Super intuitive and gorgeous for mobile!) -->
+          <div id="det-fat-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. SEÇÃO DETALHE LUCRO LÍQUIDO DO MÊS -->
+      <section id="sec-lucro-detalhado" class="app-section">
+        <!-- Cabeçalho da Seção -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--success); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-wallet" style="color: var(--success);"></i> Lucro Líquido de Maio/2026
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px; background: var(--success);">Mês Corrente</span>
+        </div>
+
+        <!-- Mini Grid de Sub-KPIs de Lucro -->
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Receita Bruta</span>
+              <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-chart-line"></i></div>
+            </div>
+            <div class="kpi-value" id="det-luc-receita" style="font-size: 20px; font-weight: 700; color: var(--info);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Custo de Materiais</span>
+              <div class="kpi-icon" style="color: var(--danger);"><i class="fas fa-scissors"></i></div>
+            </div>
+            <div class="kpi-value" id="det-luc-materiais" style="font-size: 20px; font-weight: 700; color: var(--danger);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Custo de Mão de Obra</span>
+              <div class="kpi-icon" style="color: var(--warning);"><i class="fas fa-people-carry-dummy"></i></div>
+            </div>
+            <div class="kpi-value" id="det-luc-mao-obra" style="font-size: 20px; font-weight: 700; color: var(--warning);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(30, 126, 52, 0.05) 100%); border: 1px solid rgba(40, 167, 69, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px; color: var(--success);">Lucro Real Conquistado</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-sack-dollar"></i></div>
+            </div>
+            <div class="kpi-value" id="det-luc-liquido" style="font-size: 20px; font-weight: 700; color: var(--success);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Margem Média Real</span>
+              <div class="kpi-icon" style="color: var(--accent);"><i class="fas fa-percentage"></i></div>
+            </div>
+            <div class="kpi-value" id="det-luc-margem" style="font-size: 20px; font-weight: 700; color: var(--accent);">0%</div>
+          </div>
+        </div>
+
+        <!-- Seção de Lista de Margens Detalhada -->
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-hand-holding-dollar" style="margin-right: 8px; color: var(--success);"></i>Rentabilidade Individual de Transações</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Análise de Lucratividade: Maio de 2026</span>
+          </div>
+
+          <!-- Desktop Table view -->
+          <div class="table-wrapper" id="det-luc-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Produto / Peça</th>
+                    <th>Cliente</th>
+                    <th style="text-align: right;">Custo Mat. (Total)</th>
+                    <th style="text-align: right;">Custo M.O. (Total)</th>
+                    <th style="text-align: right;">Valor Venda</th>
+                    <th style="text-align: right;">Lucro Real</th>
+                    <th style="text-align: right;">Margem Real</th>
+                  </tr>
+                </thead>
+                <tbody id="det-luc-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Mobile Cards list (Super intuitive and gorgeous for mobile!) -->
+          <div id="det-luc-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. SEÇÃO DETALHE COLARES VENDIDOS -->
+      <section id="sec-colares-detalhado" class="app-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-gem" style="color: var(--accent);"></i> Colares Vendidos em Maio/2026
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px;">Foco Categoria</span>
+        </div>
+
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Peças de Colares Sold</span>
+              <div class="kpi-icon" style="color: var(--accent);"><i class="fas fa-gem"></i></div>
+            </div>
+            <div class="kpi-value" id="det-col-pecas" style="font-size: 22px; font-weight: 700; color: var(--accent);">0 peças</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Receita Bruta Categoria</span>
+              <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-chart-line"></i></div>
+            </div>
+            <div class="kpi-value" id="det-col-receita" style="font-size: 22px; font-weight: 700; color: var(--info);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(30, 126, 52, 0.05) 100%); border: 1px solid rgba(40, 167, 69, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px; color: var(--success);">Lucro Real Categoria</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-wallet"></i></div>
+            </div>
+            <div class="kpi-value" id="det-col-lucro" style="font-size: 22px; font-weight: 700; color: var(--success);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Ticket Médio do Colar</span>
+              <div class="kpi-icon" style="color: var(--warning);"><i class="fas fa-calculator"></i></div>
+            </div>
+            <div class="kpi-value" id="det-col-ticket" style="font-size: 22px; font-weight: 700; color: var(--warning);">R$ 0,00</div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-list-check" style="margin-right: 8px; color: var(--accent);"></i>Transações Contendo Colares</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Filtrado por Categoria: Colares</span>
+          </div>
+
+          <div class="table-wrapper" id="det-col-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Produto / Peça</th>
+                    <th>Cliente</th>
+                    <th>Canal</th>
+                    <th style="text-align: right;">Quantidade</th>
+                    <th style="text-align: right;">Valor Venda</th>
+                    <th style="text-align: right;">Lucro Real</th>
+                    <th style="text-align: right;">Margem Real</th>
+                  </tr>
+                </thead>
+                <tbody id="det-col-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="det-col-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. SEÇÃO DETALHE TICKET MÉDIO -->
+      <section id="sec-ticket-detalhado" class="app-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--info); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-calculator" style="color: var(--info);"></i> Ranking por Ticket Médio Unitário
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px; background: var(--info);">Melhores Tickets</span>
+        </div>
+
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Ticket Médio Geral</span>
+              <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-calculator"></i></div>
+            </div>
+            <div class="kpi-value" id="det-tkt-geral" style="font-size: 22px; font-weight: 700; color: var(--info);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(170, 124, 17, 0.05) 100%); border: 1px solid rgba(212, 175, 55, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px; color: var(--text-gold);">Melhor Ticket Produto</span>
+              <div class="kpi-icon" style="color: var(--text-gold);"><i class="fas fa-crown"></i></div>
+            </div>
+            <div class="kpi-value" id="det-tkt-lider" style="font-size: 18px; font-weight: 700; color: var(--text-gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 4px;">Nenhum</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Receita Total do Mês</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-chart-line"></i></div>
+            </div>
+            <div class="kpi-value" id="det-tkt-receita" style="font-size: 22px; font-weight: 700; color: var(--success);">R$ 0,00</div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-ranking-star" style="margin-right: 8px; color: var(--info);"></i>Ranking de Produtos por Ticket Médio de Venda</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Métrica: Receita Total / Quantidade Vendida</span>
+          </div>
+
+          <div class="table-wrapper" id="det-tkt-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Pos</th>
+                    <th>Produto / Peça</th>
+                    <th>Categoria</th>
+                    <th style="text-align: right;">Quantidade Vendida</th>
+                    <th style="text-align: right;">Faturamento Bruto</th>
+                    <th style="text-align: right;">Custos Totais</th>
+                    <th style="text-align: right;">Lucro Acumulado</th>
+                    <th style="text-align: right;">Ticket Médio</th>
+                  </tr>
+                </thead>
+                <tbody id="det-tkt-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="det-tkt-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. SEÇÃO DETALHE VAREJO -->
+      <section id="sec-varejo-detalhado" class="app-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--info); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-shopping-bag" style="color: var(--info);"></i> Produtos Mais Vendidos no Varejo
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px; background: var(--info);">Cliente Final</span>
+        </div>
+
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Receita Varejo Total</span>
+              <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-shopping-bag"></i></div>
+            </div>
+            <div class="kpi-value" id="det-var-receita" style="font-size: 20px; font-weight: 700; color: var(--info);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Peças no Varejo</span>
+              <div class="kpi-icon" style="color: var(--accent);"><i class="fas fa-boxes-stacked"></i></div>
+            </div>
+            <div class="kpi-value" id="det-var-pecas" style="font-size: 20px; font-weight: 700; color: var(--accent);">0 un</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Ticket Médio Varejo</span>
+              <div class="kpi-icon" style="color: var(--warning);"><i class="fas fa-calculator"></i></div>
+            </div>
+            <div class="kpi-value" id="det-var-ticket" style="font-size: 20px; font-weight: 700; color: var(--warning);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(30, 126, 52, 0.05) 100%); border: 1px solid rgba(40, 167, 69, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px; color: var(--success);">Lucro Real Varejo</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-sack-dollar"></i></div>
+            </div>
+            <div class="kpi-value" id="det-var-lucro" style="font-size: 20px; font-weight: 700; color: var(--success);">R$ 0,00</div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-list-ol" style="margin-right: 8px; color: var(--info);"></i>Produtos por Performance no Canal Varejo</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Filtrado por Canal: Varejo</span>
+          </div>
+
+          <div class="table-wrapper" id="det-var-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Pos</th>
+                    <th>Produto / Peça</th>
+                    <th>SKU</th>
+                    <th style="text-align: right;">Quantidade Varejo</th>
+                    <th style="text-align: right;">Receita Bruta Varejo</th>
+                    <th style="text-align: right;">Custos da Categoria</th>
+                    <th style="text-align: right;">Lucro Real Varejo</th>
+                    <th style="text-align: right;">Margem Média %</th>
+                  </tr>
+                </thead>
+                <tbody id="det-var-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="det-var-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. SEÇÃO DETALHE ATACADO -->
+      <section id="sec-atacado-detalhado" class="app-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--purple); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-boxes-packing" style="color: var(--purple);"></i> Produtos Mais Vendidos no Atacado
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px; background: var(--purple);">Revendedores</span>
+        </div>
+
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Receita Atacado Total</span>
+              <div class="kpi-icon" style="color: var(--purple);"><i class="fas fa-boxes-packing"></i></div>
+            </div>
+            <div class="kpi-value" id="det-ata-receita" style="font-size: 20px; font-weight: 700; color: var(--purple);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Peças no Atacado</span>
+              <div class="kpi-icon" style="color: var(--accent);"><i class="fas fa-boxes-stacked"></i></div>
+            </div>
+            <div class="kpi-value" id="det-ata-pecas" style="font-size: 20px; font-weight: 700; color: var(--accent);">0 un</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Ticket Médio Atacado</span>
+              <div class="kpi-icon" style="color: var(--warning);"><i class="fas fa-calculator"></i></div>
+            </div>
+            <div class="kpi-value" id="det-ata-ticket" style="font-size: 20px; font-weight: 700; color: var(--warning);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(30, 126, 52, 0.05) 100%); border: 1px solid rgba(40, 167, 69, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px; color: var(--success);">Lucro Real Atacado</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-sack-dollar"></i></div>
+            </div>
+            <div class="kpi-value" id="det-ata-lucro" style="font-size: 20px; font-weight: 700; color: var(--success);">R$ 0,00</div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-list-ol" style="margin-right: 8px; color: var(--purple);"></i>Produtos por Performance no Canal Atacado</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Filtrado por Canal: Atacado</span>
+          </div>
+
+          <div class="table-wrapper" id="det-ata-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Pos</th>
+                    <th>Produto / Peça</th>
+                    <th>SKU</th>
+                    <th style="text-align: right;">Quantidade Atacado</th>
+                    <th style="text-align: right;">Receita Bruta Atacado</th>
+                    <th style="text-align: right;">Custos da Categoria</th>
+                    <th style="text-align: right;">Lucro Real Atacado</th>
+                    <th style="text-align: right;">Margem Média %</th>
+                  </tr>
+                </thead>
+                <tbody id="det-ata-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="det-ata-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 13. SEÇÃO DETALHE PRODUTO MAIS VENDIDO (VOLUME) -->
+      <section id="sec-produto-top-detalhado" class="app-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--warning); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-crown" style="color: var(--warning);"></i> Ranking de Vendas por Volume Físico (Quantidade)
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px; background: var(--warning);">Líderes de Volume</span>
+        </div>
+
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Total Peças Vendidas</span>
+              <div class="kpi-icon" style="color: var(--accent);"><i class="fas fa-gem"></i></div>
+            </div>
+            <div class="kpi-value" id="det-top-total-pecas" style="font-size: 22px; font-weight: 700; color: var(--accent);">0 un</div>
+          </div>
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(197, 143, 0, 0.05) 100%); border: 1px solid rgba(255, 193, 7, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px; color: var(--warning);">Produto Campeão</span>
+              <div class="kpi-icon" style="color: var(--warning);"><i class="fas fa-crown"></i></div>
+            </div>
+            <div class="kpi-value" id="det-top-campeao" style="font-size: 18px; font-weight: 700; color: var(--warning); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 4px;">Nenhum</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Quantidade do Campeão</span>
+              <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-boxes-stacked"></i></div>
+            </div>
+            <div class="kpi-value" id="det-top-campeao-qtd" style="font-size: 22px; font-weight: 700; color: var(--info);">0 un</div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-chart-bar" style="margin-right: 8px; color: var(--warning);"></i>Lista de Peças por Volume Acumulado de Vendas</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Métrica: Soma total das unidades vendidas</span>
+          </div>
+
+          <div class="table-wrapper" id="det-top-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Pos</th>
+                    <th>Produto / Peça</th>
+                    <th>Categoria</th>
+                    <th style="text-align: right;">Total de Vendas (Qtd)</th>
+                    <th style="text-align: right;">Receita Bruta Gerada</th>
+                    <th style="text-align: right;">Lucro Real Acumulado</th>
+                    <th style="text-align: right;">Participação em Volume %</th>
+                  </tr>
+                </thead>
+                <tbody id="det-top-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="det-top-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 14. SEÇÃO DETALHE MELHOR LUCRO REAL -->
+      <section id="sec-produto-lucro-detalhado" class="app-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--success); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-sack-dollar" style="color: var(--success);"></i> Ranking de Clientes por Lucro Líquido Real Absoluto
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px; background: var(--success);">Líderes de Rentabilidade</span>
+        </div>
+
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Lucro Líquido Real Total</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-wallet"></i></div>
+            </div>
+            <div class="kpi-value" id="det-rlu-total" style="font-size: 22px; font-weight: 700; color: var(--success);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(30, 126, 52, 0.05) 100%); border: 1px solid rgba(40, 167, 69, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px; color: var(--success);">Cliente Mais Lucrativo</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-gem"></i></div>
+            </div>
+            <div class="kpi-value" id="det-rlu-lider" style="font-size: 18px; font-weight: 700; color: var(--success); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 4px;">Nenhum</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Margem Média Global</span>
+              <div class="kpi-icon" style="color: var(--accent);"><i class="fas fa-percentage"></i></div>
+            </div>
+            <div class="kpi-value" id="det-rlu-margem-geral" style="font-size: 22px; font-weight: 700; color: var(--accent);">0%</div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-hand-holding-dollar" style="margin-right: 8px; color: var(--success);"></i>Ranking de Clientes por Lucro Real Gerado</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Métrica: Lucro real acumulado gerado pelo cliente</span>
+          </div>
+
+          <div class="table-wrapper" id="det-rlu-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Pos</th>
+                    <th>Cliente</th>
+                    <th style="text-align: right;">Peças Compradas</th>
+                    <th style="text-align: right;">Faturamento Total</th>
+                    <th style="text-align: right;">Custo Total</th>
+                    <th style="text-align: right;">Lucro Real</th>
+                    <th style="text-align: right;">Margem Média</th>
+                  </tr>
+                </thead>
+                <tbody id="det-rlu-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="det-rlu-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 15. SEÇÃO DETALHE DESEMPENHO CATEGORIAS -->
+      <section id="sec-categoria-top-detalhado" class="app-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--info); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-tag" style="color: var(--info);"></i> Desempenho Financeiro por Categoria de Produto
+            </h3>
+          </div>
+          <span class="badge badge-success" style="font-size: 12px; padding: 6px 12px; background: var(--info);">Divisão de Vendas</span>
+        </div>
+
+        <div class="financial-summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="kpi-card kpi-gold" style="background: linear-gradient(135deg, rgba(23, 162, 184, 0.05) 0%, rgba(13, 102, 117, 0.05) 100%); border: 1px solid rgba(23, 162, 184, 0.2);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px; color: var(--info);">Categoria Líder</span>
+              <div class="kpi-icon" style="color: var(--info);"><i class="fas fa-tag"></i></div>
+            </div>
+            <div class="kpi-value" id="det-cat-lider" style="font-size: 20px; font-weight: 700; color: var(--info); padding-top: 4px;">Nenhuma</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Faturamento da Líder</span>
+              <div class="kpi-icon" style="color: var(--success);"><i class="fas fa-chart-line"></i></div>
+            </div>
+            <div class="kpi-value" id="det-cat-lider-receita" style="font-size: 20px; font-weight: 700; color: var(--success);">R$ 0,00</div>
+          </div>
+          <div class="kpi-card" style="background: var(--bg-card); border: 1px solid var(--border);">
+            <div class="kpi-header">
+              <span class="kpi-title" style="font-size: 11px;">Lucro Real da Líder</span>
+              <div class="kpi-icon" style="color: var(--accent);"><i class="fas fa-wallet"></i></div>
+            </div>
+            <div class="kpi-value" id="det-cat-lider-lucro" style="font-size: 20px; font-weight: 700; color: var(--accent);">R$ 0,00</div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
+          <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-chart-pie" style="margin-right: 8px; color: var(--info);"></i>Comparativo Geral por Categoria</span>
+            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Divisão financeira com custos de produção computados</span>
+          </div>
+
+          <div class="table-wrapper" id="det-cat-table-desktop-wrapper">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px;">Pos</th>
+                    <th>Categoria</th>
+                    <th style="text-align: right;">Quantidade Peças</th>
+                    <th style="text-align: right;">Receita Total</th>
+                    <th style="text-align: right;">Custo Produção (Total)</th>
+                    <th style="text-align: right;">Lucro Real Total</th>
+                    <th style="text-align: right;">Margem Média %</th>
+                  </tr>
+                </thead>
+                <tbody id="det-cat-table-body">
+                  <!-- Injetado via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="det-cat-cards-mobile" style="display: none; flex-direction: column; gap: 12px;">
+            <!-- Cards injetados via Javascript -->
           </div>
         </div>
       </section>
@@ -709,7 +1417,7 @@
             </span>
             <div class="form-row" style="margin-bottom: 14px; gap: 16px;">
               <div class="form-group" style="margin-bottom: 0; gap: 6px;">
-                <label class="form-label" style="font-size: 11px;" for="prod-custo">Custo da Peça (Insumos) (R$) *</label>
+                <label class="form-label" style="font-size: 11px;" for="prod-custo">Custo da Peça (Materiais) (R$) *</label>
                 <input type="number" id="prod-custo" class="form-control" step="0.01" placeholder="0.00" readonly required style="background: rgba(0,0,0,0.025); font-weight: 600;">
               </div>
               
@@ -719,13 +1427,13 @@
               </div>
             </div>
 
-            <!-- Ficha Técnica / Composição (Insumos da Peça) Integrada -->
+            <!-- Ficha Técnica / Composição (Materiais da Peça) Integrada -->
             <div style="margin-top: 14px; padding: 12px; background: rgba(0,0,0,0.01); border: 1px solid rgba(0,0,0,0.05); border-radius: 6px;">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 6px; margin-bottom: 10px;">
                 <span style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 4px;">
-                  <i class="fas fa-receipt"></i> Ficha Técnica (Composição de Insumos)
+                  <i class="fas fa-receipt"></i> Ficha Técnica (Composição de Materiais)
                 </span>
-                <button type="button" class="btn btn-secondary" id="btn-add-ficha-insumo" style="padding: 4px 10px; font-size: 11px; height: auto;">
+                <button type="button" class="btn btn-secondary" id="btn-add-ficha-material" style="padding: 4px 10px; font-size: 11px; height: auto;">
                   <i class="fas fa-plus"></i> Adicionar
                 </button>
               </div>
@@ -736,7 +1444,7 @@
               </div>
               
               <div id="ficha-insumos-empty" style="text-align: center; color: var(--text-muted); font-size: 11px; padding: 8px 0;">
-                Nenhum insumo associado a este produto.
+                Nenhum material associado a este produto.
               </div>
             </div>
           </div>
@@ -792,7 +1500,7 @@
           <!-- Calculadora Dinâmica Interna -->
           <div class="profit-calculator-box" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 12px; background: rgba(0,0,0,0.015); border-radius: 8px; border: 1px solid var(--border-color);">
             <div class="calc-item" style="grid-column: span 3; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 6px;">
-              <span class="calc-label" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary);">Custo Total da Peça (Insumo + M.O.)</span>
+              <span class="calc-label" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary);">Custo Total da Peça (Material + M.O.)</span>
               <span class="calc-value" id="calc-invest-val" style="font-size: 15px; font-weight: 700; color: var(--text-gold); display: block; margin-top: 2px;">R$ 0.00</span>
             </div>
             <div class="calc-item" style="text-align: center;">
@@ -834,6 +1542,28 @@
       <div class="modal-footer" style="justify-content: flex-end; gap: 12px; padding: 15px 24px;">
         <button type="button" class="btn btn-secondary btn-cancel-delete" style="padding: 8px 16px;">Cancelar</button>
         <button type="button" class="btn btn-danger btn-confirm-delete" style="padding: 8px 16px;">Apagar Peça</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIRMAÇÃO LIMPEZA DE VENDAS -->
+  <div class="modal-overlay" id="modal-confirmacao-limpar-vendas">
+    <div class="modal-box" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--danger);"><i class="fas fa-triangle-exclamation" style="margin-right: 8px;"></i> Limpar Histórico</h3>
+        <button class="btn-close-modal"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding-top: 15px;">
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+          Tem certeza absoluta de que deseja apagar <strong>todas as vendas registradas</strong>?
+        </p>
+        <p style="color: var(--text-muted); font-size: 12px; margin-top: 10px;">
+          Esta ação é irreversível e removerá permanentemente todo o histórico financeiro e transacional do sistema.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end; gap: 12px; padding: 15px 24px;">
+        <button type="button" class="btn btn-secondary btn-cancelar-limpar" style="padding: 8px 16px;">Cancelar</button>
+        <button type="button" class="btn btn-danger btn-confirmar-limpar" style="padding: 8px 16px;">Limpar Tudo</button>
       </div>
     </div>
   </div>
@@ -916,7 +1646,7 @@
   <div class="modal-overlay" id="modal-insumo">
     <div class="modal-box" style="max-width: 550px;">
       <div class="modal-header">
-        <h3 class="modal-title" id="modal-insumo-titulo">Cadastrar Novo Insumo</h3>
+        <h3 class="modal-title" id="modal-insumo-titulo">Cadastrar Novo Material</h3>
         <button class="btn-close-modal"><i class="fas fa-xmark"></i></button>
       </div>
       <form id="form-insumo">
@@ -924,7 +1654,7 @@
         <div class="modal-body">
           
           <div class="form-group">
-            <label class="form-label" for="insumo-nome">Nome do Insumo *</label>
+            <label class="form-label" for="insumo-nome">Nome do Material *</label>
             <input type="text" id="insumo-nome" class="form-control" placeholder="Corda Náutica 4mm" required>
           </div>
 
@@ -978,7 +1708,7 @@
         <div class="modal-footer">
           <div class="form-actions" style="margin-right: 24px;">
             <button type="button" class="btn btn-secondary btn-cancel-form">Cancelar</button>
-            <button type="submit" class="btn btn-primary" id="btn-submit-insumo">Cadastrar Insumo</button>
+            <button type="submit" class="btn btn-primary" id="btn-submit-insumo">Cadastrar Material</button>
           </div>
         </div>
       </form>
@@ -989,7 +1719,7 @@
   <div class="modal-overlay" id="modal-selecionar-insumo">
     <div class="modal-box" style="max-width: 500px; display: flex; flex-direction: column; max-height: 85vh; padding: 0;">
       <div class="modal-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border-dim);">
-        <h3 class="modal-title" style="font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-search" style="color: var(--accent);"></i> Selecionar Insumo</h3>
+        <h3 class="modal-title" style="font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-search" style="color: var(--accent);"></i> Selecionar Material</h3>
         <button class="btn-close-modal" id="btn-close-modal-selecionar-insumo" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px;"><i class="fas fa-xmark"></i></button>
       </div>
       <div class="modal-body" style="padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; flex: 1;">

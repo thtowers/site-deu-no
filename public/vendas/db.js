@@ -429,6 +429,23 @@ const DB = {
     };
   },
 
+  async limparTodasVendas() {
+    if (this.isSupabaseActive()) {
+      try {
+        const { error } = await supabaseClient
+          .from('vendas')
+          .delete()
+          .gt('created_at', '2000-01-01T00:00:00Z');
+        if (error) throw error;
+        return true;
+      } catch (err) {
+        console.warn("Erro no Supabase ao limpar vendas, usando LocalStorage:", err);
+      }
+    }
+    this.setLocalData(LOCAL_KEYS.VENDAS, []);
+    return true;
+  },
+
   // 6. OPERAÇÕES DE CATEGORIAS (CRUD DINÂMICO)
   async getCategorias() {
     const cats = this.getLocalData(LOCAL_KEYS.CATEGORIAS);
@@ -655,7 +672,7 @@ const DB = {
       { id: 'p14', nome: 'Pulseira Laço', categoria: 'Pulseira', sku: 'PUL-LACO', custo: 14.00, mao_obra: 6.00, valor_venda: 55.00, lucro: 35.00, estoque: 15, status_margem: 'alta', foto: '/assets/produtos/laco.webp', created_at: new Date('2026-02-28T09:00:00Z').toISOString() },
       
       // BRINCOS
-      { id: 'p15', nome: 'Brinco Bae', categoria: 'Brinco', sku: 'BRI-BAE', custo: 7.00, mao_obra: 3.00, valor_venda: 30.00, lucro: 20.00, estoque: 40, status_margem: 'alta', foto: '/assets/produtos/bae.webp', created_at: new Date('2026-02-28T14:00:00Z').toISOString() },
+      { id: 'p15', nome: 'Brinco Bae', categoria: 'Brinco', sku: 'BRI-BAE', custo: 7.00, mao_obra: 3.00, valor_venda: 30.00, lucro: 20.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/bae.webp', created_at: new Date('2026-02-28T14:00:00Z').toISOString() },
       { id: 'p16', nome: 'Brinco Douré', categoria: 'Brinco', sku: 'BRI-DOURE', custo: 9.00, mao_obra: 4.00, valor_venda: 40.00, lucro: 27.00, estoque: 20, status_margem: 'alta', foto: '/assets/produtos/doure.webp', created_at: new Date('2026-02-28T15:00:00Z').toISOString() },
       { id: 'p17', nome: 'Brinco Amá', categoria: 'Brinco', sku: 'BRI-AMA', custo: 10.00, mao_obra: 4.00, valor_venda: 45.00, lucro: 31.00, estoque: 35, status_margem: 'alta', foto: '/assets/produtos/ama.webp', created_at: new Date('2026-02-28T16:00:00Z').toISOString() }
     ];
@@ -704,3 +721,18 @@ const DB = {
 DB.semearSeVazio();
 // Inicializa conexão se as chaves do Supabase já estiverem salvas
 DB.initSupabase();
+
+// Garantir que o estoque do Brinco Bae seja 0 (indisponível) no banco local
+try {
+  const prods = DB.getLocalData(LOCAL_KEYS.PRODUTOS);
+  if (prods && prods.length > 0) {
+    const baeProd = prods.find(p => p.sku === 'BRI-BAE');
+    if (baeProd && baeProd.estoque !== 0) {
+      baeProd.estoque = 0;
+      DB.setLocalData(LOCAL_KEYS.PRODUTOS, prods);
+      console.log("Estoque do Brinco Bae atualizado para 0 (indisponível).");
+    }
+  }
+} catch (e) {
+  console.error("Erro ao migrar estoque do Brinco Bae:", e);
+}
