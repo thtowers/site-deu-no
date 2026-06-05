@@ -28,3 +28,7 @@ dist-ssr
 # Unused and Removed artifacts
 remove/
 public/assets/remove/
+
+# Generated local environment configs
+vendas/env.js
+public/vendas/env.js

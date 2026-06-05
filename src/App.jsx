@@ -8,6 +8,7 @@ import ProductsSection from './components/ProductsSection';
 import QualitySection from './components/QualitySection';
 import Footer from './components/Footer';
 import ColecoeAnterioresPage from './pages/ColecoeAnterioresPage';
+import LinkHubPage from './pages/LinkHubPage';
 
 /* Página principal */
 const HomePage = () => (
@@ -40,6 +41,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/colecoes-anteriores" element={<ColecoeAnterioresPage />} />
+        <Route path="/links" element={<LinkHubPage />} />
+        <Route path="/hub" element={<LinkHubPage />} />
       </Routes>
     </BrowserRouter>
   );
