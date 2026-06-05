@@ -79,6 +79,14 @@ const App = {
       return;
     }
 
+    // Verificar se as credenciais padrão do env.js estão vazias (quando o build na Cloudflare é feito sem as variáveis de ambiente)
+    const defaultUsername = window.ENV?.DEFAULT_USERNAME || 'admin';
+    const defaultPassword = window.ENV?.DEFAULT_PASSWORD;
+    if (user.toLowerCase() === defaultUsername.toLowerCase() && !defaultPassword && !DB.isSupabaseActive()) {
+      this.showToast('Erro de Configuração', 'A senha padrão não foi configurada no Cloudflare Pages. Por favor, adicione VITE_DEFAULT_PASSWORD nas configurações.', 'danger');
+      return;
+    }
+
     try {
       const resposta = await DB.validarUsuario(user, pass);
       if (resposta.sucesso) {
