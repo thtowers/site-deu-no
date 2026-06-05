@@ -33,9 +33,6 @@
           <input type="password" id="login-password" class="form-control" placeholder="Digite sua senha..." required>
         </div>
 
-        <div class="login-credentials-hint">
-          <i class="fas fa-key"></i> Acesso Padrão: <strong>admin</strong> | Senha: <strong>deuno2026</strong>
-        </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">
           Entrar no Painel <i class="fas fa-arrow-right-to-bracket" style="margin-left: 8px;"></i>
@@ -1758,6 +1755,9 @@
 
   <!-- Supabase JS Client via CDN (Camada Nuvem Opcional) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Configurações Dinâmicas das Variáveis de Ambiente -->
+  <script src="/vendas/env.js"></script>
 
   <!-- Camadas e Lógica JS da SPA -->
   <script src="/vendas/db.js"></script>

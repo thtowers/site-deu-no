@@ -93,7 +93,13 @@ const DB = {
     
     // Fallback LocalStorage
     const usuarios = this.getLocalData(LOCAL_KEYS.USUARIOS);
-    const userObj = usuarios.find(u => u.username.trim().toLowerCase() === username.trim().toLowerCase() && u.password === password.trim());
+    const defaultUsername = window.ENV?.DEFAULT_USERNAME || 'admin';
+    const defaultPassword = window.ENV?.DEFAULT_PASSWORD || '';
+    const userObj = usuarios.find(u => {
+      const isMatch = u.username.trim().toLowerCase() === username.trim().toLowerCase();
+      const expectedPassword = isMatch && u.username.trim().toLowerCase() === defaultUsername.trim().toLowerCase() ? defaultPassword : u.password;
+      return isMatch && expectedPassword === password.trim();
+    });
     if (userObj) {
       return { sucesso: true, usuario: userObj };
     }
@@ -537,7 +543,7 @@ const DB = {
     if (usuariosExistentes.length === 0) {
       console.log("Semeando usuários locais padrão...");
       this.setLocalData(LOCAL_KEYS.USUARIOS, [
-        { id: 'u1', username: 'admin', password: 'deuno2026', nome: 'Thiago Administrador', created_at: new Date().toISOString() }
+        { id: 'u1', username: window.ENV?.DEFAULT_USERNAME || 'admin', password: window.ENV?.DEFAULT_PASSWORD || '', nome: 'Thiago Administrador', created_at: new Date().toISOString() }
       ]);
     }
 
