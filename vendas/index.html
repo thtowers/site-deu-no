@@ -1776,7 +1776,14 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Configurações Dinâmicas das Variáveis de Ambiente -->
-  <script src="/vendas/env.js?v=1780673619"></script>
+  <script>
+window.ENV = {
+  DEFAULT_USERNAME: "admin",
+  DEFAULT_PASSWORD: "deuno2026",
+  SUPABASE_URL: "https://qubfrnezfmbrpmxintdq.supabase.co",
+  SUPABASE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1YmZybmV6Zm1icnBteGludGRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MzgxMDIsImV4cCI6MjA5NjIxNDEwMn0.IVZkMEHx1ftdURf9i6kD6qd4nuddLdUAJ4SElvLQYX8"
+};
+</script>
 
   <!-- Camadas e Lógica JS da SPA -->
   <script src="/vendas/db.js?v=1780673537"></script>

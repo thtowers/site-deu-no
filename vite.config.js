@@ -8,22 +8,6 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Function to generate env.js for the vendas app
-function writeEnvFile(username, password, supabaseUrl, supabaseKey) {
-  const content = `window.ENV = { 
-    DEFAULT_USERNAME: ${JSON.stringify(username || '')}, 
-    DEFAULT_PASSWORD: ${JSON.stringify(password || '')},
-    SUPABASE_URL: ${JSON.stringify(supabaseUrl || '')},
-    SUPABASE_KEY: ${JSON.stringify(supabaseKey || '')}
-  };\n`;
-  try {
-    fs.writeFileSync(path.resolve(__dirname, 'vendas/env.js'), content);
-    fs.writeFileSync(path.resolve(__dirname, 'public/vendas/env.js'), content);
-  } catch (err) {
-    console.error('Error writing env.js:', err);
-  }
-}
-
 // Function to update cache busters based on file modification times
 function updateHtmlCacheBuster() {
   const folders = ['vendas', 'public/vendas'];
@@ -33,12 +17,11 @@ function updateHtmlCacheBuster() {
 
     try {
       let content = fs.readFileSync(htmlPath, 'utf8');
-      const files = ['style.css', 'env.js', 'db.js', 'charts.js', 'app.js'];
+      const files = ['style.css', 'db.js', 'charts.js', 'app.js'];
       
       files.forEach(file => {
         const filePath = path.resolve(__dirname, folder, file);
         if (fs.existsSync(filePath)) {
-          // Use the modification timestamp (in seconds) of the file as the cache-buster version
           const mtime = Math.round(fs.statSync(filePath).mtimeMs / 1000);
           const escapedFile = file.replace('.', '\\.');
           const regex = new RegExp(`${escapedFile}(\\?v=[^"]*)?`, 'g');
@@ -54,14 +37,58 @@ function updateHtmlCacheBuster() {
   });
 }
 
+// Plugin que injeta window.ENV inline nos HTMLs da pasta vendas
+function injectEnvPlugin(env) {
+  const envScript = `<script>
+window.ENV = {
+  DEFAULT_USERNAME: ${JSON.stringify(env.VITE_DEFAULT_USERNAME || '')},
+  DEFAULT_PASSWORD: ${JSON.stringify(env.VITE_DEFAULT_PASSWORD || '')},
+  SUPABASE_URL: ${JSON.stringify(env.VITE_SUPABASE_URL || '')},
+  SUPABASE_KEY: ${JSON.stringify(env.VITE_SUPABASE_ANON_KEY || '')}
+};
+</script>`;
+
+  return {
+    name: 'inject-env-inline',
+    // Escreve env.js para compatibilidade com dev local (está no .gitignore)
+    buildStart() {
+      const content = `window.ENV = {\n  DEFAULT_USERNAME: ${JSON.stringify(env.VITE_DEFAULT_USERNAME || '')},\n  DEFAULT_PASSWORD: ${JSON.stringify(env.VITE_DEFAULT_PASSWORD || '')},\n  SUPABASE_URL: ${JSON.stringify(env.VITE_SUPABASE_URL || '')},\n  SUPABASE_KEY: ${JSON.stringify(env.VITE_SUPABASE_ANON_KEY || '')}\n};\n`;
+      try {
+        fs.writeFileSync(path.resolve(__dirname, 'vendas/env.js'), content);
+        fs.writeFileSync(path.resolve(__dirname, 'public/vendas/env.js'), content);
+      } catch (err) {
+        console.error('Error writing env.js:', err);
+      }
+    },
+    // Substitui a tag <script src="env.js"> pela versão inline no HTML
+    closeBundle() {
+      const folders = ['vendas', 'public/vendas'];
+      folders.forEach(folder => {
+        const htmlPath = path.resolve(__dirname, folder, 'index.html');
+        if (!fs.existsSync(htmlPath)) return;
+        try {
+          let content = fs.readFileSync(htmlPath, 'utf8');
+          content = content.replace(
+            /<script[^>]*src="[^"]*env\.js[^"]*"[^>]*><\/script>/,
+            envScript
+          );
+          fs.writeFileSync(htmlPath, content, 'utf8');
+          console.log(`✓ window.ENV injetado inline em ${folder}/index.html`);
+        } catch (err) {
+          console.error(`Erro ao injetar ENV em ${htmlPath}:`, err);
+        }
+      });
+    }
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  writeEnvFile(env.VITE_DEFAULT_USERNAME, env.VITE_DEFAULT_PASSWORD, env.VITE_SUPABASE_URL, env.VITE_SUPABASE_ANON_KEY)
   updateHtmlCacheBuster()
 
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), injectEnvPlugin(env)],
     server: {
       port: 5173,
       host: true,
