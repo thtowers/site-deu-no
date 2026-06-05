@@ -199,8 +199,60 @@ const DB = {
       }
       
       console.log("✓ Semeadura automática do Supabase concluída!");
+
+      // 5. Semear insumos do localStorage no Supabase (se a tabela estiver vazia)
+      await this.migrarInsumosParaSupabase();
+
     } catch (e) {
       console.error("Erro geral na semeadura do Supabase:", e);
+    }
+  },
+
+  async migrarInsumosParaSupabase() {
+    if (!supabaseClient) return;
+    try {
+      // Verifica se já existe algum insumo no Supabase
+      const { data: existentes, error: errCheck } = await supabaseClient
+        .from('insumos')
+        .select('id')
+        .limit(1);
+
+      if (errCheck) { console.warn('Não foi possível verificar insumos no Supabase:', errCheck); return; }
+      if (existentes && existentes.length > 0) {
+        console.log('Supabase já possui insumos. Migração ignorada.');
+        return;
+      }
+
+      // Buscar insumos do localStorage
+      const insumosLocais = this.getLocalData(LOCAL_KEYS.INSUMOS);
+      if (!insumosLocais || insumosLocais.length === 0) {
+        console.log('Nenhum insumo local para migrar.');
+        return;
+      }
+
+      console.log(`Migrando ${insumosLocais.length} insumos para o Supabase...`);
+
+      const payload = insumosLocais.map(i => ({
+        local_id: i.id,
+        nome: i.nome,
+        tipo: i.tipo || 'outros',
+        especificacao: i.especificacao || '',
+        preco_custo: parseFloat(i.preco_custo) || 0,
+        unidade_medida: i.unidade_medida || 'unidade',
+        estoque_atual: parseFloat(i.estoque_atual) || 0,
+        estoque_minimo: parseFloat(i.estoque_minimo) || 0
+      }));
+
+      // Inserir em lotes de 100 para evitar limites da API
+      for (let i = 0; i < payload.length; i += 100) {
+        const lote = payload.slice(i, i + 100);
+        const { error: errIns } = await supabaseClient.from('insumos').insert(lote);
+        if (errIns) { console.error('Erro ao migrar lote de insumos:', errIns); }
+      }
+
+      console.log('✓ Insumos migrados para o Supabase com sucesso!');
+    } catch (e) {
+      console.error('Erro ao migrar insumos para o Supabase:', e);
     }
   },
   // 1. GERENCIAMENTO DE CREDENCIAIS DO SUPABASE
@@ -681,6 +733,19 @@ const DB = {
 
   // 6. OPERAÇÕES DE INSUMOS (CRUD)
   async getInsumos() {
+    if (this.isSupabaseActive()) {
+      try {
+        const { data, error } = await supabaseClient
+          .from('insumos')
+          .select('*')
+          .order('nome', { ascending: true });
+        if (error) throw error;
+        // Normalizar: usar local_id como id se disponível para compatibilidade
+        return data.map(i => ({ ...i, id: i.local_id || i.id }));
+      } catch (err) {
+        console.warn('Erro no Supabase ao obter insumos, usando LocalStorage:', err);
+      }
+    }
     const insumos = this.getLocalData(LOCAL_KEYS.INSUMOS);
     
     // Garante que a corda genérica exista no banco mesmo que o usuário já tenha semeado anteriormente
@@ -709,6 +774,64 @@ const DB = {
     insumo.estoque_atual = parseFloat(insumo.estoque_atual) || 0;
     insumo.estoque_minimo = parseFloat(insumo.estoque_minimo) || 0;
 
+    if (this.isSupabaseActive()) {
+      try {
+        const payload = {
+          local_id: insumo.id || null,
+          nome: insumo.nome,
+          tipo: insumo.tipo,
+          especificacao: insumo.especificacao || '',
+          preco_custo: insumo.preco_custo,
+          unidade_medida: insumo.unidade_medida,
+          estoque_atual: insumo.estoque_atual,
+          estoque_minimo: insumo.estoque_minimo
+        };
+
+        if (insumo.id) {
+          // Atualizar: buscar por local_id ou id
+          const { data: existing } = await supabaseClient
+            .from('insumos')
+            .select('id')
+            .or(`local_id.eq.${insumo.id},id.eq.${insumo.id}`)
+            .maybeSingle();
+
+          if (existing) {
+            const { data, error } = await supabaseClient
+              .from('insumos')
+              .update(payload)
+              .eq('id', existing.id)
+              .select()
+              .single();
+            if (error) throw error;
+            return { ...data, id: data.local_id || data.id };
+          } else {
+            // Não encontrado — inserir
+            payload.local_id = insumo.id;
+            const { data, error } = await supabaseClient
+              .from('insumos')
+              .insert([payload])
+              .select()
+              .single();
+            if (error) throw error;
+            return { ...data, id: data.local_id || data.id };
+          }
+        } else {
+          insumo.id = 'i_' + Date.now().toString();
+          payload.local_id = insumo.id;
+          const { data, error } = await supabaseClient
+            .from('insumos')
+            .insert([payload])
+            .select()
+            .single();
+          if (error) throw error;
+          return { ...data, id: data.local_id || data.id };
+        }
+      } catch (err) {
+        console.warn('Erro no Supabase ao salvar insumo, usando LocalStorage:', err);
+      }
+    }
+
+    // Fallback LocalStorage
     const insumos = this.getLocalData(LOCAL_KEYS.INSUMOS);
     if (insumo.id) {
       const idx = insumos.findIndex(i => i.id === insumo.id);
@@ -725,10 +848,58 @@ const DB = {
   },
 
   async deletarInsumo(id) {
+    if (this.isSupabaseActive()) {
+      try {
+        const { error } = await supabaseClient
+          .from('insumos')
+          .delete()
+          .or(`local_id.eq.${id},id.eq.${id}`);
+        if (error) throw error;
+        return true;
+      } catch (err) {
+        console.warn('Erro no Supabase ao deletar insumo, usando LocalStorage:', err);
+      }
+    }
     let insumos = this.getLocalData(LOCAL_KEYS.INSUMOS);
     insumos = insumos.filter(i => i.id !== id);
     this.setLocalData(LOCAL_KEYS.INSUMOS, insumos);
     return true;
+  },
+
+  // Forçar sincronização completa: apaga os insumos do Supabase e reenvia os do localStorage
+  async sincronizarTodosInsumosParaNuvem() {
+    if (!supabaseClient) throw new Error('Supabase não está conectado');
+
+    const insumosLocais = this.getLocalData(LOCAL_KEYS.INSUMOS);
+    if (!insumosLocais || insumosLocais.length === 0) return 0;
+
+    // 1. Deletar tudo no Supabase
+    const { error: delErr } = await supabaseClient
+      .from('insumos')
+      .delete()
+      .gt('created_at', '1970-01-01T00:00:00Z');
+    if (delErr) throw delErr;
+
+    // 2. Reenviar todos do localStorage
+    const payload = insumosLocais.map(i => ({
+      local_id: i.id,
+      nome: i.nome,
+      tipo: i.tipo || 'outros',
+      especificacao: i.especificacao || '',
+      preco_custo: parseFloat(i.preco_custo) || 0,
+      unidade_medida: i.unidade_medida || 'unidade',
+      estoque_atual: parseFloat(i.estoque_atual) || 0,
+      estoque_minimo: parseFloat(i.estoque_minimo) || 0
+    }));
+
+    for (let i = 0; i < payload.length; i += 100) {
+      const lote = payload.slice(i, i + 100);
+      const { error: insErr } = await supabaseClient.from('insumos').insert(lote);
+      if (insErr) throw insErr;
+    }
+
+    console.log(`✓ ${payload.length} insumos sincronizados para o Supabase.`);
+    return payload.length;
   },
 
   // 7. CARREGADOR DE DADOS DO CATÁLOGO REAL DEU NÓ (SEEDER)

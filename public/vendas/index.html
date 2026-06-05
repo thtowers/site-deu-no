@@ -1374,6 +1374,20 @@
               </button>
             </div>
           </form>
+
+          <!-- Ações de Manutenção de Dados -->
+          <div style="margin-top: 24px; padding: 16px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md);">
+            <h4 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+              <i class="fas fa-tools" style="margin-right: 8px; color: var(--accent);"></i>Manutenção e Sincronização
+            </h4>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+              Use esse botão quando alterar o estoque de materiais no computador e quiser que o tablet/celular veja as mudanças imediatamente.
+            </p>
+            <button type="button" class="btn btn-primary" id="btn-sincronizar-insumos" style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
+              <i class="fas fa-cloud-arrow-up"></i> Sincronizar Materiais → Nuvem
+            </button>
+            <div id="supa-sync-status" style="font-size: 12px; color: var(--text-muted); margin-top: 8px; display: none;"></div>
+          </div>
         </div>
       </section>
 
@@ -1762,11 +1776,11 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Configurações Dinâmicas das Variáveis de Ambiente -->
-  <script src="/vendas/env.js?v=1780672317"></script>
+  <script src="/vendas/env.js?v=1780673330"></script>
 
   <!-- Camadas e Lógica JS da SPA -->
-  <script src="/vendas/db.js?v=1780672311"></script>
+  <script src="/vendas/db.js?v=1780673322"></script>
   <script src="/vendas/charts.js?v=1780665466"></script>
-  <script src="/vendas/app.js?v=1780666587"></script>
+  <script src="/vendas/app.js?v=1780673322"></script>
 </body>
 </html>

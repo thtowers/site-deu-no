@@ -1032,6 +1032,7 @@ const App = {
     document.getElementById('form-cliente')?.addEventListener('submit', (e) => this.handleSubmitCliente(e));
     document.getElementById('form-supabase-config')?.addEventListener('submit', (e) => this.handleSubmitSupabase(e));
     document.getElementById('btn-desconectar-supa')?.addEventListener('click', (e) => this.handleDesconectarSupabase(e));
+    document.getElementById('btn-sincronizar-insumos')?.addEventListener('click', () => this.handleSincronizarInsumos());
 
     // Escutadores para o modal de confirmacao de exclusao
     document.querySelector('.btn-cancel-delete')?.addEventListener('click', (e) => {
@@ -2032,6 +2033,37 @@ const App = {
     this.atualizarDashboard();
     this.atualizarStatusSupabaseUI();
     this.showToast('Banco Local Ativo', 'Desconectado do Supabase. Operando via LocalStorage.', 'info');
+  },
+
+  async handleSincronizarInsumos() {
+    const statusEl = document.getElementById('supa-sync-status');
+    const btn = document.getElementById('btn-sincronizar-insumos');
+
+    if (!DB.isSupabaseActive()) {
+      this.showToast('Sem Conexão', 'Conecte ao Supabase primeiro para sincronizar os materiais.', 'warning');
+      return;
+    }
+
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sincronizando...'; }
+    if (statusEl) { statusEl.style.display = 'block'; statusEl.innerHTML = '⏳ Enviando materiais para a nuvem...'; }
+
+    try {
+      const total = await DB.sincronizarTodosInsumosParaNuvem();
+      if (total === 0) {
+        this.showToast('Nenhum Material', 'Não há materiais no banco local para sincronizar.', 'warning');
+        if (statusEl) { statusEl.innerHTML = '⚠️ Nenhum material encontrado no banco local.'; }
+        return;
+      }
+      this.state.insumos = await DB.getInsumos();
+      if (statusEl) { statusEl.innerHTML = `✅ ${total} materiais sincronizados com sucesso!`; statusEl.style.color = 'var(--success)'; }
+      this.showToast('Sincronização Completa!', `${total} materiais enviados para a nuvem. Tablet e celular já verão as mudanças.`, 'success');
+    } catch (err) {
+      console.error('Erro ao sincronizar insumos:', err);
+      if (statusEl) { statusEl.innerHTML = '❌ Erro ao sincronizar. Tente novamente.'; statusEl.style.color = 'var(--danger)'; }
+      this.showToast('Erro na Sincronização', 'Não foi possível enviar os materiais para a nuvem.', 'danger');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-arrow-up"></i> Sincronizar Materiais → Nuvem'; }
+    }
   },
 
   atualizarStatusSupabaseUI() {
