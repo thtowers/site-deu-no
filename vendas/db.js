@@ -1,6 +1,40 @@
 /* global supabase */
 // db.js - Camada de Persistência Híbrida (LocalStorage & Supabase) com Catálogo Oficial Deu Nó
 
+// Polyfill de segurança para localStorage/sessionStorage bloqueados em modo privado de alguns navegadores/tablets
+(function() {
+  function testStorage(type) {
+    try {
+      const storage = window[type];
+      const x = '__storage_test__';
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function createMemoryStorage() {
+    const data = {};
+    return {
+      getItem(key) { return Object.prototype.hasOwnProperty.call(data, key) ? data[key] : null; },
+      setItem(key, value) { data[key] = String(value); },
+      removeItem(key) { delete data[key]; },
+      clear() { for (const k in data) delete data[k]; },
+      key(i) { return Object.keys(data)[i] || null; },
+      get length() { return Object.keys(data).length; }
+    };
+  }
+  if (!testStorage('localStorage')) {
+    console.warn('LocalStorage is blocked or not supported. Falling back to memory storage.');
+    Object.defineProperty(window, 'localStorage', { value: createMemoryStorage(), writable: true, configurable: true });
+  }
+  if (!testStorage('sessionStorage')) {
+    console.warn('SessionStorage is blocked or not supported. Falling back to memory storage.');
+    Object.defineProperty(window, 'sessionStorage', { value: createMemoryStorage(), writable: true, configurable: true });
+  }
+})();
+
 const LOCAL_KEYS = {
   PRODUTOS: 'site_semijoias_produtos',
   VENDAS: 'site_semijoias_vendas',
@@ -204,8 +238,6 @@ const DB = {
     localStorage.removeItem(LOCAL_KEYS.SUPABASE_KEY);
     supabaseClient = null;
   },
-
-  semearSupabaseSeVazio() { return DB.semearSupabaseSeVazio(); }
 
   initSupabase() {
     const config = this.getSupabaseConfig();
