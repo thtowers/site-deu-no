@@ -24,6 +24,19 @@ const App = {
     // Configurar manipuladores adicionais de login
     document.getElementById('form-login')?.addEventListener('submit', (e) => this.handleLogin(e));
     document.getElementById('btn-logout')?.addEventListener('click', (e) => this.handleLogout(e));
+    document.getElementById('btn-toggle-password')?.addEventListener('click', () => {
+      const input = document.getElementById('login-password');
+      const icon = document.getElementById('password-toggle-icon');
+      if (input && icon) {
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.className = 'fas fa-eye-slash';
+        } else {
+          input.type = 'password';
+          icon.className = 'fas fa-eye';
+        }
+      }
+    });
 
     // Carregar dados estáticos e relacionais em segundo plano
     await this.carregarDados();

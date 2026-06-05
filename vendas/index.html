@@ -30,7 +30,12 @@
         
         <div class="form-group">
           <label class="form-label" for="login-password">Senha</label>
-          <input type="password" id="login-password" class="form-control" placeholder="Digite sua senha..." required>
+          <div style="position: relative; display: flex; align-items: center; width: 100%;">
+            <input type="password" id="login-password" class="form-control" placeholder="Digite sua senha..." required style="padding-right: 40px;">
+            <button type="button" id="btn-toggle-password" style="position: absolute; right: 12px; background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; height: 100%; font-size: 14px; padding: 0;">
+              <i class="fas fa-eye" id="password-toggle-icon"></i>
+            </button>
+          </div>
         </div>
 
 
