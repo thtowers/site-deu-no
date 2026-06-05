@@ -1,0 +1,415 @@
+[
+  {
+    "RASTRO": "CORDA POLIP.",
+    "__EMPTY": 6,
+    "FLUXO": "MARROQUINO",
+    "__EMPTY_2": 8,
+    "TRAÇO": "CORDA POLIP",
+    "__EMPTY_4": 2,
+    "ÂNGULO": "SÃO FRANCISCO",
+    "__EMPTY_6": 2,
+    "PONTO": "CORD POLIP.",
+    "__EMPTY_8": 10,
+    "VINCULO": "LENÇO",
+    "__EMPTY_10": 2
+  },
+  {
+    "RASTRO": "CHAPA",
+    "__EMPTY": 0.74,
+    "FLUXO": "Corrente argola",
+    "__EMPTY_2": 0.15,
+    "TRAÇO": "ENTREMEIO RESIN",
+    "__EMPTY_4": 5.4,
+    "ÂNGULO": "TUBO ORGANICO",
+    "__EMPTY_6": 6.15,
+    "PONTO": "CHAPA",
+    "__EMPTY_8": 1.48,
+    "VINCULO": "Corrente argola",
+    "__EMPTY_10": 0.3
+  },
+  {
+    "RASTRO": "BOLA OVAL",
+    "__EMPTY": 2.8,
+    "FLUXO": "PONTEIRA 6MM",
+    "__EMPTY_2": 1.74,
+    "TRAÇO": "Terminal 13mm",
+    "__EMPTY_4": 7.48,
+    "ÂNGULO": "Terminal 10mm",
+    "__EMPTY_6": 5.16,
+    "PONTO": "Terminal 13mm",
+    "__EMPTY_8": 7.48,
+    "VINCULO": "PING ESTRELA",
+    "__EMPTY_10": 9.14
+  },
+  {
+    "RASTRO": "COLA",
+    "__EMPTY": 1,
+    "FLUXO": "PING CORAÇ LOVE",
+    "__EMPTY_2": 3.41,
+    "TRAÇO": "Corrente",
+    "__EMPTY_4": 1,
+    "ÂNGULO": "Corrente",
+    "__EMPTY_6": 1,
+    "PONTO": "Corrente",
+    "__EMPTY_8": 1,
+    "VINCULO": "Argola 13mm",
+    "__EMPTY_10": 0.47
+  },
+  {
+    "RASTRO": "MÃO DE OBRA",
+    "__EMPTY": 10,
+    "FLUXO": "COLA",
+    "__EMPTY_2": 1,
+    "TRAÇO": "Fech Lagosta 14mm",
+    "__EMPTY_4": 3.29,
+    "ÂNGULO": "Fech Lagosta 14mm",
+    "__EMPTY_6": 3.29,
+    "PONTO": "Fech Lagosta 14mm",
+    "__EMPTY_8": 3.29,
+    "VINCULO": "Argola Ingt 13mm",
+    "__EMPTY_10": 3.08
+  },
+  {
+    "RASTRO": "EMBALAGEM",
+    "__EMPTY": 5.85,
+    "FLUXO": "MÃO DE OBRA",
+    "__EMPTY_2": 10,
+    "TRAÇO": "Corrente argola",
+    "__EMPTY_4": 0.3,
+    "ÂNGULO": "Corrente argola",
+    "__EMPTY_6": 0.3,
+    "PONTO": "Corrente argola",
+    "__EMPTY_8": 0.3,
+    "VINCULO": "Terminal 13mm",
+    "__EMPTY_10": 7.48
+  },
+  {
+    "FLUXO": "EMBALAGEM",
+    "__EMPTY_2": 5.85,
+    "TRAÇO": "Pingente Strass 8mm",
+    "__EMPTY_4": 1.16,
+    "ÂNGULO": "Pingente Strass 8mm",
+    "__EMPTY_6": 1.16,
+    "PONTO": "Pingente Strass 8mm",
+    "__EMPTY_8": 1.16,
+    "VINCULO": "Corrente",
+    "__EMPTY_10": 1
+  },
+  {
+    "RASTRO": "Custo",
+    "__EMPTY": 26.39,
+    "TRAÇO": "COLA",
+    "__EMPTY_4": 1,
+    "ÂNGULO": "COLA",
+    "__EMPTY_6": 1,
+    "PONTO": "COLA",
+    "__EMPTY_8": 1,
+    "VINCULO": "Fech Lagosta 14mm",
+    "__EMPTY_10": 3.29
+  },
+  {
+    "RASTRO": "Varejo 50%",
+    "__EMPTY": 40,
+    "FLUXO": "Custo",
+    "__EMPTY_2": 30.15,
+    "TRAÇO": "MÃO DE OBRA",
+    "__EMPTY_4": 10,
+    "ÂNGULO": "MÃO DE OBRA",
+    "__EMPTY_6": 10,
+    "PONTO": "MÃO DE OBRA",
+    "__EMPTY_8": 10,
+    "VINCULO": "Pingente Strass 8mm",
+    "__EMPTY_10": 1.16
+  },
+  {
+    "RASTRO": "Atacado 30%",
+    "__EMPTY": 35,
+    "FLUXO": "Varejo 50%",
+    "__EMPTY_2": 45,
+    "TRAÇO": "EMBALAGEM",
+    "__EMPTY_4": 5.85,
+    "ÂNGULO": "EMBALAGEM",
+    "__EMPTY_6": 5.85,
+    "PONTO": "EMBALAGEM",
+    "__EMPTY_8": 5.85,
+    "VINCULO": "COLA",
+    "__EMPTY_10": 1
+  },
+  {
+    "FLUXO": "Atacado 30%",
+    "__EMPTY_2": 40,
+    "VINCULO": "MÃO DE OBRA",
+    "__EMPTY_10": 10
+  },
+  {
+    "RASTRO": "Lucro varejo",
+    "__EMPTY": 13.61,
+    "TRAÇO": "Custo",
+    "__EMPTY_4": 37.480000000000004,
+    "ÂNGULO": "Custo",
+    "__EMPTY_6": 35.910000000000004,
+    "PONTO": "Custo",
+    "__EMPTY_8": 41.56,
+    "VINCULO": "EMBALAGEM",
+    "__EMPTY_10": 5.85
+  },
+  {
+    "RASTRO": "Lucro atacado",
+    "__EMPTY": 8.61,
+    "FLUXO": "Lucro varejo",
+    "__EMPTY_2": 14.85,
+    "TRAÇO": "Varejo 50%",
+    "__EMPTY_4": 58,
+    "ÂNGULO": "Varejo 50%",
+    "__EMPTY_6": 60,
+    "PONTO": "Varejo 50%",
+    "__EMPTY_8": 60
+  },
+  {
+    "FLUXO": "Lucro atacado",
+    "__EMPTY_2": 9.85,
+    "TRAÇO": "Atacado 30%",
+    "__EMPTY_4": 50,
+    "ÂNGULO": "Atacado 30%",
+    "__EMPTY_6": 50,
+    "PONTO": "Atacado 30%",
+    "__EMPTY_8": 55,
+    "VINCULO": "Custo",
+    "__EMPTY_10": 44.77
+  },
+  {
+    "VINCULO": "Varejo 50%",
+    "__EMPTY_10": 65
+  },
+  {
+    "TRAÇO": "Lucro varejo",
+    "__EMPTY_4": 20.52,
+    "ÂNGULO": "Lucro varejo",
+    "__EMPTY_6": 24.09,
+    "PONTO": "Lucro varejo",
+    "__EMPTY_8": 18.44,
+    "VINCULO": "Atacado 30%",
+    "__EMPTY_10": 60
+  },
+  {
+    "TRAÇO": "Lucro atacado",
+    "__EMPTY_4": 12.52,
+    "ÂNGULO": "Lucro atacado",
+    "__EMPTY_6": 14.09,
+    "PONTO": "Lucro atacado",
+    "__EMPTY_8": 13.44
+  },
+  {
+    "VINCULO": "Lucro varejo",
+    "__EMPTY_10": 20.23
+  },
+  {
+    "VINCULO": "Lucro atacado",
+    "__EMPTY_10": 15.23
+  },
+  {
+    "RASTRO": "EIXO",
+    "FLUXO": "CICLO",
+    "TRAÇO": "ECO",
+    "ÂNGULO": "DOMO",
+    "PONTO": "VELO"
+  },
+  {
+    "RASTRO": "CORDA POLIP",
+    "__EMPTY": 2,
+    "FLUXO": "SÃO FRANCISCO",
+    "__EMPTY_2": 2,
+    "TRAÇO": "CORDA POLIP",
+    "__EMPTY_4": 2,
+    "ÂNGULO": "CORDA POLIP",
+    "__EMPTY_6": 2,
+    "PONTO": "CORDA POLIP",
+    "__EMPTY_8": 4
+  },
+  {
+    "RASTRO": "Terminal 13mm",
+    "__EMPTY": 7.48,
+    "FLUXO": "Corrente Cartier",
+    "__EMPTY_2": 14.5,
+    "TRAÇO": "BRIDÃO 143MM",
+    "__EMPTY_4": 20.78,
+    "ÂNGULO": "Terminal 13mm",
+    "__EMPTY_6": 7.48,
+    "PONTO": "Terminal 13mm",
+    "__EMPTY_8": 7.48
+  },
+  {
+    "RASTRO": "Corrente argola",
+    "__EMPTY": 0.15,
+    "FLUXO": "PING CORAÇ 28MM",
+    "__EMPTY_2": 10.07,
+    "TRAÇO": "Terminal 13mm",
+    "__EMPTY_4": 14.96,
+    "ÂNGULO": "Corrente",
+    "__EMPTY_6": 1,
+    "PONTO": "Corrente",
+    "__EMPTY_8": 1
+  },
+  {
+    "RASTRO": "Argola 13mm",
+    "__EMPTY": 0.94,
+    "FLUXO": "Terminal 10mm",
+    "__EMPTY_2": 5.16,
+    "TRAÇO": "Corrente argola",
+    "__EMPTY_4": 0.6,
+    "ÂNGULO": "Fech Lagosta 14mm",
+    "__EMPTY_6": 3.29,
+    "PONTO": "Fech Lagosta 14mm",
+    "__EMPTY_8": 3.29
+  },
+  {
+    "RASTRO": "Mosquetão 32mm",
+    "__EMPTY": 6.83,
+    "FLUXO": "Corrente",
+    "__EMPTY_2": 1,
+    "TRAÇO": "Corrente",
+    "__EMPTY_4": 1,
+    "ÂNGULO": "Corrente argola",
+    "__EMPTY_6": 0.3,
+    "PONTO": "Corrente argola",
+    "__EMPTY_8": 0.3
+  },
+  {
+    "RASTRO": "PING REDOND 30MM",
+    "__EMPTY": 10.04,
+    "FLUXO": "Fech Lagosta 14mm",
+    "__EMPTY_2": 3.29,
+    "TRAÇO": "Fech Lagosta 14mm",
+    "__EMPTY_4": 3.29,
+    "ÂNGULO": "Pingente Strass 8mm",
+    "__EMPTY_6": 1.16,
+    "PONTO": "Pingente Strass 8mm",
+    "__EMPTY_8": 1.16
+  },
+  {
+    "RASTRO": "COLA",
+    "__EMPTY": 1,
+    "FLUXO": "Corrente argola",
+    "__EMPTY_2": 0.3,
+    "TRAÇO": "Pingente Strass 8mm",
+    "__EMPTY_4": 1.16,
+    "ÂNGULO": "COLA",
+    "__EMPTY_6": 1,
+    "PONTO": "COLA",
+    "__EMPTY_8": 1
+  },
+  {
+    "RASTRO": "MÃO DE OBRA",
+    "__EMPTY": 10,
+    "FLUXO": "Pingente Strass 8mm",
+    "__EMPTY_2": 1.16,
+    "TRAÇO": "COLA",
+    "__EMPTY_4": 1,
+    "ÂNGULO": "MÃO DE OBRA",
+    "__EMPTY_6": 10,
+    "PONTO": "MÃO DE OBRA",
+    "__EMPTY_8": 10
+  },
+  {
+    "RASTRO": "EMBALAGEM",
+    "__EMPTY": 5.85,
+    "FLUXO": "COLA",
+    "__EMPTY_2": 1,
+    "TRAÇO": "MÃO DE OBRA",
+    "__EMPTY_4": 10,
+    "ÂNGULO": "EMBALAGEM",
+    "__EMPTY_6": 5.85,
+    "PONTO": "EMBALAGEM",
+    "__EMPTY_8": 5.85
+  },
+  {
+    "FLUXO": "MÃO DE OBRA",
+    "__EMPTY_2": 10,
+    "TRAÇO": "EMBALAGEM",
+    "__EMPTY_4": 5.85,
+    "ÂNGULO": "RESINA DUPLA",
+    "__EMPTY_6": 5,
+    "PONTO": "Corrente",
+    "__EMPTY_8": 1.5
+  },
+  {
+    "RASTRO": "Custo",
+    "__EMPTY": 44.29,
+    "FLUXO": "EMBALAGEM",
+    "__EMPTY_2": 5.85,
+    "ÂNGULO": "PONTEIRA RED 8MM",
+    "__EMPTY_6": 10.5,
+    "PONTO": "Terminal 13mm",
+    "__EMPTY_8": 7.48
+  },
+  {
+    "RASTRO": "Varejo 50%",
+    "__EMPTY": 70,
+    "TRAÇO": "Custo",
+    "__EMPTY_4": 60.64,
+    "PONTO": "Corrente argola",
+    "__EMPTY_8": 0.3
+  },
+  {
+    "RASTRO": "Atacado 30%",
+    "__EMPTY": 62,
+    "FLUXO": "Custo",
+    "__EMPTY_2": 54.33,
+    "TRAÇO": "Varejo 50%",
+    "__EMPTY_4": 85,
+    "ÂNGULO": "Custo",
+    "__EMPTY_6": 47.58,
+    "PONTO": "RESINA TUBO FINO",
+    "__EMPTY_8": 4.5
+  },
+  {
+    "FLUXO": "Varejo 50%",
+    "__EMPTY_2": 80,
+    "TRAÇO": "Atacado 30%",
+    "__EMPTY_4": 78,
+    "ÂNGULO": "Varejo 50%",
+    "__EMPTY_6": 75
+  },
+  {
+    "RASTRO": "Lucro varejo",
+    "__EMPTY": 25.71,
+    "FLUXO": "Atacado 30%",
+    "__EMPTY_2": 72,
+    "ÂNGULO": "Atacado 30%",
+    "__EMPTY_6": 70,
+    "PONTO": "Custo",
+    "__EMPTY_8": 47.86
+  },
+  {
+    "RASTRO": "Lucro atacado",
+    "__EMPTY": 17.71,
+    "TRAÇO": "Lucro varejo",
+    "__EMPTY_4": 24.36,
+    "PONTO": "Varejo 50%",
+    "__EMPTY_8": 75
+  },
+  {
+    "FLUXO": "Lucro varejo",
+    "__EMPTY_2": 25.67,
+    "TRAÇO": "Lucro atacado",
+    "__EMPTY_4": 17.36,
+    "ÂNGULO": "Lucro varejo",
+    "__EMPTY_6": 27.42,
+    "PONTO": "Atacado 30%",
+    "__EMPTY_8": 70
+  },
+  {
+    "FLUXO": "Lucro atacado",
+    "__EMPTY_2": 17.67,
+    "ÂNGULO": "Lucro atacado",
+    "__EMPTY_6": 22.42
+  },
+  {
+    "PONTO": "Lucro varejo",
+    "__EMPTY_8": 27.14
+  },
+  {
+    "PONTO": "Lucro atacado",
+    "__EMPTY_8": 22.14
+  }
+]

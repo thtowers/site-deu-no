@@ -535,8 +535,8 @@ const DB = {
 
   // 7. CARREGADOR DE DADOS DO CATÁLOGO REAL DEU NÓ (SEEDER)
   semearSeVazio() {
-    const produtosExistentes = this.getLocalData(LOCAL_KEYS.PRODUTOS);
-    const vendasExistentes = this.getLocalData(LOCAL_KEYS.VENDAS);
+    let produtosExistentes = this.getLocalData(LOCAL_KEYS.PRODUTOS);
+    let vendasExistentes = this.getLocalData(LOCAL_KEYS.VENDAS);
     const usuariosExistentes = this.getLocalData(LOCAL_KEYS.USUARIOS);
 
     // Seeder de Usuários
@@ -651,13 +651,6 @@ const DB = {
       insumosExistentes = insumosPlanilha;
     }
 
-    if (produtosExistentes.length > 0 || vendasExistentes.length > 0) {
-      return;
-    }
-
-    console.log("Semeando banco de dados local com catálogo real Deu Nó e histórico financeiro...");
-
-    // 17 PRODUTOS OFICIAIS DO CATÁLOGO DEU NÓ COM FOTOS REAIS
     const produtosSeed = [
       // COLARES
       { id: 'p1', nome: 'Colar Rastro', categoria: 'Colar', sku: 'COL-RASTRO', custo: 10.00, mao_obra: 5.00, valor_venda: 40.00, lucro: 25.00, estoque: 15, status_margem: 'alta', foto: '/assets/produtos/rastro.webp', created_at: new Date('2026-02-15T10:00:00Z').toISOString() },
@@ -681,6 +674,8 @@ const DB = {
       { id: 'p15', nome: 'Brinco Bae', categoria: 'Brinco', sku: 'BRI-BAE', custo: 7.00, mao_obra: 3.00, valor_venda: 30.00, lucro: 20.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/bae.webp', created_at: new Date('2026-02-28T14:00:00Z').toISOString() },
       { id: 'p16', nome: 'Brinco Douré', categoria: 'Brinco', sku: 'BRI-DOURE', custo: 9.00, mao_obra: 4.00, valor_venda: 40.00, lucro: 27.00, estoque: 20, status_margem: 'alta', foto: '/assets/produtos/doure.webp', created_at: new Date('2026-02-28T15:00:00Z').toISOString() },
       { id: 'p17', nome: 'Brinco Amá', categoria: 'Brinco', sku: 'BRI-AMA', custo: 10.00, mao_obra: 4.00, valor_venda: 45.00, lucro: 31.00, estoque: 35, status_margem: 'alta', foto: '/assets/produtos/ama.webp', created_at: new Date('2026-02-28T16:00:00Z').toISOString() }
+,
+      { id: 'p18', nome: 'Colar Sopro', categoria: 'Colar', sku: 'COL-SOPRO', custo: 60.02, mao_obra: 10.00, valor_venda: 85.00, lucro: 24.98, estoque: 10, status_margem: 'alta', foto: '/assets/produtos/sopro.webp', created_at: new Date('2026-02-28T17:00:00Z').toISOString() }
     ];
     this.setLocalData(LOCAL_KEYS.PRODUTOS, produtosSeed);
 
@@ -695,31 +690,76 @@ const DB = {
 
     // HISTÓRICO DE VENDAS REALISTAS BASEADAS NAS PEÇAS REAIS (Março, Abril e Maio de 2026)
     const vendasSeed = [
-      // MARÇO 2026
-      { id: 'v1', produto_id: 'p1', cliente_nome: 'Mariana Silva Souza', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 2, valor_venda: 80.00, lucro: 50.00, observacoes: 'Cliente adorou o acabamento em verde militar', created_at: new Date('2026-03-02T14:30:00Z').toISOString() },
-      { id: 'v2', produto_id: 'p2', cliente_nome: 'Camila de Oliveira Lima', tipo_cliente: 'varejo', pagamento: 'Cartão', quantidade: 3, valor_venda: 135.00, lucro: 84.00, observacoes: 'Modelo mesclado preto/dourado', created_at: new Date('2026-03-11T10:15:00Z').toISOString() },
-      { id: 'v3', produto_id: 'p13', cliente_nome: 'Juliana Costa Semijoias', tipo_cliente: 'atacado', pagamento: 'Cartão', quantidade: 10, valor_venda: 400.00, lucro: 220.00, observacoes: 'Lote atacado inicial de pulseiras', created_at: new Date('2026-03-15T16:00:00Z').toISOString() },
-      { id: 'v4', produto_id: 'p17', cliente_nome: 'Mariana Silva Souza', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 45.00, lucro: 31.00, observacoes: '', created_at: new Date('2026-03-22T18:20:00Z').toISOString() },
-      { id: 'v5', produto_id: 'p13', cliente_nome: 'Camila de Oliveira Lima', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 2, valor_venda: 100.00, lucro: 64.00, observacoes: '', created_at: new Date('2026-03-29T11:45:00Z').toISOString() },
-
-      // ABRIL 2026
-      { id: 'v6', produto_id: 'p1', cliente_nome: 'Mariana Silva Souza', tipo_cliente: 'varejo', pagamento: 'Cartão', quantidade: 1, valor_venda: 40.00, lucro: 25.00, observacoes: '', created_at: new Date('2026-04-03T11:00:00Z').toISOString() },
-      { id: 'v7', produto_id: 'p15', cliente_nome: 'Beatriz Santos Revendas', tipo_cliente: 'atacado', pagamento: 'PIX', quantidade: 20, valor_venda: 440.00, lucro: 240.00, observacoes: 'Desconto atacado brinco Bae', created_at: new Date('2026-04-09T09:30:00Z').toISOString() },
-      { id: 'v8', produto_id: 'p13', cliente_nome: 'Camila de Oliveira Lima', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 50.00, lucro: 32.00, observacoes: '', created_at: new Date('2026-04-14T17:10:00Z').toISOString() },
-      { id: 'v9', produto_id: 'p1', cliente_nome: 'Juliana Costa Semijoias', tipo_cliente: 'atacado', pagamento: 'Dinheiro', quantidade: 10, valor_venda: 320.00, lucro: 170.00, observacoes: 'Atacado lote Rastro', created_at: new Date('2026-04-20T14:00:00Z').toISOString() },
-      { id: 'v10', produto_id: 'p17', cliente_nome: 'Mariana Silva Souza', tipo_cliente: 'varejo', pagamento: 'Cartão', quantidade: 2, valor_venda: 90.00, lucro: 62.00, observacoes: 'Cartão de Crédito', created_at: new Date('2026-04-25T16:40:00Z').toISOString() },
-      { id: 'v11', produto_id: 'p5', cliente_nome: 'Camila de Oliveira Lima', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 3, valor_venda: 180.00, lucro: 117.00, observacoes: 'Rami branco e cinza mescla', created_at: new Date('2026-04-29T15:20:00Z').toISOString() },
-
-      // MAIO 2026
-      { id: 'v12', produto_id: 'p1', cliente_nome: 'Mariana Silva Souza', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 2, valor_venda: 80.00, lucro: 50.00, observacoes: '', created_at: new Date('2026-05-02T13:00:00Z').toISOString() },
-      { id: 'v13', produto_id: 'p17', cliente_nome: 'Beatriz Santos Revendas', tipo_cliente: 'atacado', pagamento: 'Cartão', quantidade: 40, valor_venda: 1400.00, lucro: 840.00, observacoes: 'Atacado brincos Amá para revenda', created_at: new Date('2026-05-08T10:00:00Z').toISOString() },
-      { id: 'v14', produto_id: 'p13', cliente_nome: 'Camila de Oliveira Lima', tipo_cliente: 'varejo', pagamento: 'Cartão', quantidade: 3, valor_venda: 150.00, lucro: 96.00, observacoes: '', created_at: new Date('2026-05-13T16:15:00Z').toISOString() },
-      { id: 'v15', produto_id: 'p15', cliente_nome: 'Beatriz Santos Revendas', tipo_cliente: 'atacado', pagamento: 'PIX', quantidade: 25, valor_venda: 600.00, lucro: 350.00, observacoes: 'Pedido extra brinco Bae', created_at: new Date('2026-05-18T09:45:00Z').toISOString() },
-      { id: 'v16', produto_id: 'p1', cliente_nome: 'Juliana Costa Semijoias', tipo_cliente: 'atacado', pagamento: 'PIX', quantidade: 5, valor_venda: 150.00, lucro: 75.00, observacoes: 'Suplementar colares', created_at: new Date('2026-05-22T14:30:00Z').toISOString() },
-      { id: 'v17', produto_id: 'p5', cliente_nome: 'Mariana Silva Souza', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 3, valor_venda: 180.00, lucro: 117.00, observacoes: 'Vários tons pastéis de Ponto', created_at: new Date('2026-05-26T17:00:00Z').toISOString() },
-      { id: 'v18', produto_id: 'p2', cliente_nome: 'Camila de Oliveira Lima', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 2, valor_venda: 90.00, lucro: 56.00, observacoes: '', created_at: new Date('2026-05-27T15:00:00Z').toISOString() }
+      { id: 'v_maio_1', produto_id: 'p2', cliente_nome: 'Hellen', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 1, valor_venda: 45.00, lucro: 14.85, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 30.15, Mão de obra: R$ 10', created_at: '2026-05-01T12:00:00.000Z' },
+      { id: 'v_maio_2', produto_id: 'p10', cliente_nome: 'Helena', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 80.00, lucro: 25.67, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 54.33, Mão de obra: R$ 10', created_at: '2026-05-01T12:00:00.000Z' },
+      { id: 'v_maio_3', produto_id: 'p2', cliente_nome: 'Vangêla', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 45.00, lucro: 14.85, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 30.15, Mão de obra: R$ 10', created_at: '2026-05-02T12:00:00.000Z' },
+      { id: 'v_maio_4', produto_id: 'p5', cliente_nome: 'Flavia', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 60.00, lucro: 18.44, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 41.56, Mão de obra: R$ 10', created_at: '2026-05-02T12:00:00.000Z' },
+      { id: 'v_maio_5', produto_id: 'p1', cliente_nome: 'Itamara', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 40.00, lucro: 13.61, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 26.39, Mão de obra: R$ 10', created_at: '2026-05-03T12:00:00.000Z' },
+      { id: 'v_maio_6', produto_id: 'p2', cliente_nome: 'Itamara', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 45.00, lucro: 14.85, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 30.15, Mão de obra: R$ 10', created_at: '2026-05-03T12:00:00.000Z' },
+      { id: 'v_maio_7', produto_id: 'p2', cliente_nome: 'Juliana', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 1, valor_venda: 45.00, lucro: 14.85, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 30.15, Mão de obra: R$ 10', created_at: '2026-05-03T12:00:00.000Z' },
+      { id: 'v_maio_8', produto_id: 'p11', cliente_nome: 'Flavia', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 85.00, lucro: 24.36, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 60.64, Mão de obra: R$ 10', created_at: '2026-05-03T12:00:00.000Z' },
+      { id: 'v_maio_9', produto_id: 'p1', cliente_nome: 'Regina', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 40.00, lucro: 13.61, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 26.39, Mão de obra: R$ 10', created_at: '2026-05-05T12:00:00.000Z' },
+      { id: 'v_maio_10', produto_id: 'p1', cliente_nome: 'Ticiane', tipo_cliente: 'atacado', pagamento: 'Cartão', quantidade: 1, valor_venda: 35.00, lucro: 8.61, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 26.39, Mão de obra: R$ 10', created_at: '2026-05-02T12:00:00.000Z' },
+      { id: 'v_maio_11', produto_id: 'p8', cliente_nome: 'Ticiane', tipo_cliente: 'atacado', pagamento: 'Cartão', quantidade: 1, valor_venda: 70.00, lucro: 22.42, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 47.58, Mão de obra: R$ 10', created_at: '2026-05-02T12:00:00.000Z' },
+      { id: 'v_maio_12', produto_id: 'p17', cliente_nome: 'Ticiane', tipo_cliente: 'atacado', pagamento: 'Cartão', quantidade: 1, valor_venda: 40.00, lucro: 6.81, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 33.19, Mão de obra: R$ 5', created_at: '2026-05-02T12:00:00.000Z' },
+      { id: 'v_maio_13', produto_id: 'p2', cliente_nome: 'Kassiane', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 45.00, lucro: 14.85, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 30.15, Mão de obra: R$ 10', created_at: '2026-05-05T12:00:00.000Z' },
+      { id: 'v_maio_14', produto_id: 'p2', cliente_nome: 'Íris', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 45.00, lucro: 14.85, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 30.15, Mão de obra: R$ 10', created_at: '2026-05-05T12:00:00.000Z' },
+      { id: 'v_maio_15', produto_id: 'p11', cliente_nome: 'Neusa', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 85.00, lucro: 24.36, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 60.64, Mão de obra: R$ 10', created_at: '2026-05-06T12:00:00.000Z' },
+      { id: 'v_maio_16', produto_id: 'p11', cliente_nome: 'Emmily', tipo_cliente: 'atacado', pagamento: 'PIX', quantidade: 1, valor_venda: 78.00, lucro: 17.36, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 60.64, Mão de obra: R$ 10', created_at: '2026-05-08T12:00:00.000Z' },
+      { id: 'v_maio_17', produto_id: 'p10', cliente_nome: 'Emmily', tipo_cliente: 'atacado', pagamento: 'PIX', quantidade: 1, valor_venda: 72.00, lucro: 17.67, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 54.33, Mão de obra: R$ 10', created_at: '2026-05-08T12:00:00.000Z' },
+      { id: 'v_maio_18', produto_id: 'p7', cliente_nome: 'Emmily', tipo_cliente: 'atacado', pagamento: 'PIX', quantidade: 1, valor_venda: 62.00, lucro: 17.71, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 44.29, Mão de obra: R$ 10', created_at: '2026-05-08T12:00:00.000Z' },
+      { id: 'v_maio_19', produto_id: 'p16', cliente_nome: 'Emmily', tipo_cliente: 'atacado', pagamento: 'PIX', quantidade: 1, valor_venda: 35.00, lucro: 8.09, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 26.91, Mão de obra: R$ 5', created_at: '2026-05-08T12:00:00.000Z' },
+      { id: 'v_maio_20', produto_id: 'p17', cliente_nome: 'Emmily', tipo_cliente: 'atacado', pagamento: 'PIX', quantidade: 1, valor_venda: 40.00, lucro: 6.81, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 33.19, Mão de obra: R$ 5', created_at: '2026-05-08T12:00:00.000Z' },
+      { id: 'v_maio_21', produto_id: 'p14', cliente_nome: 'Alda', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 55.00, lucro: 10.97, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 37.03, Mão de obra: R$ 5', created_at: '2026-05-10T12:00:00.000Z' },
+      { id: 'v_maio_22', produto_id: 'p15', cliente_nome: 'Alda', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 30.00, lucro: 5.35, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 19.65, Mão de obra: R$ 5', created_at: '2026-05-10T12:00:00.000Z' },
+      { id: 'v_maio_23', produto_id: 'p11', cliente_nome: 'Degilane', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 1, valor_venda: 85.00, lucro: 24.36, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 60.64, Mão de obra: R$ 10', created_at: '2026-05-13T12:00:00.000Z' },
+      { id: 'v_maio_24', produto_id: 'p10', cliente_nome: 'Degilane', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 1, valor_venda: 80.00, lucro: 25.67, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 54.33, Mão de obra: R$ 10', created_at: '2026-05-13T12:00:00.000Z' },
+      { id: 'v_maio_25', produto_id: 'p4', cliente_nome: 'Degilane', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 1, valor_venda: 60.00, lucro: 24.09, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 35.91, Mão de obra: R$ 10', created_at: '2026-05-13T12:00:00.000Z' },
+      { id: 'v_maio_26', produto_id: 'p1', cliente_nome: 'Mylena', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 40.00, lucro: 13.61, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 26.39, Mão de obra: R$ 10', created_at: '2026-05-13T12:00:00.000Z' },
+      { id: 'v_maio_27', produto_id: 'p18', cliente_nome: 'Mylena', tipo_cliente: 'varejo', pagamento: 'PIX', quantidade: 1, valor_venda: 85.00, lucro: 24.98, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 60.02, Mão de obra: R$ 10', created_at: '2026-05-13T12:00:00.000Z' },
+      { id: 'v_maio_28', produto_id: 'p4', cliente_nome: 'Ana', tipo_cliente: 'atacado', pagamento: 'Cartão', quantidade: 1, valor_venda: 50.00, lucro: 14.09, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 35.91, Mão de obra: R$ 10', created_at: '2026-05-23T12:00:00.000Z' },
+      { id: 'v_maio_29', produto_id: 'p12', cliente_nome: 'Ana', tipo_cliente: 'atacado', pagamento: 'Cartão', quantidade: 1, valor_venda: 42.00, lucro: 10.07, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 32.23, Mão de obra: R$ 5', created_at: '2026-05-23T12:00:00.000Z' },
+      { id: 'v_maio_30', produto_id: 'p7', cliente_nome: 'Jucilene', tipo_cliente: 'varejo', pagamento: 'Dinheiro', quantidade: 1, valor_venda: 70.00, lucro: 25.71, observacoes: 'Venda registrada via planilha de Maio. Custo: R$ 44.29, Mão de obra: R$ 10', created_at: '2026-05-28T12:00:00.000Z' }
     ];
     this.setLocalData(LOCAL_KEYS.VENDAS, vendasSeed);
+
+    // Força a atualização/mesclagem dos dados locais (vendas e produtos de Maio)
+    const DB_DATA_VERSION_KEY = 'site_semijoias_data_version';
+    const DATA_VERSION_ATUAL = 'v4';
+    const dataVersaoSalva = localStorage.getItem(DB_DATA_VERSION_KEY);
+
+    if (dataVersaoSalva !== DATA_VERSION_ATUAL) {
+      console.log(`Nova versão de dados detectada (${DATA_VERSION_ATUAL}). Atualizando base local...\n(Se necessário, limpe o cache do navegador ou LocalStorage para atualizar completamente)`);
+      
+      // Mesclar Produtos
+      const prodsAtuais = this.getLocalData(LOCAL_KEYS.PRODUTOS);
+      produtosSeed.forEach(seedProd => {
+        const idx = prodsAtuais.findIndex(p => p.sku === seedProd.sku);
+        if (idx !== -1) {
+          prodsAtuais[idx] = { ...seedProd, estoque: prodsAtuais[idx].estoque };
+        } else {
+          prodsAtuais.push(seedProd);
+        }
+      });
+      this.setLocalData(LOCAL_KEYS.PRODUTOS, prodsAtuais);
+
+      // Sobrescrever Vendas para deixar apenas as importadas de Maio
+      this.setLocalData(LOCAL_KEYS.VENDAS, vendasSeed);
+
+      localStorage.setItem(DB_DATA_VERSION_KEY, DATA_VERSION_ATUAL);
+      vendasExistentes = vendasSeed;
+      produtosExistentes = prodsAtuais;
+    }
+
+    if (produtosExistentes.length > 0 || vendasExistentes.length > 0) {
+      return;
+    }
+
+    console.log("Semeando banco de dados local com catálogo real Deu Nó e histórico financeiro...");
+
+    // 17 PRODUTOS OFICIAIS DO CATÁLOGO DEU NÓ COM FOTOS REAIS
+    
+
   }
 };
 

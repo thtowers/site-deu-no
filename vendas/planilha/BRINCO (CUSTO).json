@@ -1,0 +1,94 @@
+[
+  {
+    "BAE": "CORDA POLIP",
+    "__EMPTY": 1,
+    "DOURÉ": "CORDA POLIP",
+    "__EMPTY_2": 1,
+    "AMÁ": "CORDA POLIP",
+    "__EMPTY_4": 1
+  },
+  {
+    "BAE": "BASE BRINC 10MM",
+    "__EMPTY": 6.8,
+    "DOURÉ": "BASE BRINC 9,80MM",
+    "__EMPTY_2": 6.28,
+    "AMÁ": "BASE ARGOLA",
+    "__EMPTY_4": 20.34
+  },
+  {
+    "BAE": "COLA",
+    "__EMPTY": 1,
+    "DOURÉ": "Terminal 13mm",
+    "__EMPTY_2": 7.48,
+    "AMÁ": "COLA",
+    "__EMPTY_4": 1
+  },
+  {
+    "BAE": "MÃO DE OBRA",
+    "__EMPTY": 5,
+    "DOURÉ": "Corrente argola",
+    "__EMPTY_2": 0.3,
+    "AMÁ": "MÃO DE OBRA",
+    "__EMPTY_4": 5
+  },
+  {
+    "BAE": "EMBALAGEM",
+    "__EMPTY": 5.85,
+    "DOURÉ": "COLA",
+    "__EMPTY_2": 1,
+    "AMÁ": "EMBALAGEM",
+    "__EMPTY_4": 5.85
+  },
+  {
+    "DOURÉ": "MÃO DE OBRA",
+    "__EMPTY_2": 5
+  },
+  {
+    "BAE": "Custo",
+    "__EMPTY": 19.65,
+    "DOURÉ": "EMBALAGEM",
+    "__EMPTY_2": 5.85,
+    "AMÁ": "Custo",
+    "__EMPTY_4": 33.19
+  },
+  {
+    "BAE": "Varejo 50%",
+    "__EMPTY": 30,
+    "AMÁ": "Varejo 50%",
+    "__EMPTY_4": 45
+  },
+  {
+    "BAE": "Atacado 30%",
+    "__EMPTY": 25,
+    "DOURÉ": "Custo",
+    "__EMPTY_2": 26.910000000000004,
+    "AMÁ": "Atacado 30%",
+    "__EMPTY_4": 40
+  },
+  {
+    "DOURÉ": "Varejo 50%",
+    "__EMPTY_2": 40
+  },
+  {
+    "BAE": "Lucro varejo",
+    "__EMPTY": 10.35,
+    "DOURÉ": "Atacado 30%",
+    "__EMPTY_2": 35,
+    "AMÁ": "Lucro varejo",
+    "__EMPTY_4": 11.81
+  },
+  {
+    "BAE": "Lucro atacado",
+    "__EMPTY": 5.35,
+    "AMÁ": "Lucro atacado",
+    "__EMPTY_4": 6.81
+  },
+  {
+    "DOURÉ": "Lucro varejo",
+    "__EMPTY_2": 13.09
+  },
+  {
+    "DOURÉ": "Lucro atacado",
+    "__EMPTY_2": 8.09
+  }
+]

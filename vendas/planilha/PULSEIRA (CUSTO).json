@@ -1,0 +1,122 @@
+[
+  {
+    "ELO": "CORDA POLIP",
+    "__EMPTY": 1,
+    "ORVALHO": "CORDA POLIP",
+    "__EMPTY_2": 1,
+    "LAÇO": "CORDA POLIP",
+    "__EMPTY_4": 2
+  },
+  {
+    "ELO": "PASSAD. DUP. 23MM",
+    "__EMPTY": 7.34,
+    "ORVALHO": "PASS TUBO 36MM",
+    "__EMPTY_2": 6.15,
+    "LAÇO": "PASSADOR 22M",
+    "__EMPTY_4": 9.95
+  },
+  {
+    "ELO": "Terminal 13mm",
+    "__EMPTY": 7.48,
+    "ORVALHO": "Terminal 13mm",
+    "__EMPTY_2": 7.48,
+    "LAÇO": "Terminal 13mm",
+    "__EMPTY_4": 7.48
+  },
+  {
+    "ELO": "Corrente",
+    "__EMPTY": 1,
+    "ORVALHO": "Corrente",
+    "__EMPTY_2": 1,
+    "LAÇO": "Corrente",
+    "__EMPTY_4": 1
+  },
+  {
+    "ELO": "Corrente argola",
+    "__EMPTY": 0.3,
+    "ORVALHO": "Corrente argola",
+    "__EMPTY_2": 0.3,
+    "LAÇO": "Corrente argola",
+    "__EMPTY_4": 0.3
+  },
+  {
+    "ELO": "Fech Lagosta 14mm",
+    "__EMPTY": 3.29,
+    "ORVALHO": "Fech Lagosta 14mm",
+    "__EMPTY_2": 3.29,
+    "LAÇO": "Fech Lagosta 14mm",
+    "__EMPTY_4": 3.29
+  },
+  {
+    "ELO": "Pingente Strass 8mm",
+    "__EMPTY": 1.16,
+    "ORVALHO": "Pingente Strass 8mm",
+    "__EMPTY_2": 1.16,
+    "LAÇO": "Pingente Strass 8mm",
+    "__EMPTY_4": 1.16
+  },
+  {
+    "ELO": "COLA",
+    "__EMPTY": 1,
+    "ORVALHO": "COLA",
+    "__EMPTY_2": 1,
+    "LAÇO": "COLA",
+    "__EMPTY_4": 1
+  },
+  {
+    "ELO": "MÃO DE OBRA",
+    "__EMPTY": 5,
+    "ORVALHO": "MÃO DE OBRA",
+    "__EMPTY_2": 5,
+    "LAÇO": "MÃO DE OBRA",
+    "__EMPTY_4": 5
+  },
+  {
+    "ELO": "EMBALAGEM",
+    "__EMPTY": 5.85,
+    "ORVALHO": "EMBALAGEM",
+    "__EMPTY_2": 5.85,
+    "LAÇO": "EMBALAGEM",
+    "__EMPTY_4": 5.85
+  },
+  {
+    "ELO": "Custo",
+    "__EMPTY": 33.42,
+    "ORVALHO": "Custo",
+    "__EMPTY_2": 32.230000000000004,
+    "LAÇO": "Custo",
+    "__EMPTY_4": 37.03
+  },
+  {
+    "ELO": "Varejo 50%",
+    "__EMPTY": 50,
+    "ORVALHO": "Varejo 50%",
+    "__EMPTY_2": 48,
+    "LAÇO": "Varejo 50%",
+    "__EMPTY_4": 55
+  },
+  {
+    "ELO": "Atacado 30%",
+    "__EMPTY": 45,
+    "ORVALHO": "Atacado 30%",
+    "__EMPTY_2": 42,
+    "LAÇO": "Atacado 30%",
+    "__EMPTY_4": 48
+  },
+  {
+    "ELO": "Lucro varejo",
+    "__EMPTY": 16.88,
+    "ORVALHO": "Lucro varejo",
+    "__EMPTY_2": 16.07,
+    "LAÇO": "Lucro varejo",
+    "__EMPTY_4": 17.97
+  },
+  {
+    "ELO": "Lucro atacado",
+    "__EMPTY": 11.88,
+    "ORVALHO": "Lucro atacado",
+    "__EMPTY_2": 10.07,
+    "LAÇO": "Lucro atacado",
+    "__EMPTY_4": 10.97
+  }
+]
