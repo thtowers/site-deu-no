@@ -297,7 +297,10 @@ const DB = {
       try {
         supabaseClient = supabase.createClient(config.url, config.key);
         console.log("Supabase inicializado com sucesso!");
+        // Semear produtos/vendas se o Supabase estiver vazio
         this.semearSupabaseSeVazio();
+        // Sempre migrar insumos do localStorage → Supabase se a tabela estiver vazia
+        this.migrarInsumosParaSupabase();
         return true;
       } catch (err) {
         console.error("Erro ao inicializar Supabase:", err);
