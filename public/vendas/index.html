@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Estilos Personalizados Premium -->
-  <link rel="stylesheet" href="/vendas/style.css?v=1780665947">
+  <link rel="stylesheet" href="/vendas/style.css?v=1780703299">
 </head>
 <body>
 
@@ -78,7 +78,7 @@
           <a href="#"><i class="fas fa-coins"></i><span>Financeiro</span></a>
         </li>
         <li class="nav-item" data-target="sec-config">
-          <a href="#"><i class="fas fa-cloud-bolt"></i><span>Nuvem Supabase</span></a>
+          <a href="#"><i class="fas fa-gear"></i><span>Configurações</span></a>
         </li>
       </ul>
       
@@ -107,6 +107,9 @@
           <a href="/" class="btn btn-secondary" style="border-color: var(--accent); color: var(--accent); font-weight: 600;">
             <i class="fas fa-globe"></i> Ver Catalogo do Site
           </a>
+          <button class="btn btn-secondary" id="btn-top-config" style="padding: 10px 14px; border-color: var(--accent); color: var(--accent);" title="Configurações">
+            <i class="fas fa-gear"></i>
+          </button>
           <button class="btn btn-cta-venda" id="btn-abrir-venda-modal">
             <i class="fas fa-plus"></i> Registrar Venda
           </button>
@@ -115,6 +118,35 @@
 
       <!-- 1. SEÇÃO DO DASHBOARD PRINCIPAL -->
       <section id="sec-dashboard" class="app-section active">
+        
+        <!-- Seletor de Período do Dashboard -->
+        <div class="dashboard-period-selector" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 12px 20px; border: 1px solid var(--border); border-radius: var(--radius-md); gap: 12px; flex-wrap: wrap;">
+          <div style="font-family: 'Playfair Display', serif; font-weight: 700; color: var(--accent); font-size: 18px; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-calendar-days"></i> Período do Dashboard
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <select id="filtro-dashboard-mes" class="select-filter" style="min-width: 140px; height: 38px;">
+              <option value="0">Janeiro</option>
+              <option value="1">Fevereiro</option>
+              <option value="2">Março</option>
+              <option value="3">Abril</option>
+              <option value="4">Maio</option>
+              <option value="5">Junho</option>
+              <option value="6">Julho</option>
+              <option value="7">Agosto</option>
+              <option value="8">Setembro</option>
+              <option value="9">Outubro</option>
+              <option value="10">Novembro</option>
+              <option value="11">Dezembro</option>
+            </select>
+            <select id="filtro-dashboard-ano" class="select-filter" style="min-width: 90px; height: 38px;">
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+            </select>
+          </div>
+        </div>
         
         <!-- KPIs Principais -->
         <div class="kpi-grid">
@@ -409,9 +441,18 @@
           <div class="filter-group" style="flex: 2; display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
             <select id="filtro-vendas-mes" class="select-filter" style="min-width: 125px;">
               <option value="todos">Todos os Meses</option>
+              <option value="0">Janeiro</option>
+              <option value="1">Fevereiro</option>
               <option value="2">Março</option>
               <option value="3">Abril</option>
               <option value="4">Maio</option>
+              <option value="5">Junho</option>
+              <option value="6">Julho</option>
+              <option value="7">Agosto</option>
+              <option value="8">Setembro</option>
+              <option value="9">Outubro</option>
+              <option value="10">Novembro</option>
+              <option value="11">Dezembro</option>
             </select>
             <select id="filtro-vendas-tipo" class="select-filter" style="min-width: 125px;">
               <option value="todos">Todos Canais</option>
@@ -434,9 +475,6 @@
             <button class="btn btn-secondary" id="btn-imprimir-pdf-vendas" style="height: 38px;">
               <i class="fas fa-print"></i> PDF
             </button>
-            <button class="btn btn-danger" id="btn-limpar-vendas" style="height: 38px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; background: var(--danger); border-color: var(--danger);">
-              <i class="fas fa-trash-can"></i> Limpar Vendas
-            </button>
           </div>
         </div>
 
@@ -453,6 +491,7 @@
                   <th>Qtd</th>
                   <th>Total Pago</th>
                   <th>Lucro Real</th>
+                  <th style="text-align: center;">Ações</th>
                 </tr>
               </thead>
               <tbody id="table-vendas-body">
@@ -646,7 +685,7 @@
             <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
               <i class="fas fa-arrow-left"></i> Voltar
             </button>
-            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <h3 id="det-fat-title" class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 8px;">
               <i class="fas fa-chart-line" style="color: var(--accent);"></i> Faturamento de Maio/2026
             </h3>
           </div>
@@ -736,7 +775,7 @@
             <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
               <i class="fas fa-arrow-left"></i> Voltar
             </button>
-            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--success); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <h3 id="det-luc-title" class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--success); font-weight: 700; display: flex; align-items: center; gap: 8px;">
               <i class="fas fa-wallet" style="color: var(--success);"></i> Lucro Líquido de Maio/2026
             </h3>
           </div>
@@ -786,7 +825,7 @@
         <div class="chart-card" style="padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); margin-bottom: 24px;">
           <div class="chart-card-title" style="margin-bottom: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
             <span><i class="fas fa-hand-holding-dollar" style="margin-right: 8px; color: var(--success);"></i>Rentabilidade Individual de Transações</span>
-            <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Análise de Lucratividade: Maio de 2026</span>
+            <span id="det-luc-periodo" style="font-size: 11px; font-weight: normal; color: var(--text-muted);">Análise de Lucratividade: Maio de 2026</span>
           </div>
 
           <!-- Desktop Table view -->
@@ -826,7 +865,7 @@
             <button type="button" class="btn btn-secondary btn-voltar-dashboard" style="height: 38px; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-weight: 600; border-color: var(--border-dim); background: var(--bg-card);">
               <i class="fas fa-arrow-left"></i> Voltar
             </button>
-            <h3 class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <h3 id="det-col-title" class="vendas-column-title" style="margin: 0; font-size: 20px; border-bottom: none; padding-bottom: 0; font-family: 'Playfair Display', serif; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 8px;">
               <i class="fas fa-gem" style="color: var(--accent);"></i> Colares Vendidos em Maio/2026
             </h3>
           </div>
@@ -1341,39 +1380,57 @@
         </div>
       </section>
 
-      <!-- 6. SEÇÃO DE CONFIGURAÇÕES DO SUPABASE -->
+      <!-- 6. SEÇÃO DE CONFIGURAÇÕES -->
       <section id="sec-config" class="app-section">
         <div class="supabase-config-form">
-          <h3 style="font-family: 'Playfair Display'; font-size: 22px; color: var(--accent);">Configurações de Sincronização na Nuvem</h3>
-          <p style="font-size: 13px; color: var(--text-secondary); margin-top: -10px;">Conecte sua base de dados ao Supabase para que seus registros fiquem salvos em nuvem compartilhável com outros aparelhos.</p>
+          <h3 style="font-family: 'Playfair Display'; font-size: 22px; color: var(--accent);">Configurações do Sistema</h3>
           
-          <div class="status-indicator-box">
-            <div class="status-dot inactive" id="supa-status-dot"></div>
-            <div class="status-text" id="supa-status-text">Detectando banco...</div>
+          <!-- Seção Sincronização Nuvem -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 8px;">Conexão com a Nuvem (Supabase)</h4>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">Conecte sua base de dados ao Supabase para salvar seus registros em nuvem e compartilhar com outros aparelhos.</p>
+            
+            <div class="status-indicator-box" style="margin-bottom: 14px;">
+              <div class="status-dot inactive" id="supa-status-dot"></div>
+              <div class="status-text" id="supa-status-text">Detectando banco...</div>
+            </div>
+
+            <form id="form-supabase-config" style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label" for="supa-url">Supabase Project URL</label>
+                <input type="url" id="supa-url" class="form-control" placeholder="https://xxxxxx.supabase.co" required>
+                <span class="form-helper">Pegue em Settings > API > Project URL no painel do Supabase.</span>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="supa-key">Supabase Anon Key (API Key pública)</label>
+                <input type="password" id="supa-key" class="form-control" placeholder="eyJh......" required>
+                <span class="form-helper">Pegue em Settings > API > Project API Keys > anon (public) no painel do Supabase.</span>
+              </div>
+
+              <div class="form-actions" style="border-top: none; padding-top: 0; margin-top: 10px;">
+                <button type="button" class="btn btn-secondary" id="btn-desconectar-supa" style="margin-right: auto; border-color: var(--danger); color: var(--danger);">
+                  Desconectar Nuvem
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Conectar & Sincronizar
+                </button>
+              </div>
+            </form>
           </div>
 
-          <form id="form-supabase-config" style="display: flex; flex-direction: column; gap: 16px; margin-top: 10px;">
-            <div class="form-group">
-              <label class="form-label" for="supa-url">Supabase Project URL</label>
-              <input type="url" id="supa-url" class="form-control" placeholder="https://xxxxxx.supabase.co" required>
-              <span class="form-helper">Pegue em Settings > API > Project URL no painel do Supabase.</span>
+          <!-- Configurações de Visualização -->
+          <div style="margin-top: 24px; padding: 16px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md);">
+            <h4 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+              <i class="fas fa-eye" style="margin-right: 8px; color: var(--accent);"></i>Opções de Visualização
+            </h4>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="checkbox" id="config-mostrar-estornadas" style="width: 18px; height: 18px; cursor: pointer;" checked>
+              <label for="config-mostrar-estornadas" style="font-size: 13px; color: var(--text-primary); cursor: pointer; font-weight: 500;">
+                Mostrar vendas estornadas no histórico (tabela)
+              </label>
             </div>
-            
-            <div class="form-group">
-              <label class="form-label" for="supa-key">Supabase Anon Key (API Key pública)</label>
-              <input type="password" id="supa-key" class="form-control" placeholder="eyJh......" required>
-              <span class="form-helper">Pegue em Settings > API > Project API Keys > anon (public) no painel do Supabase.</span>
-            </div>
-
-            <div class="form-actions" style="border-top: none; padding-top: 0; margin-top: 10px;">
-              <button type="button" class="btn btn-secondary" id="btn-desconectar-supa" style="margin-right: auto; border-color: var(--danger); color: var(--danger);">
-                Desconectar Nuvem
-              </button>
-              <button type="submit" class="btn btn-primary">
-                Conectar & Sincronizar
-              </button>
-            </div>
-          </form>
+          </div>
 
           <!-- Ações de Manutenção de Dados -->
           <div style="margin-top: 24px; padding: 16px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md);">
@@ -1387,6 +1444,19 @@
               <i class="fas fa-cloud-arrow-up"></i> Sincronizar Materiais → Nuvem
             </button>
             <div id="supa-sync-status" style="font-size: 12px; color: var(--text-muted); margin-top: 8px; display: none;"></div>
+          </div>
+
+          <!-- Zona de Perigo -->
+          <div style="margin-top: 24px; padding: 16px; background: rgba(220, 53, 69, 0.02); border: 1px dashed var(--danger); border-radius: var(--radius-md);">
+            <h4 style="font-size: 13px; font-weight: 600; color: var(--danger); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+              <i class="fas fa-triangle-exclamation" style="margin-right: 8px;"></i>Zona de Perigo (Ações Irreversíveis)
+            </h4>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+              Essas ações apagam dados permanentemente da base de dados local ou na nuvem. Use com extrema cautela.
+            </p>
+            <button type="button" class="btn btn-danger" id="btn-limpar-vendas" style="background: var(--danger); border-color: var(--danger); font-size: 13px; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-trash-can"></i> Limpar Todas as Vendas
+            </button>
           </div>
         </div>
       </section>
@@ -1580,6 +1650,28 @@
       <div class="modal-footer" style="justify-content: flex-end; gap: 12px; padding: 15px 24px;">
         <button type="button" class="btn btn-secondary btn-cancelar-limpar" style="padding: 8px 16px;">Cancelar</button>
         <button type="button" class="btn btn-danger btn-confirmar-limpar" style="padding: 8px 16px;">Limpar Tudo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIRMAÇÃO ESTORNO DE VENDA -->
+  <div class="modal-overlay" id="modal-confirmacao-estorno-venda">
+    <div class="modal-box" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--warning);"><i class="fas fa-rotate-left" style="margin-right: 8px;"></i> Estornar Venda</h3>
+        <button class="btn-close-modal"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding-top: 15px;">
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+          Tem certeza de que deseja estornar a venda do produto <strong id="estorno-venda-prod-nome" style="color: var(--text-primary);"></strong> para o cliente <strong id="estorno-venda-cli-nome" style="color: var(--text-primary);"></strong>?
+        </p>
+        <p style="color: var(--text-muted); font-size: 12px; margin-top: 10px;">
+          Esta ação irá marcar a venda como estornada, devolver as peças ao estoque do produto e estornar o valor acumulado do cliente. O histórico de estornos continuará registrado no sistema.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: flex-end; gap: 12px; padding: 15px 24px;">
+        <button type="button" class="btn btn-secondary btn-cancelar-estorno" style="padding: 8px 16px;">Cancelar</button>
+        <button type="button" class="btn btn-primary btn-confirmar-estorno" style="padding: 8px 16px; background-color: var(--accent); border-color: var(--accent);">Confirmar Estorno</button>
       </div>
     </div>
   </div>
@@ -1786,8 +1878,8 @@ window.ENV = {
 </script>
 
   <!-- Camadas e Lógica JS da SPA -->
-  <script src="/vendas/db.js?v=1780673611"></script>
+  <script src="/vendas/db.js?v=1780703158"></script>
   <script src="/vendas/charts.js?v=1780665466"></script>
-  <script src="/vendas/app.js?v=1780673322"></script>
+  <script src="/vendas/app.js?v=1780710562"></script>
 </body>
 </html>

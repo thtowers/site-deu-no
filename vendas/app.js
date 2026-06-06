@@ -46,7 +46,10 @@ const App = {
     if (this.isUserLoggedIn()) {
       this.exibirPainelAdmin();
       const nomeAdmin = sessionStorage.getItem('deu_no_admin_nome') || 'Administrador';
-      this.showToast('Sessão Ativa', `Bem-vindo de volta, ${nomeAdmin}!`, 'success');
+      if (sessionStorage.getItem('deu_no_admin_boas_vindas_exibido') !== 'true') {
+        this.showToast('Sessão Ativa', `Bem-vindo de volta, ${nomeAdmin}!`, 'success');
+        sessionStorage.setItem('deu_no_admin_boas_vindas_exibido', 'true');
+      }
     } else {
       this.exibirTelaLogin();
     }
@@ -87,11 +90,23 @@ const App = {
       return;
     }
 
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+    }
+
     try {
-      const resposta = await DB.validarUsuario(user, pass);
+      const resposta = await Promise.all([
+        DB.validarUsuario(user, pass),
+        new Promise(resolve => setTimeout(resolve, 800))
+      ]).then(([res]) => res);
+
       if (resposta.sucesso) {
         sessionStorage.setItem('deu_no_admin_logged', 'true');
         sessionStorage.setItem('deu_no_admin_nome', resposta.usuario.nome || 'Administrador');
+        sessionStorage.setItem('deu_no_admin_boas_vindas_exibido', 'true');
         this.exibirPainelAdmin();
         this.showToast('Login Efetuado', `Olá, ${resposta.usuario.nome || 'Administrador'}! Acesso autorizado.`, 'success');
       } else {
@@ -100,14 +115,27 @@ const App = {
     } catch (err) {
       console.error("Erro na autenticação:", err);
       this.showToast('Erro de Conexão', 'Não foi possível validar o acesso.', 'danger');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+      }
     }
   },
 
   handleLogout(e) {
     e.preventDefault();
     if (confirm('Tem certeza que deseja sair e bloquear o painel administrativo?')) {
-      sessionStorage.removeItem('deu_no_admin_logged');
-      window.location.reload();
+      const btn = e.currentTarget;
+      const originalHTML = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saindo...';
+      }
+      setTimeout(() => {
+        sessionStorage.removeItem('deu_no_admin_logged');
+        window.location.reload();
+      }, 500);
     }
   },
 
@@ -138,6 +166,13 @@ const App = {
     this.state.clientes = await DB.getClientes();
     this.state.categorias = await DB.getCategorias();
     this.state.insumos = await DB.getInsumos();
+    
+    // Inicializar mês e ano do dashboard com base na venda mais recente ou mês atual
+    if (this.state.dashboardMes === undefined || this.state.dashboardAno === undefined) {
+      const padrao = this.obterMesAnoPadraoDashboard();
+      this.state.dashboardMes = padrao.mes;
+      this.state.dashboardAno = padrao.ano;
+    }
     
     this.popularSelectProdutosFormVenda();
     this.popularSelectsCategorias();
@@ -198,14 +233,60 @@ const App = {
     }
   },
 
+  obterMesAnoPadraoDashboard() {
+    if (!this.state.vendas || this.state.vendas.length === 0) {
+      const hoje = new Date();
+      return { mes: hoje.getMonth(), ano: hoje.getFullYear() };
+    }
+    
+    // Filtrar vendas ativas
+    const vendasAtivas = this.state.vendas.filter(v => v.status !== 'estornada');
+    if (vendasAtivas.length === 0) {
+      const hoje = new Date();
+      return { mes: hoje.getMonth(), ano: hoje.getFullYear() };
+    }
+    
+    // Encontrar a venda mais recente
+    let maisRecente = new Date(0);
+    vendasAtivas.forEach(v => {
+      const dt = new Date(v.created_at);
+      if (dt > maisRecente) {
+        maisRecente = dt;
+      }
+    });
+    
+    return { mes: maisRecente.getMonth(), ano: maisRecente.getFullYear() };
+  },
+
   // 5. ATUALIZAÇÕES DO DASHBOARD (KPIS E INSIGHTS MENSAIS)
   atualizarDashboard() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    // Análise focada em Maio/2026 conforme dados do Seeder e data atual
-    const mesAnalise = 4; // Maio (Base 0)
-    const anoAnalise = 2026;
+    // Recuperar mês e ano de análise do estado (ou padrão)
+    if (this.state.dashboardMes === undefined || this.state.dashboardAno === undefined) {
+      const padrao = this.obterMesAnoPadraoDashboard();
+      this.state.dashboardMes = padrao.mes;
+      this.state.dashboardAno = padrao.ano;
+    }
+    const mesAnalise = this.state.dashboardMes;
+    const anoAnalise = this.state.dashboardAno;
+
+    // Atualizar seletor na interface se existir
+    const selectMes = document.getElementById('filtro-dashboard-mes');
+    const selectAno = document.getElementById('filtro-dashboard-ano');
+    if (selectMes) selectMes.value = mesAnalise;
+    if (selectAno) selectAno.value = anoAnalise;
+
+    // Atualizar os textos de exibição com o mês selecionado
+    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const nomeMesSelecionado = nomesMeses[mesAnalise];
+
+    const spanMesCorrente = document.querySelector('#kpi-card-faturamento .kpi-trend span');
+    if (spanMesCorrente) {
+      spanMesCorrente.textContent = `Mês Selecionado (${nomeMesSelecionado})`;
+    }
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -216,13 +297,17 @@ const App = {
     const lucroMes = vendasMes.reduce((sum, v) => sum + parseFloat(v.lucro), 0);
     
     const colaresVendidos = vendasMes
-      .filter(v => v.produto_nome.toLowerCase().includes('colar') || (v.produtos && v.produtos.categoria === 'Colar'))
+      .filter(v => {
+        const prod = produtos.find(p => p.id === v.produto_id);
+        const cat = prod && prod.categoria ? prod.categoria.toLowerCase() : '';
+        return v.produto_nome.toLowerCase().includes('colar') || cat.includes('colares') || cat.includes('colar');
+      })
       .reduce((sum, v) => sum + v.quantidade, 0);
 
     const ticketMedio = vendasMes.length > 0 ? faturamentoMes / vendasMes.length : 0;
 
-    const totalVarejo = vendasMes.filter(v => v.tipo_cliente === 'varejo').reduce((sum, v) => sum + v.valor_venda, 0);
-    const totalAtacado = vendasMes.filter(v => v.tipo_cliente === 'atacado').reduce((sum, v) => sum + v.valor_venda, 0);
+    const totalVarejo = vendasMes.filter(v => v.tipo_cliente === 'varejo').reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
+    const totalAtacado = vendasMes.filter(v => v.tipo_cliente === 'atacado').reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
 
     this.setDOMText('kpi-faturamento', `R$ ${faturamentoMes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
     this.setDOMText('kpi-lucro', `R$ ${lucroMes.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
@@ -375,11 +460,15 @@ const App = {
 
   // 7. Q&A DE INTELIGÊNCIA DE NEGÓCIOS
   responderPerguntaDeNegocio(perguntaKey) {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    const mesAnalise = 4;
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
+    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const nomeMesSelecionado = nomesMeses[mesAnalise];
+
     const vendasMaio = vendas.filter(v => {
       const dt = new Date(v.created_at);
       return dt.getMonth() === mesAnalise && dt.getFullYear() === anoAnalise;
@@ -427,25 +516,29 @@ const App = {
         } else if (fatAtacado > fatVarejo) {
           resposta = `Você vendeu mais no <strong>Atacado</strong> (R$ ${fatAtacado.toLocaleString('pt-BR', {maximumFractionDigits: 0})} vs R$ ${fatVarejo.toLocaleString('pt-BR', {maximumFractionDigits: 0})} do Varejo). O atacado representou <strong>${((fatAtacado / (fatVarejo + fatAtacado)) * 100).toFixed(0)}%</strong>.`;
         } else {
-          resposta = "Canais empatados ou sem vendas em Maio.";
+          resposta = `Canais empatados ou sem vendas em ${nomeMesSelecionado}.`;
         }
         break;
       }
 
       case 'evolucao_mes': {
-        const vendasAbril = vendas.filter(v => {
-          const dt = new Date(v.created_at);
-          return dt.getMonth() === 3 && dt.getFullYear() === 2026;
-        });
-        const fatAbril = vendasAbril.reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
-        const fatMaio = vendasMaio.reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
+        const mesAnteriorIndex = mesAnalise === 0 ? 11 : mesAnalise - 1;
+        const anoAnterior = mesAnalise === 0 ? anoAnalise - 1 : anoAnalise;
+        const nomeMesAnterior = nomesMeses[mesAnteriorIndex];
         
-        if (fatAbril > 0) {
-          const pct = ((fatMaio - fatAbril) / fatAbril) * 100;
+        const vendasMesAnterior = vendas.filter(v => {
+          const dt = new Date(v.created_at);
+          return dt.getMonth() === mesAnteriorIndex && dt.getFullYear() === anoAnterior;
+        });
+        const fatMesAnterior = vendasMesAnterior.reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
+        const fatMesAtual = vendasMaio.reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
+        
+        if (fatMesAnterior > 0) {
+          const pct = ((fatMesAtual - fatMesAnterior) / fatMesAnterior) * 100;
           const isPos = pct >= 0;
-          resposta = `Seu faturamento <strong>${isPos ? 'AUMENTOU' : 'CAIU'} ${Math.abs(pct).toFixed(1)}%</strong> comparado a Abril. Faturamento de Abril: <strong>R$ ${fatAbril.toLocaleString('pt-BR', {maximumFractionDigits: 0})}</strong> | Maio: <strong>R$ ${fatMaio.toLocaleString('pt-BR', {maximumFractionDigits: 0})}</strong>.`;
+          resposta = `Seu faturamento <strong>${isPos ? 'AUMENTOU' : 'CAIU'} ${Math.abs(pct).toFixed(1)}%</strong> comparado a ${nomeMesAnterior}. Faturamento de ${nomeMesAnterior}: <strong>R$ ${fatMesAnterior.toLocaleString('pt-BR', {maximumFractionDigits: 0})}</strong> | ${nomeMesSelecionado}: <strong>R$ ${fatMesAtual.toLocaleString('pt-BR', {maximumFractionDigits: 0})}</strong>.`;
         } else {
-          resposta = "Sem registros do mês de Abril para fins de comparação.";
+          resposta = `Sem registros do mês de ${nomeMesAnterior} para fins de comparação.`;
         }
         break;
       }
@@ -479,7 +572,7 @@ const App = {
 
       case 'lucro_liquido': {
         const lucLiq = vendasMaio.reduce((sum, v) => sum + parseFloat(v.lucro), 0);
-        resposta = `O lucro líquido de Maio foi de <strong>R$ ${lucLiq.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong> (já descontados os custos de materiais e mão de obra de cada peça).`;
+        resposta = `O lucro líquido de ${nomeMesSelecionado} foi de <strong>R$ ${lucLiq.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong> (já descontados os custos de materiais e mão de obra de cada peça).`;
         break;
       }
     }
@@ -488,7 +581,11 @@ const App = {
     const answerText = document.getElementById('qa-answer-text');
     if (answerBox && answerText) {
       answerBox.classList.add('active');
-      answerText.innerHTML = resposta;
+      answerText.innerHTML = '<i class="fas fa-spinner fa-spin" style="color: var(--text-gold); margin-right: 8px;"></i> Processando dados e calculando KPIs...';
+      
+      setTimeout(() => {
+        answerText.innerHTML = resposta;
+      }, 400);
     }
   },
 
@@ -618,10 +715,13 @@ const App = {
       return matchBusca && matchMes && matchTipo && matchPag;
     });
 
-    if (filtrados.length === 0) {
+    const mostrarEstornadas = localStorage.getItem('mostrarEstornadas') !== 'false';
+    const exibidos = filtrados.filter(v => mostrarEstornadas || v.status !== 'estornada');
+
+    if (exibidos.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="8" class="empty-state">
+          <td colspan="9" class="empty-state">
             <i class="fas fa-receipt"></i>
             <h3>Nenhuma venda encontrada</h3>
             <p>Ajuste os filtros ou registre uma nova venda.</p>
@@ -631,26 +731,54 @@ const App = {
       return;
     }
 
-    filtrados.forEach(v => {
+    exibidos.forEach(v => {
       const tr = document.createElement('tr');
+      if (v.status === 'estornada') {
+        tr.className = 'venda-estornada';
+      }
+      
       const dt = new Date(v.created_at);
       const dataFormatada = dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+
+      const canalBadge = v.status === 'estornada'
+        ? `<span class="badge badge-voided">Estornada</span>`
+        : `<span class="badge ${v.tipo_cliente === 'varejo' ? 'badge-info' : 'badge-purple'}">${v.tipo_cliente}</span>`;
+
+      const acaoBotao = v.status === 'estornada'
+        ? `<span style="font-size: 11px; color: var(--danger); font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;"><i class="fas fa-ban"></i> Estornada</span>`
+        : `<button class="btn-action btn-action-void" data-id="${v.id}" data-produto="${v.produto_nome}" data-cliente="${v.cliente_nome}" title="Estornar Venda">
+             <i class="fas fa-rotate-left"></i>
+           </button>`;
 
       tr.innerHTML = `
         <td style="font-weight: 600; font-family: 'Playfair Display'; font-size: 15px; color: var(--accent);">${v.produto_nome}</td>
         <td>${v.cliente_nome}</td>
         <td style="font-size: 13px; color: var(--text-secondary);">${dataFormatada}</td>
-        <td>
-          <span class="badge ${v.tipo_cliente === 'varejo' ? 'badge-info' : 'badge-purple'}">
-            ${v.tipo_cliente}
-          </span>
-        </td>
+        <td>${canalBadge}</td>
         <td><i class="far fa-credit-card" style="margin-right: 6px; color: var(--accent);"></i>${v.pagamento}</td>
         <td style="font-weight: 600;">${v.quantidade}x</td>
         <td style="font-weight: 600; color: var(--text-primary);">R$ ${(parseFloat(v.valor_venda) || 0).toFixed(2)}</td>
         <td style="color: var(--accent); font-weight: 600;">+ R$ ${(parseFloat(v.lucro) || 0).toFixed(2)}</td>
+        <td style="text-align: center; vertical-align: middle; white-space: nowrap;">${acaoBotao}</td>
       `;
       tbody.appendChild(tr);
+    });
+
+    // Vincular clique do botão de estornar
+    tbody.querySelectorAll('.btn-action-void').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        const prod = e.currentTarget.getAttribute('data-produto');
+        const cli = e.currentTarget.getAttribute('data-cliente');
+        
+        const modal = document.getElementById('modal-confirmacao-estorno-venda');
+        if (modal) {
+          document.getElementById('estorno-venda-prod-nome').textContent = prod;
+          document.getElementById('estorno-venda-cli-nome').textContent = cli;
+          modal.querySelector('.btn-confirmar-estorno').setAttribute('data-id', id);
+          modal.classList.add('active');
+        }
+      });
     });
   },
 
@@ -700,7 +828,8 @@ const App = {
 
   // 11. FINANCEIRO
   renderizarAbaFinanceiro() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
 
     const faturamentoTotal = vendas.reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
@@ -992,8 +1121,6 @@ const App = {
                 b.classList.remove('active');
               }
             });
-            
-            this.showToast('Cliente Identificado', `Canal de venda ajustado automaticamente para "${clienteEncontrado.tipo_cliente.toUpperCase()}"!`, 'info');
           }
         }
       });
@@ -1042,9 +1169,16 @@ const App = {
 
     document.querySelector('.btn-confirm-delete')?.addEventListener('click', async (e) => {
       const id = e.currentTarget.getAttribute('data-id');
+      const btn = e.currentTarget;
+      const originalHTML = btn.innerHTML;
       if (id) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Apagando...';
         try {
-          await DB.deletarProduto(id);
+          await Promise.all([
+            DB.deletarProduto(id),
+            new Promise(resolve => setTimeout(resolve, 800))
+          ]);
           await this.carregarDados();
           this.renderizarTabelaProdutos();
           
@@ -1054,6 +1188,9 @@ const App = {
         } catch (err) {
           console.error("Erro ao apagar produto:", err);
           this.showToast('Erro ao Excluir', 'Não foi possível remover o produto.', 'danger');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
         }
       }
     });
@@ -1078,10 +1215,79 @@ const App = {
     this.bindFiltroSelect('filtro-clientes-tipo', 'clientes', 'tipo', () => this.renderizarTabelaClientes());
 
     document.getElementById('btn-exportar-csv-vendas')?.addEventListener('click', () => this.exportarVendasParaCSV());
-    document.getElementById('btn-imprimir-pdf-vendas')?.addEventListener('click', () => window.print());
+    document.getElementById('btn-imprimir-pdf-vendas')?.addEventListener('click', (e) => {
+      const btn = e.currentTarget;
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+      setTimeout(() => {
+        window.print();
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }, 300);
+    });
     document.getElementById('btn-limpar-vendas')?.addEventListener('click', () => {
       document.getElementById('modal-confirmacao-limpar-vendas')?.classList.add('active');
     });
+
+    // Navegar para configurações via botão do topo
+    document.getElementById('btn-top-config')?.addEventListener('click', () => {
+      this.navegarParaAba('sec-config');
+    });
+
+    document.getElementById('filtro-dashboard-mes')?.addEventListener('change', (e) => {
+      this.state.dashboardMes = parseInt(e.target.value);
+      this.atualizarDashboard();
+    });
+    document.getElementById('filtro-dashboard-ano')?.addEventListener('change', (e) => {
+      this.state.dashboardAno = parseInt(e.target.value);
+      this.atualizarDashboard();
+    });
+
+    // Configuração de visualização de vendas estornadas
+    const checkMostrarEstornadas = document.getElementById('config-mostrar-estornadas');
+    if (checkMostrarEstornadas) {
+      checkMostrarEstornadas.checked = localStorage.getItem('mostrarEstornadas') !== 'false';
+      checkMostrarEstornadas.addEventListener('change', (e) => {
+        localStorage.setItem('mostrarEstornadas', e.target.checked);
+        this.renderizarTabelaVendas();
+      });
+    }
+
+    // Modal de estorno de venda
+    document.querySelector('.btn-cancelar-estorno')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('modal-confirmacao-estorno-venda')?.classList.remove('active');
+    });
+
+    document.querySelector('.btn-confirmar-estorno')?.addEventListener('click', async (e) => {
+      const id = e.currentTarget.getAttribute('data-id');
+      const btn = e.currentTarget;
+      const originalHTML = btn.innerHTML;
+      if (id) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Estornando...';
+        try {
+          await Promise.all([
+            DB.estornarVenda(id),
+            new Promise(resolve => setTimeout(resolve, 800))
+          ]);
+          await this.carregarDados();
+          this.showToast('Venda Estornada', 'A transação foi estornada e o estoque atualizado com sucesso.', 'success');
+          document.getElementById('modal-confirmacao-estorno-venda')?.classList.remove('active');
+          this.atualizarDashboard();
+          this.renderizarTabelaVendas();
+        } catch (err) {
+          console.error("Erro ao estornar venda:", err);
+          this.showToast('Erro ao Estornar', 'Não foi possível estornar a transação.', 'danger');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+        }
+      }
+    });
+
+    // Fechar modal de estorno clicando no X (já coberto pelo seletor genérico btn-close-modal na linha 915)
 
     const modalLimpar = document.getElementById('modal-confirmacao-limpar-vendas');
     if (modalLimpar) {
@@ -1091,9 +1297,16 @@ const App = {
       modalLimpar.querySelector('.btn-cancelar-limpar')?.addEventListener('click', () => {
         modalLimpar.classList.remove('active');
       });
-      modalLimpar.querySelector('.btn-confirmar-limpar')?.addEventListener('click', async () => {
+      modalLimpar.querySelector('.btn-confirmar-limpar')?.addEventListener('click', async (e) => {
+        const btn = e.currentTarget;
+        const originalHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Limpando...';
         try {
-          await DB.limparTodasVendas();
+          await Promise.all([
+            DB.limparTodasVendas(),
+            new Promise(resolve => setTimeout(resolve, 1000))
+          ]);
           this.state.vendas = [];
           this.showToast('Vendas Limpas', 'Todas as vendas foram excluídas com sucesso!', 'success');
           this.atualizarDashboard();
@@ -1102,6 +1315,9 @@ const App = {
         } catch (err) {
           console.error(err);
           this.showToast('Erro ao Limpar', 'Não foi possível limpar o histórico de vendas.', 'danger');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
         }
       });
     }
@@ -1654,8 +1870,9 @@ const App = {
       `;
       
       if (!isOutros) {
-        item.querySelector('.btn-delete-cat').addEventListener('click', () => {
-          this.handleDeletarCategoria(cat);
+        const btnDel = item.querySelector('.btn-delete-cat');
+        btnDel.addEventListener('click', () => {
+          this.handleDeletarCategoria(cat, btnDel);
         });
       }
       
@@ -1676,16 +1893,38 @@ const App = {
       return;
     }
 
-    this.state.categorias = await DB.salvarCategoria(nome);
-    inputNome.value = '';
-    
-    this.popularSelectsCategorias();
-    this.renderizarListaCategorias();
-    
-    this.showToast('Categoria Cadastrada', `A categoria "${nome}" foi adicionada com sucesso.`, 'success');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    }
+
+    try {
+      await Promise.all([
+        (async () => {
+          this.state.categorias = await DB.salvarCategoria(nome);
+        })(),
+        new Promise(resolve => setTimeout(resolve, 800))
+      ]);
+      inputNome.value = '';
+      
+      this.popularSelectsCategorias();
+      this.renderizarListaCategorias();
+      
+      this.showToast('Categoria Cadastrada', `A categoria "${nome}" foi adicionada com sucesso.`, 'success');
+    } catch (err) {
+      console.error("Erro ao cadastrar categoria:", err);
+      this.showToast('Erro ao cadastrar', 'Não foi possível salvar a categoria.', 'danger');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+      }
+    }
   },
 
-  async handleDeletarCategoria(nome) {
+  async handleDeletarCategoria(nome, btn) {
     const produtosNaCategoria = this.state.produtos.filter(p => p.categoria.toLowerCase() === nome.toLowerCase().trim());
     
     let mensagemConfirmacao = `Tem certeza que deseja apagar a categoria "${nome}"?`;
@@ -1694,20 +1933,30 @@ const App = {
     }
     
     if (confirm(mensagemConfirmacao)) {
+      const originalHTML = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      }
       try {
-        this.state.categorias = await DB.deletarCategoria(nome);
-        
-        if (!this.state.categorias.map(c => c.toLowerCase()).includes('outros')) {
-          this.state.categorias = await DB.salvarCategoria('Outros');
-        }
+        await Promise.all([
+          (async () => {
+            this.state.categorias = await DB.deletarCategoria(nome);
+            
+            if (!this.state.categorias.map(c => c.toLowerCase()).includes('outros')) {
+              this.state.categorias = await DB.salvarCategoria('Outros');
+            }
 
-        if (produtosNaCategoria.length > 0) {
-          for (const prod of produtosNaCategoria) {
-            prod.categoria = 'Outros';
-            await DB.salvarProduto(prod);
-          }
-          this.state.produtos = await DB.getProdutos();
-        }
+            if (produtosNaCategoria.length > 0) {
+              for (const prod of produtosNaCategoria) {
+                prod.categoria = 'Outros';
+                await DB.salvarProduto(prod);
+              }
+              this.state.produtos = await DB.getProdutos();
+            }
+          })(),
+          new Promise(resolve => setTimeout(resolve, 800))
+        ]);
 
         this.popularSelectsCategorias();
         this.renderizarListaCategorias();
@@ -1718,6 +1967,10 @@ const App = {
       } catch (err) {
         console.error("Erro ao deletar categoria:", err);
         this.showToast('Erro ao remover', 'Não foi possível apagar a categoria.', 'danger');
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+        }
       }
     }
   },
@@ -1810,9 +2063,19 @@ const App = {
       produto.id = id;
     }
     
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+    }
+
     try {
       const isEdicao = !!id;
-      await DB.salvarProduto(produto);
+      await Promise.all([
+        DB.salvarProduto(produto),
+        new Promise(resolve => setTimeout(resolve, 1000))
+      ]);
       await this.carregarDados();
       this.renderizarTabelaProdutos();
       
@@ -1826,11 +2089,19 @@ const App = {
     } catch (err) {
       console.error("Erro ao salvar produto:", err);
       this.showToast('Erro ao Salvar', 'Não foi possível registrar o produto.', 'danger');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+      }
     }
   },
 
   async handleSubmitVenda(e) {
     e.preventDefault();
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+    
     const produtoId = document.getElementById('venda-produto-id').value;
     const clienteNome = document.getElementById('venda-cliente').value.trim();
     const dataVenda = document.getElementById('venda-data').value;
@@ -1863,8 +2134,22 @@ const App = {
       created_at: new Date(dataVenda).toISOString()
     };
 
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrando...';
+    }
+
     try {
-      await DB.registrarVenda(venda);
+      // Registrar a venda e garantir que a animação dure pelo menos 1.2 segundos para efeito visual premium
+      await Promise.all([
+        DB.registrarVenda(venda),
+        new Promise(resolve => setTimeout(resolve, 1200))
+      ]);
+
+      // Alternar o dashboard para o mês/ano da venda recém-registrada
+      const dtVenda = new Date(venda.created_at);
+      this.state.dashboardMes = dtVenda.getMonth();
+      this.state.dashboardAno = dtVenda.getFullYear();
 
       // Baixa proporcional de insumos baseada na composição da peça
       if (prod && prod.composicao && prod.composicao.length > 0) {
@@ -1910,9 +2195,17 @@ const App = {
 
       this.showToast('Venda Registrada!', `Lançamento efetuado para ${clienteNome}.`, 'success');
       this.atualizarDashboard();
+      
+      // Retorna automaticamente para o histórico de transações
+      this.navegarParaAba('sec-vendas');
     } catch (err) {
       console.error("Erro ao registrar venda:", err);
       this.showToast('Erro de Registro', 'Falha ao processar a venda.', 'danger');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+      }
     }
   },
 
@@ -1982,8 +2275,18 @@ const App = {
 
     const cliente = { nome, telefone, tipo_cliente: tipo, total_compras: 0 };
     
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
+    }
+
     try {
-      await DB.salvarCliente(cliente);
+      await Promise.all([
+        DB.salvarCliente(cliente),
+        new Promise(resolve => setTimeout(resolve, 1000))
+      ]);
       await this.carregarDados();
       this.renderizarTabelaClientes();
 
@@ -1994,6 +2297,11 @@ const App = {
     } catch (err) {
       console.error("Erro ao cadastrar cliente:", err);
       this.showToast('Erro ao cadastrar', 'Falha ao salvar a ficha do cliente.', 'danger');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+      }
     }
   },
 
@@ -2007,32 +2315,66 @@ const App = {
       return;
     }
 
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando...';
+    }
+
     const sucesso = DB.setSupabaseConfig(url, key);
     if (sucesso) {
       try {
-        await this.carregarDados();
+        await Promise.all([
+          this.carregarDados(),
+          new Promise(resolve => setTimeout(resolve, 1200))
+        ]);
         this.atualizarDashboard();
         this.atualizarStatusSupabaseUI();
         this.showToast('Conectado à Nuvem', 'Seu banco de dados agora está ativado no Supabase!', 'success');
       } catch (err) {
         console.error("Erro ao conectar Supabase:", err);
         this.showToast('Falha na Conexão', 'Não foi possível sincronizar as tabelas do Supabase.', 'danger');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHTML;
+        }
       }
     } else {
       this.showToast('Erro na Conexão', 'Não foi possível configurar a biblioteca do Supabase.', 'danger');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+      }
     }
   },
 
   async handleDesconectarSupabase(e) {
     e.preventDefault();
+    const btn = e.currentTarget;
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Desconectando...';
+
     DB.clearSupabaseConfig();
     document.getElementById('supa-url').value = '';
     document.getElementById('supa-key').value = '';
     
-    await this.carregarDados();
-    this.atualizarDashboard();
-    this.atualizarStatusSupabaseUI();
-    this.showToast('Banco Local Ativo', 'Desconectado do Supabase. Operando via LocalStorage.', 'info');
+    try {
+      await Promise.all([
+        this.carregarDados(),
+        new Promise(resolve => setTimeout(resolve, 1000))
+      ]);
+      this.atualizarDashboard();
+      this.atualizarStatusSupabaseUI();
+      this.showToast('Banco Local Ativo', 'Desconectado do Supabase. Operando via LocalStorage.', 'info');
+    } catch (err) {
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+    }
   },
 
   async handleSincronizarInsumos() {
@@ -2048,7 +2390,10 @@ const App = {
     if (statusEl) { statusEl.style.display = 'block'; statusEl.innerHTML = '⏳ Enviando materiais para a nuvem...'; }
 
     try {
-      const total = await DB.sincronizarTodosInsumosParaNuvem();
+      const [total] = await Promise.all([
+        DB.sincronizarTodosInsumosParaNuvem(),
+        new Promise(resolve => setTimeout(resolve, 1200))
+      ]);
       if (total === 0) {
         this.showToast('Nenhum Material', 'Não há materiais no banco local para sincronizar.', 'warning');
         if (statusEl) { statusEl.innerHTML = '⚠️ Nenhum material encontrado no banco local.'; }
@@ -2084,46 +2429,64 @@ const App = {
 
   // 15. EXPORTAÇÃO CSV
   exportarVendasParaCSV() {
-    const vendas = this.state.vendas;
-    if (vendas.length === 0) {
-      this.showToast('Exportação Inválida', 'Não há registros de vendas.', 'danger');
-      return;
+    const btn = document.getElementById('btn-exportar-csv-vendas');
+    const originalText = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exportando...';
     }
 
-    let csvContent = "\uFEFF"; // UTF-8 BOM
-    csvContent += "Produto;Cliente;Data;Tipo;Pagamento;Quantidade;Valor Total Venda (R$);Lucro Real (R$)\r\n";
+    setTimeout(() => {
+      const todasVendas = this.state.vendas || [];
+      const vendas = todasVendas.filter(v => v.status !== 'estornada');
+      if (vendas.length === 0) {
+        this.showToast('Exportação Inválida', 'Não há registros de vendas.', 'danger');
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+        return;
+      }
 
-    vendas.forEach(v => {
-      const dt = new Date(v.created_at);
-      const dataStr = dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+      let csvContent = "\uFEFF"; // UTF-8 BOM
+      csvContent += "Produto;Cliente;Data;Tipo;Pagamento;Quantidade;Valor Total Venda (R$);Lucro Real (R$)\r\n";
+
+      vendas.forEach(v => {
+        const dt = new Date(v.created_at);
+        const dataStr = dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+        
+        const linha = [
+          v.produto_nome.replace(/;/g, ','),
+          v.cliente_nome.replace(/;/g, ','),
+          dataStr,
+          v.tipo_cliente,
+          v.pagamento,
+          v.quantidade,
+          v.valor_venda.toFixed(2).replace('.', ','),
+          v.lucro.toFixed(2).replace('.', ',')
+        ];
+
+        csvContent += linha.join(";") + "\r\n";
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
       
-      const linha = [
-        v.produto_nome.replace(/;/g, ','),
-        v.cliente_nome.replace(/;/g, ','),
-        dataStr,
-        v.tipo_cliente,
-        v.pagamento,
-        v.quantidade,
-        v.valor_venda.toFixed(2).replace('.', ','),
-        v.lucro.toFixed(2).replace('.', ',')
-      ];
+      const dataHoraStr = new Date().toISOString().slice(0,10);
+      link.setAttribute("download", `relatorio_vendas_deuno_${dataHoraStr}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-      csvContent += linha.join(";") + "\r\n";
-    });
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    
-    const dataHoraStr = new Date().toISOString().slice(0,10);
-    link.setAttribute("download", `relatorio_vendas_deuno_${dataHoraStr}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    this.showToast('Download Concluído', 'Relatório CSV exportado com sucesso!', 'success');
+      this.showToast('Download Concluído', 'Relatório CSV exportado com sucesso!', 'success');
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
+    }, 600);
   },
 
   // === MÓDULO DE GESTÃO DE INSUMOS & MATÉRIA-PRIMA ===
@@ -2211,7 +2574,7 @@ const App = {
     tbody.querySelectorAll('.btn-deletar-insumo').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
-        this.deletarInsumo(id);
+        this.deletarInsumo(id, btn);
       });
     });
   },
@@ -2294,9 +2657,19 @@ const App = {
       insumo.id = id;
     }
 
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+    }
+
     try {
       const isEdicao = !!id;
-      await DB.salvarInsumo(insumo);
+      await Promise.all([
+        DB.salvarInsumo(insumo),
+        new Promise(resolve => setTimeout(resolve, 1000))
+      ]);
       await this.carregarDados();
       this.renderizarTabelaInsumos();
 
@@ -2311,23 +2684,42 @@ const App = {
     } catch (err) {
       console.error("Erro ao salvar insumo:", err);
       this.showToast('Erro ao Salvar', 'Não foi possível registrar o material.', 'danger');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+      }
     }
   },
 
-  async deletarInsumo(id) {
+  async deletarInsumo(id, btn) {
     const insumo = this.state.insumos.find(i => i.id === id);
     if (!insumo) return;
 
     if (confirm(`Deseja realmente excluir o material "${insumo.nome} (${insumo.especificacao})"?`)) {
+      const originalHTML = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      }
       try {
-        await DB.deletarInsumo(id);
-        await this.carregarDados();
+        await Promise.all([
+          (async () => {
+            await DB.deletarInsumo(id);
+            await this.carregarDados();
+          })(),
+          new Promise(resolve => setTimeout(resolve, 800))
+        ]);
         this.renderizarTabelaInsumos();
         this.showToast('Material Removido', 'O material foi excluído com sucesso.', 'success');
         this.atualizarDashboard();
       } catch (err) {
         console.error("Erro ao deletar insumo:", err);
         this.showToast('Erro ao Excluir', 'Não foi possível remover o material.', 'danger');
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+        }
       }
     }
   },
@@ -2605,12 +2997,24 @@ const App = {
   },
 
   renderizarFaturamentoDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    // Análise focada em Maio/2026
-    const mesAnalise = 4; // Maio (Base 0)
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
+    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const nomeMesSelecionado = nomesMeses[mesAnalise];
+
+    // Atualizar títulos dinamicamente na UI
+    const tituloFaturamento = document.getElementById('det-fat-title');
+    if (tituloFaturamento) {
+      tituloFaturamento.innerHTML = `<i class="fas fa-chart-line" style="color: var(--accent);"></i> Faturamento de ${nomeMesSelecionado}/${anoAnalise}`;
+    }
+    const detFatPeriodo = document.getElementById('det-fat-periodo');
+    if (detFatPeriodo) {
+      detFatPeriodo.textContent = `Filtro aplicado: ${nomeMesSelecionado} de ${anoAnalise}`;
+    }
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -2618,8 +3022,8 @@ const App = {
     });
 
     const faturamentoMes = vendasMes.reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
-    const totalVarejo = vendasMes.filter(v => v.tipo_cliente === 'varejo').reduce((sum, v) => sum + v.valor_venda, 0);
-    const totalAtacado = vendasMes.filter(v => v.tipo_cliente === 'atacado').reduce((sum, v) => sum + v.valor_venda, 0);
+    const totalVarejo = vendasMes.filter(v => v.tipo_cliente === 'varejo').reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
+    const totalAtacado = vendasMes.filter(v => v.tipo_cliente === 'atacado').reduce((sum, v) => sum + parseFloat(v.valor_venda), 0);
     const ticketMedio = vendasMes.length > 0 ? faturamentoMes / vendasMes.length : 0;
 
     // Atualizar KPIs
@@ -2735,11 +3139,24 @@ const App = {
   },
 
   renderizarLucroDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    const mesAnalise = 4; // Maio
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
+    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const nomeMesSelecionado = nomesMeses[mesAnalise];
+
+    // Atualizar títulos dinamicamente na UI
+    const tituloLucro = document.getElementById('det-luc-title');
+    if (tituloLucro) {
+      tituloLucro.innerHTML = `<i class="fas fa-wallet" style="color: var(--success);"></i> Lucro Líquido de ${nomeMesSelecionado}/${anoAnalise}`;
+    }
+    const detLucPeriodo = document.getElementById('det-luc-periodo');
+    if (detLucPeriodo) {
+      detLucPeriodo.textContent = `Análise de Lucratividade: ${nomeMesSelecionado} de ${anoAnalise}`;
+    }
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -2893,11 +3310,20 @@ const App = {
   },
 
   renderizarColaresDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    const mesAnalise = 4; // Maio
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
+    const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const nomeMesSelecionado = nomesMeses[mesAnalise];
+
+    // Atualizar título dinamicamente na UI
+    const tituloColares = document.getElementById('det-col-title');
+    if (tituloColares) {
+      tituloColares.innerHTML = `<i class="fas fa-gem" style="color: var(--accent);"></i> Colares Vendidos em ${nomeMesSelecionado}/${anoAnalise}`;
+    }
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -3031,11 +3457,12 @@ const App = {
   },
 
   renderizarTicketDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    const mesAnalise = 4; // Maio
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -3157,11 +3584,12 @@ const App = {
   },
 
   renderizarVarejoDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    const mesAnalise = 4; // Maio
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -3288,11 +3716,12 @@ const App = {
   },
 
   renderizarAtacadoDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    const mesAnalise = 4; // Maio
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -3419,11 +3848,12 @@ const App = {
   },
 
   renderizarProdutoTopDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    const mesAnalise = 4; // Maio
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -3538,10 +3968,11 @@ const App = {
   },
 
   renderizarProdutoLucroDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     
-    const mesAnalise = 4; // Maio
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);
@@ -3668,11 +4099,12 @@ const App = {
   },
 
   renderizarCategoriaTopDetalhado() {
-    const vendas = this.state.vendas;
+    const todasVendas = this.state.vendas || [];
+    const vendas = todasVendas.filter(v => v.status !== 'estornada');
     const produtos = this.state.produtos;
     
-    const mesAnalise = 4; // Maio
-    const anoAnalise = 2026;
+    const mesAnalise = this.state.dashboardMes !== undefined ? this.state.dashboardMes : 4;
+    const anoAnalise = this.state.dashboardAno !== undefined ? this.state.dashboardAno : 2026;
 
     const vendasMes = vendas.filter(v => {
       const dt = new Date(v.created_at);

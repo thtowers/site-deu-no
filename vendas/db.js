@@ -583,6 +583,7 @@ const DB = {
   async registrarVenda(venda) {
     venda.quantidade = parseInt(venda.quantidade) || 1;
     venda.valor_venda = parseFloat(venda.valor_venda) || 0;
+    venda.status = venda.status || 'finalizada';
     
     let produtoEncontrado = null;
 
@@ -688,6 +689,89 @@ const DB = {
     };
   },
 
+  async estornarVenda(vendaId) {
+    if (this.isSupabaseActive()) {
+      try {
+        const { data: vendaData, error: vendaErr } = await supabaseClient
+          .from('vendas')
+          .select('*')
+          .eq('id', vendaId)
+          .single();
+        if (vendaErr) throw vendaErr;
+        
+        if (vendaData.status === 'estornada') {
+          return vendaData;
+        }
+
+        const { data: updatedVenda, error: updateErr } = await supabaseClient
+          .from('vendas')
+          .update({ status: 'estornada' })
+          .eq('id', vendaId)
+          .select()
+          .single();
+        if (updateErr) throw updateErr;
+
+        const { data: prodData, error: prodErr } = await supabaseClient
+          .from('produtos')
+          .select('*')
+          .eq('id', vendaData.produto_id)
+          .single();
+        if (!prodErr && prodData) {
+          const novoEstoque = parseInt(prodData.estoque) + parseInt(vendaData.quantidade);
+          await supabaseClient
+            .from('produtos')
+            .update({ estoque: novoEstoque })
+            .eq('id', prodData.id);
+        }
+
+        const { data: cliData } = await supabaseClient
+          .from('clientes')
+          .select('*')
+          .eq('nome', vendaData.cliente_nome);
+        if (cliData && cliData.length > 0) {
+          const novoTotal = Math.max(0, parseFloat(cliData[0].total_compras) - parseFloat(vendaData.valor_venda));
+          await supabaseClient
+            .from('clientes')
+            .update({ total_compras: novoTotal })
+            .eq('id', cliData[0].id);
+        }
+
+        return updatedVenda;
+      } catch (err) {
+        console.warn("Erro no Supabase ao estornar venda, tentando LocalStorage:", err);
+      }
+    }
+
+    const vendas = this.getLocalData(LOCAL_KEYS.VENDAS);
+    const produtos = this.getLocalData(LOCAL_KEYS.PRODUTOS);
+    const clientes = this.getLocalData(LOCAL_KEYS.CLIENTES);
+
+    const vendaIdx = vendas.findIndex(v => v.id === vendaId);
+    if (vendaIdx !== -1) {
+      const venda = vendas[vendaIdx];
+      if (venda.status === 'estornada') {
+        return venda;
+      }
+      venda.status = 'estornada';
+      vendas[vendaIdx] = venda;
+      this.setLocalData(LOCAL_KEYS.VENDAS, vendas);
+
+      const prodIdx = produtos.findIndex(p => p.id === venda.produto_id);
+      if (prodIdx !== -1) {
+        produtos[prodIdx].estoque = parseInt(produtos[prodIdx].estoque) + parseInt(venda.quantidade);
+        this.setLocalData(LOCAL_KEYS.PRODUTOS, produtos);
+      }
+
+      const cliIdx = clientes.findIndex(c => c.nome.toLowerCase() === venda.cliente_nome.toLowerCase());
+      if (cliIdx !== -1) {
+        clientes[cliIdx].total_compras = Math.max(0, clientes[cliIdx].total_compras - venda.valor_venda);
+        this.setLocalData(LOCAL_KEYS.CLIENTES, clientes);
+      }
+      return venda;
+    }
+    throw new Error("Venda não encontrada");
+  },
+
   async limparTodasVendas() {
     if (this.isSupabaseActive()) {
       try {
@@ -791,12 +875,31 @@ const DB = {
         };
 
         if (insumo.id) {
-          // Atualizar: buscar por local_id ou id
-          const { data: existing } = await supabaseClient
+          // Atualizar: buscar primeiro por local_id, depois por id UUID
+          // (evita erro silencioso do Supabase ao comparar string não-UUID com coluna UUID)
+          let existing = null;
+
+          // 1ª tentativa: busca por local_id (ex: 'i_plan_28')
+          const { data: byLocalId } = await supabaseClient
             .from('insumos')
             .select('id')
-            .or(`local_id.eq.${insumo.id},id.eq.${insumo.id}`)
+            .eq('local_id', insumo.id)
             .maybeSingle();
+
+          if (byLocalId) {
+            existing = byLocalId;
+          } else {
+            // 2ª tentativa: só tenta por id UUID se parecer um UUID válido (36 chars com hífens)
+            const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(insumo.id);
+            if (isUUID) {
+              const { data: byId } = await supabaseClient
+                .from('insumos')
+                .select('id')
+                .eq('id', insumo.id)
+                .maybeSingle();
+              if (byId) existing = byId;
+            }
+          }
 
           if (existing) {
             const { data, error } = await supabaseClient
@@ -808,7 +911,7 @@ const DB = {
             if (error) throw error;
             return { ...data, id: data.local_id || data.id };
           } else {
-            // Não encontrado — inserir
+            // Não encontrado — inserir como novo
             payload.local_id = insumo.id;
             const { data, error } = await supabaseClient
               .from('insumos')
@@ -853,11 +956,24 @@ const DB = {
   async deletarInsumo(id) {
     if (this.isSupabaseActive()) {
       try {
-        const { error } = await supabaseClient
+        // Tenta deletar por local_id primeiro (ex: 'i_plan_28')
+        const { error: err1, count: c1 } = await supabaseClient
           .from('insumos')
           .delete()
-          .or(`local_id.eq.${id},id.eq.${id}`);
-        if (error) throw error;
+          .eq('local_id', id);
+        if (err1) throw err1;
+
+        // Se não deletou por local_id e o id parece UUID, tenta por id
+        if (!c1 || c1 === 0) {
+          const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+          if (isUUID) {
+            const { error: err2 } = await supabaseClient
+              .from('insumos')
+              .delete()
+              .eq('id', id);
+            if (err2) throw err2;
+          }
+        }
         return true;
       } catch (err) {
         console.warn('Erro no Supabase ao deletar insumo, usando LocalStorage:', err);
