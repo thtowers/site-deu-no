@@ -206,7 +206,7 @@ const LinkHubPage = () => {
                 <div className="flex gap-3 justify-center">
                     {/* WhatsApp do Desenvolvedor */}
                     <a
-                        href={`https://wa.me/5521979362517np?text=${encodeURIComponent('Olá Thiago! Vim pelo Link Hub da Deu Nó.')}`}
+                        href={`https://wa.me/5521979362517?text=${encodeURIComponent('Olá Thiago! Vim pelo Link Hub da Deu Nó.')}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-9 h-9 rounded-full bg-[#3f4d41]/10 hover:bg-[#3f4d41]/20 border border-[#3f4d41]/25 hover:border-[#3f4d41]/50 flex items-center justify-center text-[#3f4d41] transition-all duration-300 hover:scale-110 hover:shadow-md active:scale-95"
