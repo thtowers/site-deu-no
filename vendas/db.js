@@ -72,7 +72,7 @@ const produtosSeed = [
       { id: 'p14', nome: 'Pulseira Laço', categoria: 'Pulseira', sku: 'PUL-LACO', custo: 14.00, mao_obra: 6.00, valor_venda: 55.00, lucro: 35.00, estoque: 15, status_margem: 'alta', foto: '/assets/produtos/laco.webp', created_at: new Date('2026-02-28T09:00:00Z').toISOString() },
       
       // BRINCOS
-      { id: 'p15', nome: 'Brinco Bae', categoria: 'Brinco', sku: 'BRI-BAE', custo: 7.00, mao_obra: 3.00, valor_venda: 30.00, lucro: 20.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/bae.webp', created_at: new Date('2026-02-28T14:00:00Z').toISOString() },
+      { id: 'p15', nome: 'Brinco Bae', categoria: 'Brinco', sku: 'BRI-BAE', custo: 7.00, mao_obra: 3.00, valor_venda: 30.00, lucro: 20.00, estoque: 10, status_margem: 'alta', foto: '/assets/produtos/bae.webp', created_at: new Date('2026-02-28T14:00:00Z').toISOString() },
       { id: 'p16', nome: 'Brinco Douré', categoria: 'Brinco', sku: 'BRI-DOURE', custo: 9.00, mao_obra: 4.00, valor_venda: 40.00, lucro: 27.00, estoque: 20, status_margem: 'alta', foto: '/assets/produtos/doure.webp', created_at: new Date('2026-02-28T15:00:00Z').toISOString() },
       { id: 'p17', nome: 'Brinco Amá', categoria: 'Brinco', sku: 'BRI-AMA', custo: 10.00, mao_obra: 4.00, valor_venda: 45.00, lucro: 31.00, estoque: 35, status_margem: 'alta', foto: '/assets/produtos/ama.webp', created_at: new Date('2026-02-28T16:00:00Z').toISOString() }
 ,
@@ -1195,15 +1195,15 @@ DB.semearSeVazio();
 // Inicializa conexão se as chaves do Supabase já estiverem salvas
 DB.initSupabase();
 
-// Garantir que o estoque do Brinco Bae seja 0 (indisponível) no banco local
+// Garantir que o estoque do Brinco Bae seja atualizado no banco local
 try {
   const prods = DB.getLocalData(LOCAL_KEYS.PRODUTOS);
   if (prods && prods.length > 0) {
     const baeProd = prods.find(p => p.sku === 'BRI-BAE');
-    if (baeProd && baeProd.estoque !== 0) {
-      baeProd.estoque = 0;
+    if (baeProd && baeProd.estoque === 0) {
+      baeProd.estoque = 10;
       DB.setLocalData(LOCAL_KEYS.PRODUTOS, prods);
-      console.log("Estoque do Brinco Bae atualizado para 0 (indisponível).");
+      console.log("Estoque do Brinco Bae atualizado para 10 (disponível).");
     }
   }
 } catch (e) {

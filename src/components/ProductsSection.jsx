@@ -300,7 +300,6 @@ const ProductsSection = () => {
                     mobileImageSrc="/assets/produtos/bae.webp"
                     badgeText="Coleção Âmago"
                     reversed={false}
-                    isOutOfStock={true}
                 />
 
                 <ElegantDivider />
