@@ -217,6 +217,7 @@ const ProductsSection = () => {
 
                     ]}
                     name="Colar Eco"
+                    isOutOfStock={true}
                     description={["Elegante hoje, atemporal sempre."]}
                     price="R$ 85,00"
                     imageSrc={["/assets/produtos/eco.webp", "/assets/produtos/eco2.webp", "/assets/produtos/eco3.webp"]}

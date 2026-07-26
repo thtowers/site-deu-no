@@ -64,7 +64,7 @@ const produtosSeed = [
       { id: 'p8', nome: 'Colar Domo', categoria: 'Colar', sku: 'COL-DOMO', custo: 20.00, mao_obra: 8.00, valor_venda: 75.00, lucro: 47.00, estoque: 6, status_margem: 'alta', foto: '/assets/produtos/domo.webp', created_at: new Date('2026-02-23T14:00:00Z').toISOString() },
       { id: 'p9', nome: 'Colar Velo', categoria: 'Colar', sku: 'COL-VELO', custo: 20.00, mao_obra: 8.00, valor_venda: 75.00, lucro: 47.00, estoque: 10, status_margem: 'alta', foto: '/assets/produtos/velo.webp', created_at: new Date('2026-02-24T15:00:00Z').toISOString() },
       { id: 'p10', nome: 'Colar Ciclo', categoria: 'Colar', sku: 'COL-CICLO', custo: 22.00, mao_obra: 8.00, valor_venda: 80.00, lucro: 50.00, estoque: 7, status_margem: 'alta', foto: '/assets/produtos/ciclo.webp', created_at: new Date('2026-02-25T16:00:00Z').toISOString() },
-      { id: 'p11', nome: 'Colar Eco', categoria: 'Colar', sku: 'COL-ECO', custo: 24.00, mao_obra: 9.00, valor_venda: 85.00, lucro: 52.00, estoque: 14, status_margem: 'alta', foto: '/assets/produtos/eco.webp', created_at: new Date('2026-02-26T17:00:00Z').toISOString() },
+      { id: 'p11', nome: 'Colar Eco', categoria: 'Colar', sku: 'COL-ECO', custo: 24.00, mao_obra: 9.00, valor_venda: 85.00, lucro: 52.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/eco.webp', created_at: new Date('2026-02-26T17:00:00Z').toISOString() },
       
       // PULSEIRAS
       { id: 'p12', nome: 'Pulseira Orvalho', categoria: 'Pulseira', sku: 'PUL-ORVALHO', custo: 12.00, mao_obra: 5.00, valor_venda: 48.00, lucro: 31.00, estoque: 22, status_margem: 'alta', foto: '/assets/produtos/orvalho.webp', created_at: new Date('2026-02-27T10:00:00Z').toISOString() },
