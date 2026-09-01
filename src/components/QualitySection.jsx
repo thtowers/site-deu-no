@@ -7,21 +7,21 @@ const qualityItems = [
         id: 'uv',
         title: 'Proteção UV',
         description: 'Nossas cordas possuem proteção contra raios UV, o que garante a preservação da cor e da estrutura mesmo em uso ao ar livre.',
-        image: '/assets/colar_1.webp',
+        image: "/assets/produtos/inteira2.webp",
         icon: ShieldCheck
     },
     {
         id: 'criatividade',
         title: 'Criatividade',
         description: 'Designs marcantes e originais para quem busca um look autêntico. Deu Nó é para quem não tem medo de se destacar.',
-        image: '/assets/colar_2.webp',
+        image: "/assets/produtos/enfim2.webp",
         icon: Palette
     },
     {
         id: 'acabamento',
         title: 'Acabamento',
         description: 'Acabamentos com banho de ouro ou níquel de alta qualidade, fornecidos pelos melhores do mercado. Brilho, resistência e elegância em cada peça.',
-        image: '/assets/colar_3.webp',
+        image: "/assets/produtos/volta1.webp",
         icon: Gem
     }
 ];
