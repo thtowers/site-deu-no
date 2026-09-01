@@ -58,7 +58,7 @@ const LinkHubPage = () => {
             {/* Imagem de Fundo de Alta Resolução */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="/assets/link_hub_desktop.webp?v=2"
+                    src="/assets/link_hub_desktop.webp?v=3"
                     alt="Modelo Deu Nó"
                     className="w-full h-full object-cover object-center"
                 />
@@ -192,13 +192,13 @@ const LinkHubPage = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
-                className="w-full max-w-[420px] mx-auto mt-2 mb-2 px-4 text-center text-[#3f4d41]/85 font-medium text-xs z-10 flex flex-col items-center gap-3"
+                className="w-full max-w-[420px] mx-auto mt-1 mb-3 px-5 py-3 rounded-2xl bg-[#faf9f7]/85 backdrop-blur-md border border-[#78877a]/35 shadow-lg text-center text-[#2d372f] z-10 flex flex-col items-center gap-2.5"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
             >
                 {/* Informações de Copyright e Crédito */}
-                <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-3 text-[10px] md:text-xs uppercase tracking-wider opacity-85 font-semibold">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-[11px] sm:text-xs uppercase tracking-wider text-[#242f25] font-semibold">
                     <span>&copy; 2026 Deu Nó</span>
-                    <span className="hidden md:inline opacity-30 text-[#3f4d41]">|</span>
+                    <span className="hidden sm:inline opacity-40 text-[#3f4d41]">•</span>
                     <span>Desenvolvido por Thiago Torres</span>
                 </div>
 
@@ -209,13 +209,13 @@ const LinkHubPage = () => {
                         href={`https://wa.me/5521979362517?text=${encodeURIComponent('Olá Thiago! Vim pelo Link Hub da Deu Nó.')}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-9 h-9 rounded-full bg-[#3f4d41]/10 hover:bg-[#3f4d41]/20 border border-[#3f4d41]/25 hover:border-[#3f4d41]/50 flex items-center justify-center text-[#3f4d41] transition-all duration-300 hover:scale-110 hover:shadow-md active:scale-95"
+                        className="w-8 h-8 rounded-full bg-[#3f4d41]/15 hover:bg-[#3f4d41] border border-[#3f4d41]/30 flex items-center justify-center text-[#3f4d41] transition-all duration-300 hover:scale-110 hover:shadow-md active:scale-95 group"
                         title="Fale com Thiago no WhatsApp"
                     >
                         <img
                             src="/assets/logo/digital_glyph_white.webp"
                             alt="WhatsApp Thiago"
-                            className="w-4 h-4 object-contain brightness-0 opacity-80"
+                            className="w-4 h-4 object-contain brightness-0 group-hover:brightness-0 group-hover:invert transition-all"
                         />
                     </a>
 
@@ -224,13 +224,13 @@ const LinkHubPage = () => {
                         href={linkedinUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-9 h-9 rounded-full bg-[#3f4d41]/10 hover:bg-[#3f4d41]/20 border border-[#3f4d41]/25 hover:border-[#3f4d41]/50 flex items-center justify-center text-[#3f4d41] transition-all duration-300 hover:scale-110 hover:shadow-md active:scale-95"
+                        className="w-8 h-8 rounded-full bg-[#3f4d41]/15 hover:bg-[#3f4d41] border border-[#3f4d41]/30 flex items-center justify-center text-[#3f4d41] transition-all duration-300 hover:scale-110 hover:shadow-md active:scale-95 group"
                         title="LinkedIn de Thiago"
                     >
                         <img
                             src="/assets/logo/li.png"
                             alt="LinkedIn Thiago"
-                            className="w-4 h-4 object-contain brightness-0 opacity-80"
+                            className="w-4 h-4 object-contain brightness-0 group-hover:brightness-0 group-hover:invert transition-all"
                         />
                     </a>
                 </div>

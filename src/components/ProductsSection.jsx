@@ -212,8 +212,8 @@ const ProductsSection = () => {
                     name="Pulseira Volta"
                     description={["Às vezes, voltar é seguir."]}
                     price="R$ 45,00"
-                    imageSrc={["/assets/produtos/volta1.webp", "/assets/produtos/volta2.webp"]}
-                    mobileImageSrc="/assets/produtos/volta1.webp"
+                    imageSrc={["/assets/produtos/volta2.webp", "/assets/produtos/volta1.webp"]}
+                    mobileImageSrc="/assets/produtos/volta2.webp"
                     badgeText="Coleção Depois"
                     reversed={true}
                     imageClass="object-bottom"
