@@ -8,14 +8,14 @@ export const COLORS_CATALOG = {
     },
     bordo_sf: {
         id: 'bordo_sf',
-        name: 'Bordô',
+        name: 'Bordô-SF',
         imageSrc: '/assets/cores/bordo_sf.svg',
 
     },
 
     bege_natural_sf: {
         id: 'bege_natural_sf',
-        name: 'Bege Natural',
+        name: 'Bege Natural-SF',
         imageSrc: '/assets/cores/bege_natural_sf.svg',
 
     },
@@ -298,25 +298,25 @@ export const COLORS_CATALOG = {
     },
     azul_marinho_sf: {
         id: 'azul_marinho_sf',
-        name: 'Azul Marinho',
+        name: 'Azul Marinho-SF',
         imageSrc: '/assets/cores/azul_marinho_sf.svg',
 
     },
     marrom_sf: {
         id: 'marrom_sf',
-        name: 'Marrom',
+        name: 'Marrom-SF',
         imageSrc: '/assets/cores/marrom_sf.svg',
 
     },
     preto_sf: {
         id: 'preto_sf',
-        name: 'Preto',
+        name: 'Preto-SF',
         imageSrc: '/assets/cores/preto_sf.svg',
 
     },
     turquesa_sf: {
         id: 'turquesa_sf',
-        name: 'Turquesa',
+        name: 'Turquesa-SF',
         imageSrc: '/assets/cores/turquesa_sf.svg',
 
     },
@@ -338,6 +338,26 @@ export const COLORS_CATALOG = {
         id: 'preto_dourado',
         name: 'Preto e Dourado',
         imageSrc: '/assets/cores/preto_dourado.webp',
+    },
+    camurca_marrom: {
+        id: 'camurca_marrom',
+        name: 'Marrom',
+        imageSrc: '/assets/cores/camurca_marrom.webp',
+    },
+    camurca_caramelo: {
+        id: 'camurca_caramelo',
+        name: 'Caramelo',
+        imageSrc: '/assets/cores/camurca_caramelo.webp',
+    },
+    camurca_areia: {
+        id: 'camurca_areia',
+        name: 'Areia',
+        imageSrc: '/assets/cores/camurca_areia.webp',
+    },
+    camurca_preto: {
+        id: 'camurca_preto',
+        name: 'Preto',
+        imageSrc: '/assets/cores/camurca_preto.webp',
     }
-}
+};
 

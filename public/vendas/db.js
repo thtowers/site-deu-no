@@ -63,7 +63,7 @@ const produtosSeed = [
       { id: 'p7', nome: 'Colar Eixo', categoria: 'Colar', sku: 'COL-EIXO', custo: 18.00, mao_obra: 7.00, valor_venda: 70.00, lucro: 45.00, estoque: 18, status_margem: 'alta', foto: '/assets/produtos/eixo.webp', created_at: new Date('2026-02-22T11:00:00Z').toISOString() },
       { id: 'p8', nome: 'Colar Domo', categoria: 'Colar', sku: 'COL-DOMO', custo: 20.00, mao_obra: 8.00, valor_venda: 75.00, lucro: 47.00, estoque: 6, status_margem: 'alta', foto: '/assets/produtos/domo.webp', created_at: new Date('2026-02-23T14:00:00Z').toISOString() },
       { id: 'p9', nome: 'Colar Velo', categoria: 'Colar', sku: 'COL-VELO', custo: 20.00, mao_obra: 8.00, valor_venda: 75.00, lucro: 47.00, estoque: 10, status_margem: 'alta', foto: '/assets/produtos/velo.webp', created_at: new Date('2026-02-24T15:00:00Z').toISOString() },
-      { id: 'p10', nome: 'Colar Ciclo', categoria: 'Colar', sku: 'COL-CICLO', custo: 22.00, mao_obra: 8.00, valor_venda: 80.00, lucro: 50.00, estoque: 7, status_margem: 'alta', foto: '/assets/produtos/ciclo.webp', created_at: new Date('2026-02-25T16:00:00Z').toISOString() },
+      { id: 'p10', nome: 'Colar Começo', categoria: 'Colar', sku: 'COL-COMECO', custo: 22.00, mao_obra: 8.00, valor_venda: 85.00, lucro: 55.00, estoque: 7, status_margem: 'alta', foto: '/assets/produtos/comeco.webp', created_at: new Date('2026-02-25T16:00:00Z').toISOString() },
       { id: 'p11', nome: 'Colar Eco', categoria: 'Colar', sku: 'COL-ECO', custo: 24.00, mao_obra: 9.00, valor_venda: 85.00, lucro: 52.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/eco.webp', created_at: new Date('2026-02-26T17:00:00Z').toISOString() },
       
       // PULSEIRAS
@@ -72,7 +72,7 @@ const produtosSeed = [
       { id: 'p14', nome: 'Pulseira Laço', categoria: 'Pulseira', sku: 'PUL-LACO', custo: 14.00, mao_obra: 6.00, valor_venda: 55.00, lucro: 35.00, estoque: 15, status_margem: 'alta', foto: '/assets/produtos/laco.webp', created_at: new Date('2026-02-28T09:00:00Z').toISOString() },
       
       // BRINCOS
-      { id: 'p15', nome: 'Brinco Bae', categoria: 'Brinco', sku: 'BRI-BAE', custo: 7.00, mao_obra: 3.00, valor_venda: 30.00, lucro: 20.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/bae.webp', created_at: new Date('2026-02-28T14:00:00Z').toISOString() },
+      { id: 'p15', nome: 'Brinco Bae', categoria: 'Brinco', sku: 'BRI-BAE', custo: 7.00, mao_obra: 3.00, valor_venda: 30.00, lucro: 20.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/bae5.webp', created_at: new Date('2026-02-28T14:00:00Z').toISOString() },
       { id: 'p16', nome: 'Brinco Douré', categoria: 'Brinco', sku: 'BRI-DOURE', custo: 9.00, mao_obra: 4.00, valor_venda: 40.00, lucro: 27.00, estoque: 20, status_margem: 'alta', foto: '/assets/produtos/doure.webp', created_at: new Date('2026-02-28T15:00:00Z').toISOString() },
       { id: 'p17', nome: 'Brinco Amá', categoria: 'Brinco', sku: 'BRI-AMA', custo: 10.00, mao_obra: 4.00, valor_venda: 45.00, lucro: 31.00, estoque: 35, status_margem: 'alta', foto: '/assets/produtos/ama.webp', created_at: new Date('2026-02-28T16:00:00Z').toISOString() }
 ,

@@ -4,18 +4,17 @@ import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 
 const banners = [
     {
-        desktop: '/assets/amago_desktop.webp',
-        mobile: '/assets/mobile/amago_mobile.webp'
+        desktop: '/assets/desktop_banner_1.webp',
+        mobile: '/assets/Mobile_banner_1.webp'
     },
     {
-        desktop: '/assets/vinculo2_desktop.webp',
-        mobile: '/assets/mobile/vinculo_mobile.webp'
+        desktop: '/assets/desktop_banner_2.webp',
+        mobile: '/assets/mobile_banner_2.webp'
     },
     {
-        desktop: '/assets/traco_desktop.webp',
-        mobile: '/assets/mobile/traco_mobile.webp'
+        desktop: '/assets/desktop_banner_3.webp',
+        mobile: '/assets/mobile_banner_3.webp'
     },
-
 ];
 
 const Hero = () => {

@@ -88,26 +88,142 @@ const ColecoeAnterioresPage = () => {
                 >
                     <div className="container mx-auto px-4">
 
+                        {/* 1. Colar Rastro */}
                         <ProductCard
-                            id="Lume"
+                            colorOptions={['verde_militar', 'verde_bandeira', 'azul_marinho', 'caramelo', 'verde_jade']}
+                            name="Colar Rastro"
+                            description={["Forte, marcante, inesquecível — como você."]}
+                            price="R$ 40,00"
+                            imageSrc={["/assets/produtos/rastro.webp", "/assets/produtos/rastro2.webp", "/assets/produtos/rastro3.webp"]}
+                            mobileImageSrc="/assets/produtos/rastro.webp"
+                            badgeText="Coleção Âmago"
+                            reversed={false}
+                            imageClass="object-center lg:object-bottom"
+                        />
+
+                        <ElegantDivider />
+
+                        {/* 2. Colar Fluxo */}
+                        <ProductCard
+                            colorOptions={['preto_dourado', 'prata_e_dourado']}
+                            name="Colar Fluxo"
+                            description={["Um colar, infinitas versões de você"]}
+                            price="R$ 45,00"
+                            imageSrc={["/assets/produtos/Fluxo4.webp", "/assets/produtos/Fluxo5.webp", "/assets/produtos/fluxo3.webp"]}
+                            mobileImageSrc="/assets/produtos/Fluxo4.webp"
+                            badgeText="Coleção Âmago"
+                            reversed={true}
+                            imageClass="object-bottom"
+                        />
+
+                        <ElegantDivider />
+
+                        {/* 3. Colar Traço */}
+                        <ProductCard
+                            colorOptions={['preto', 'terracota', 'marrom']}
+                            name="Colar Traço"
+                            description={["A força do simples bem definido."]}
+                            price="R$ 58,00"
+                            imageSrc={["/assets/produtos/traco.webp", "/assets/produtos/traco2.webp", "/assets/produtos/traco3.webp", "/assets/produtos/traco4.webp", "/assets/produtos/traco5.webp"]}
+                            mobileImageSrc="/assets/produtos/traco.webp"
+                            badgeText="Coleção Âmago"
+                            reversed={false}
+                            imageClass={["object-bottom", "object-bottom lg:object-center"]}
+                        />
+
+                        <ElegantDivider />
+
+                        {/* 4. Colar Ângulo */}
+                        <ProductCard
+                            colorOptions={['bordo_sf', 'azul_marinho_sf', 'bege_natural_sf', 'marrom_sf', 'preto_sf', 'turquesa_sf']}
+                            name="Colar Ângulo"
+                            description={["Impacto sutil, elegância absoluta."]}
+                            price="R$ 60,00"
+                            imageSrc={["/assets/produtos/angulo.webp", "/assets/produtos/angulo2.webp", "/assets/produtos/angulo3.webp", "/assets/produtos/angulo4.webp"]}
+                            mobileImageSrc="/assets/produtos/angulo.webp"
+                            badgeText="Coleção Âmago"
+                            reversed={true}
+                            imageClass={["object-bottom lg:object-bottom", "object-bottom lg:object-center", "object-center lg:object-center"]}
+                        />
+
+                        <ElegantDivider />
+
+                        {/* 5. Colar Vínculo */}
+                        <ProductCard
+                            colorOptions={['lenço_azul_bebe', 'lenço_vermelho', 'lenço_preto', 'lenço_branco', 'lenço_vermelho_vivo', 'lenço_bege', 'lenço_marrom_escuro', 'lenço_azul_marinho', 'lenço_verde', 'lenço_verde_escuro']}
+                            name="Colar Vínculo"
+                            description={["Moderno no design, forte na personalidade."]}
+                            price="R$ 65,00"
+                            imageSrc={["/assets/produtos/vinculo.webp", "/assets/produtos/vinculo2.webp", "/assets/produtos/vinculo4.webp"]}
+                            mobileImageSrc="/assets/produtos/vinculo.webp"
+                            badgeText="Coleção Âmago"
+                            reversed={false}
+                            imageClass="object-bottom"
+                        />
+
+                        <ElegantDivider />
+
+                        {/* 6. Colar Eixo */}
+                        <ProductCard
+                            colorOptions={['areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe', 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho', 'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'vinho', 'caramelo', 'marrom', 'marrom_escuro', 'chumbo', 'mostarda', 'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco', 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada']}
+                            name="Colar Eixo"
+                            description={["O equilíbrio entre quem você é e o que você mostra."]}
+                            price="R$ 70,00"
+                            imageSrc={["/assets/produtos/eixo.webp", "/assets/produtos/eixo2.webp", "/assets/produtos/eixo3.webp"]}
+                            mobileImageSrc="/assets/produtos/eixo.webp"
+                            badgeText="Coleção Âmago"
+                            reversed={true}
+                        />
+
+                        <ElegantDivider />
+
+                        {/* 7. Colar Domo */}
+                        <ProductCard
+                            colorOptions={['marrom', 'preto', 'terracota', 'areia', 'caramelo', 'verde_militar', 'mostarda']}
+                            id="colar-domo"
+                            name="Colar Domo"
+                            modalSubtitle="Resina na cor Tartaruga"
+                            description={["Design moderno com personalidade inconfundível."]}
+                            price="R$ 75,00"
+                            imageSrc={["/assets/produtos/domo2.webp", "/assets/produtos/domo.webp", "/assets/produtos/domo3.webp"]}
+                            mobileImageSrc="/assets/produtos/domo2.webp"
+                            badgeText="Coleção Âmago"
+                            reversed={false}
+                        />
+
+                        <ElegantDivider />
+
+                        {/* 8. Colar Velo */}
+                        <ProductCard
+                            colorOptions={['preto', 'azul_marinho', 'marrom']}
+                            name="Colar Velo"
+                            description={["Sofisticação que revela sua essência."]}
+                            price="R$ 75,00"
+                            imageSrc={["/assets/produtos/velo.webp", "/assets/produtos/velo2.webp", "/assets/produtos/velo3.webp", "/assets/produtos/velo4.webp"]}
+                            mobileImageSrc="/assets/produtos/velo.webp"
+                            badgeText="Coleção Âmago"
+                            reversed={true}
+                        />
+
+                        <ElegantDivider />
+
+                        {/* 9. Colar Lume */}
+                        <ProductCard
+                            colorOptions={['verde_militar', 'preto']}
                             name="Colar Lume"
                             description={["Não passa despercebido. Nem tenta."]}
                             price="R$ 55,00"
                             imageSrc={["/assets/produtos/luma4.webp", "/assets/produtos/luma3.webp", "/assets/produtos/lume.webp"]}
                             mobileImageSrc="/assets/produtos/luma4.webp"
-                            colorOptions={['verde_militar', 'preto']}
+                            badgeText="Coleção Âmago"
                             reversed={false}
                             imageClass="object-center"
                         />
+
                         <ElegantDivider />
 
+                        {/* 10. Colar Esfera */}
                         <ProductCard
-                            id="Esfera"
-                            name="Colar Esfera"
-                            description={["Um nó, infinitas combinações."]}
-                            price="R$ 65,00"
-                            imageSrc={["/assets/produtos/esfera.webp", "/assets/produtos/esfera1.webp", "/assets/produtos/esfera2.webp"]}
-                            mobileImageSrc="/assets/produtos/esfera.webp"
                             colorOptions={[
                                 'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                                 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
@@ -117,40 +233,20 @@ const ColecoeAnterioresPage = () => {
                                 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
                                 'vermelho_poa_azul_marinho'
                             ]}
+                            name="Colar Esfera"
+                            description={["Um nó, infinitas combinações."]}
+                            price="R$ 65,00"
+                            imageSrc={["/assets/produtos/esfera.webp", "/assets/produtos/esfera1.webp", "/assets/produtos/esfera2.webp"]}
+                            mobileImageSrc="/assets/produtos/esfera.webp"
+                            badgeText="Coleção Âmago"
                             reversed={true}
                             imageClass="object-center"
                         />
+
                         <ElegantDivider />
 
+                        {/* 11. Colar Chave */}
                         <ProductCard
-                            id="Abraço"
-                            name="Colar Abraço"
-                            description={["É corda, mas quem se apaixona é você que se prende."]}
-                            price="R$ 70,00"
-                            imageSrc={["/assets/produtos/abraco.webp", "/assets/produtos/abraco2.webp"]}
-                            mobileImageSrc="/assets/produtos/abraco.webp"
-                            modalSubtitle="Escolha até duas cores"
-                            colorOptions={[
-                                'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
-                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
-                                'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
-                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
-                                'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
-                                'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                                'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
-                            ]}
-                            reversed={false}
-                            imageClass="object-center"
-                        />
-                        <ElegantDivider />
-
-                        <ProductCard
-                            id="Chave"
-                            name="Colar Chave"
-                            description={["Discreto o suficiente para o olhar. Inesquecível para a memória."]}
-                            price="R$ 40,00"
-                            imageSrc={["/assets/produtos/chave.webp", "/assets/produtos/chave2.webp"]}
-                            mobileImageSrc="/assets/produtos/chave.webp"
                             colorOptions={[
                                 'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
                                 'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
@@ -160,51 +256,13 @@ const ColecoeAnterioresPage = () => {
                                 'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
                                 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
                             ]}
-                            reversed={true}
-                            imageClass="object-center"
-                        />
-                        <ElegantDivider />
-
-                        <ProductCard
-                            id="Círculo"
-                            name="Colar Círculo"
-                            description={["Elegância não se explica, se sente."]}
-                            price="R$ 65,00"
-                            imageSrc={["/assets/produtos/circulo.webp", "/assets/produtos/circulo2.webp"]}
-                            mobileImageSrc="/assets/produtos/circulo.webp"
-                            modalSubtitle="Escolha até duas cores"
-                            colorOptions={[
-                                'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
-                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
-                                'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
-                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
-                                'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
-                                'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                                'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
-                            ]}
+                            name="Colar Chave"
+                            description={["Discreto o suficiente para o olhar. Inesquecível para a memória."]}
+                            price="R$ 40,00"
+                            imageSrc={["/assets/produtos/chave.webp", "/assets/produtos/chave2.webp"]}
+                            mobileImageSrc="/assets/produtos/chave.webp"
+                            badgeText="Coleção Âmago"
                             reversed={false}
-                            imageClass="object-center"
-                        />
-                        <ElegantDivider />
-
-                        <ProductCard
-                            id="Gerânio"
-                            name="Colar Gerânio"
-                            description={["O encontro da modernidade com a ousadia."]}
-                            price="R$ 65,00"
-                            imageSrc={["/assets/produtos/geranio.webp", "/assets/produtos/geranio2.webp"]}
-                            mobileImageSrc="/assets/produtos/geranio.webp"
-                            modalSubtitle="Escolha até duas cores"
-                            colorOptions={[
-                                'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
-                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
-                                'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
-                                'terracota', 'vermelho_figo', 'caramelo', 'marrom', 'chumbo', 'mostarda',
-                                'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',
-                                'verde_militar_poa_branco', 'rami_branco', 'areia_poa_marrom_escuro',
-                                'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
-                            ]}
-                            reversed={true}
                             imageClass="object-center"
                         />
 
