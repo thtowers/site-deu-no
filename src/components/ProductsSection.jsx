@@ -79,6 +79,7 @@ const ProductsSection = () => {
                     imageSrc={["/assets/produtos/agora1.webp", "/assets/produtos/agora2.1.webp"]}
                     mobileImageSrc="/assets/produtos/agora1.webp"
                     badgeText="Coleção Depois"
+                    isOutOfStock={true}
                     reversed={false}
                     imageClass="object-center lg:object-bottom"
                 />
