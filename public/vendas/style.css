@@ -2167,3 +2167,31 @@ h1, h2, h3, h4, .brand-title {
   color: var(--danger) !important;
   border: 1px solid var(--danger) !important;
 }
+
+/* Gestão de Hero e Banners */
+.hero-media-option {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--bg-primary);
+}
+
+.hero-media-option:hover {
+  border-color: var(--accent) !important;
+}
+
+.hero-media-option.active {
+  border-color: var(--text-gold) !important;
+  background: rgba(212, 175, 55, 0.05) !important;
+  box-shadow: 0 0 0 1px var(--text-gold);
+}
+
+.banner-preset-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.banner-preset-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  border-color: var(--accent) !important;
+}
+

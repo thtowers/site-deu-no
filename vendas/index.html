@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Estilos Personalizados Premium -->
-  <link rel="stylesheet" href="/vendas/style.css?v=1780711810">
+  <link rel="stylesheet" href="/vendas/style.css?v=1789321091">
 </head>
 <body>
 
@@ -76,6 +76,9 @@
         </li>
         <li class="nav-item" data-target="sec-financeiro">
           <a href="#"><i class="fas fa-coins"></i><span>Financeiro</span></a>
+        </li>
+        <li class="nav-item" data-target="sec-hero-banner">
+          <a href="#"><i class="fas fa-images"></i><span>Banners & Hero</span></a>
         </li>
         <li class="nav-item" data-target="sec-config">
           <a href="#"><i class="fas fa-gear"></i><span>Configurações</span></a>
@@ -1461,6 +1464,189 @@
         </div>
       </section>
 
+      <!-- SEÇÃO GERENCIADOR DE BANNERS & HERO DO SITE -->
+      <section id="sec-hero-banner" class="app-section">
+        <div class="supabase-config-form" style="max-width: 960px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h3 style="font-family: 'Playfair Display', serif; font-size: 24px; color: var(--accent); margin-bottom: 6px;">
+                <i class="fas fa-images" style="color: var(--text-gold); margin-right: 8px;"></i>Banners & Hero da Página Inicial
+              </h3>
+              <p style="font-size: 13px; color: var(--text-secondary);">
+                Controle se a página principal exibe banners ou vídeo, e alterne os banners para computadores e celulares em tempo real.
+              </p>
+            </div>
+            <a href="/" target="_blank" class="btn btn-secondary" style="font-size: 13px; display: inline-flex; align-items: center; gap: 8px;">
+              <i class="fas fa-arrow-up-right-from-square"></i> Abrir Site Principal
+            </a>
+          </div>
+
+          <form id="form-hero-config">
+            <!-- 1. SELETOR DE MÍDIA PRINCIPAL (BANNER VS VÍDEO) -->
+            <div style="padding: 20px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 24px;">
+              <h4 style="font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+                <i class="fas fa-sliders" style="margin-right: 8px; color: var(--text-gold);"></i>Tipo de Mídia em Exibição
+              </h4>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px;">
+                Escolha se o Hero do site exibirá banners de imagem ou o vídeo promocional:
+              </p>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                <!-- Opção 1: Banner (Padrão Ativo) -->
+                <label style="border: 2px solid var(--border); border-radius: var(--radius-md); padding: 16px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; transition: all 0.2s;" id="label-media-banner" class="hero-media-option active">
+                  <input type="radio" name="hero_media_type" value="banner" id="media-type-banner" checked style="margin-top: 4px;">
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px; color: var(--accent); margin-bottom: 4px;" id="title-media-banner">
+                      <i class="fas fa-image" style="color: #2e7d32; margin-right: 6px;"></i>Carrossel de Banners <span id="badge-media-banner" class="badge-status-hero" style="font-size: 11px; color: #2e7d32; font-weight: 700;">(Ativo)</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">
+                      Exibe banners em formato carrossel responsivo tanto no computador quanto no celular. Carregamento ultra-rápido e sem consumo de dados móveis de vídeo.
+                    </div>
+                  </div>
+                </label>
+
+                <!-- Opção 2: Vídeo Mobile 9:16 -->
+                <label style="border: 2px solid var(--border); border-radius: var(--radius-md); padding: 16px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; transition: all 0.2s;" id="label-media-video" class="hero-media-option">
+                  <input type="radio" name="hero_media_type" value="video" id="media-type-video" style="margin-top: 4px;">
+                  <div>
+                    <div style="font-weight: 600; font-size: 14px; color: var(--accent); margin-bottom: 4px;" id="title-media-video">
+                      <i class="fas fa-video" style="color: var(--text-gold); margin-right: 6px;"></i>Vídeo Promocional <span id="badge-media-video" class="badge-status-hero" style="font-size: 11px; color: var(--text-muted); font-weight: 600;">(Desativado)</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">
+                      Exibe o clipe em vídeo em loop no topo da página principal. O componente Hero.jsx força a exibição do vídeo 9:16 quando visualizado em dispositivos móveis (isMobile &amp;&amp; !videoError), e no computador exibe o carrossel de banners.
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. CATÁLOGO DE BANNERS RÁPIDOS (1 CLIQUE PARA APLICAR) -->
+            <div style="padding: 20px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 24px;">
+              <h4 style="font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                <i class="fas fa-wand-magic-sparkles" style="margin-right: 8px; color: var(--text-gold);"></i>Banners Oficiais da Coleção Deu Nó
+              </h4>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;">
+                Clique em qualquer banner oficial abaixo para preencher automaticamente os campos de Desktop e Celular:
+              </p>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+                <!-- Banner 1 -->
+                <div class="banner-preset-card" style="border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-secondary); cursor: pointer;" onclick="App.aplicarPresetBanner('/assets/desktop_banner_1.webp', '/assets/Mobile_banner_1.webp')">
+                  <div style="position: relative; height: 120px; overflow: hidden; background: #eee;">
+                    <img src="/assets/desktop_banner_1.webp" alt="Banner 1" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.65); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 500;">Coleção Depois - Principal</span>
+                  </div>
+                  <div style="padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 13px; font-weight: 600; color: var(--accent);">Banner 1 (Padrão)</span>
+                    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px;">Aplicar</button>
+                  </div>
+                </div>
+
+                <!-- Banner 2 -->
+                <div class="banner-preset-card" style="border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-secondary); cursor: pointer;" onclick="App.aplicarPresetBanner('/assets/desktop_banner_2.webp', '/assets/mobile_banner_2.webp')">
+                  <div style="position: relative; height: 120px; overflow: hidden; background: #eee;">
+                    <img src="/assets/desktop_banner_2.webp" alt="Banner 2" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.65); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 500;">Coleção Depois - Clean</span>
+                  </div>
+                  <div style="padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 13px; font-weight: 600; color: var(--accent);">Banner 2 (Minimalista)</span>
+                    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px;">Aplicar</button>
+                  </div>
+                </div>
+
+                <!-- Banner 3 -->
+                <div class="banner-preset-card" style="border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-secondary); cursor: pointer;" onclick="App.aplicarPresetBanner('/assets/desktop_banner_3.webp', '/assets/mobile_banner_3.webp')">
+                  <div style="position: relative; height: 120px; overflow: hidden; background: #eee;">
+                    <img src="/assets/desktop_banner_3.webp" alt="Banner 3" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.65); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 500;">Coleção Depois - Editorial</span>
+                  </div>
+                  <div style="padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 13px; font-weight: 600; color: var(--accent);">Banner 3 (Editorial)</span>
+                    <button type="button" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px;">Aplicar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. CAMPOS DE URL DO BANNER (DESKTOP E MOBILE) -->
+            <div style="padding: 20px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 24px;">
+              <h4 style="font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em;">
+                <i class="fas fa-link" style="margin-right: 8px; color: var(--text-gold);"></i>URLs das Imagens do Banner Ativo
+              </h4>
+
+              <div class="form-row" style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 1; min-width: 280px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label class="form-label" for="hero-banner-desktop" style="margin-bottom: 0;">
+                      <i class="fas fa-desktop" style="margin-right: 6px;"></i>Banner para Computadores (Desktop) *
+                    </label>
+                    <button type="button" class="btn btn-secondary" id="btn-arquivo-hero-desktop" style="font-size: 11px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 6px; border-color: var(--accent); color: var(--accent); cursor: pointer;">
+                      <i class="fas fa-folder-open"></i> Acessar Arquivos
+                    </button>
+                    <input type="file" id="input-arquivo-hero-desktop" accept="image/*" style="display: none;">
+                  </div>
+                  <input type="text" id="hero-banner-desktop" class="form-control" placeholder="/assets/desktop_banner_1.webp ou URL externa" required>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; flex-wrap: wrap; gap: 4px;">
+                    <span class="form-helper">Recomendado: proporção 16:9 ou 21:9 panorâmica (ex: 1920x800).</span>
+                    <span style="color: #2e7d32; font-weight: 600; font-size: 11px;"><i class="fas fa-file-image"></i> Formata automaticamente como .webp</span>
+                  </div>
+                </div>
+
+                <div class="form-group" style="flex: 1; min-width: 280px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label class="form-label" for="hero-banner-mobile" style="margin-bottom: 0;">
+                      <i class="fas fa-mobile-screen" style="margin-right: 6px;"></i>Banner para Celulares (Mobile) *
+                    </label>
+                    <button type="button" class="btn btn-secondary" id="btn-arquivo-hero-mobile" style="font-size: 11px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 6px; border-color: var(--accent); color: var(--accent); cursor: pointer;">
+                      <i class="fas fa-folder-open"></i> Acessar Arquivos
+                    </button>
+                    <input type="file" id="input-arquivo-hero-mobile" accept="image/*" style="display: none;">
+                  </div>
+                  <input type="text" id="hero-banner-mobile" class="form-control" placeholder="/assets/Mobile_banner_1.webp ou URL externa" required>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; flex-wrap: wrap; gap: 4px;">
+                    <span class="form-helper">Recomendado: proporção vertical 9:16 ou 4:5 (ex: 1080x1920).</span>
+                    <span style="color: #2e7d32; font-weight: 600; font-size: 11px;"><i class="fas fa-file-image"></i> Formata automaticamente como .webp</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. PRÉ-VISUALIZAÇÃO EM TEMPO REAL -->
+              <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <h5 style="font-size: 13px; font-weight: 600; color: var(--accent);">Pré-visualização do Banner Ativo</h5>
+                  <span style="font-size: 11px; color: var(--text-muted);">Atualização ao vivo</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; align-items: flex-start;">
+                  <!-- Preview Desktop -->
+                  <div>
+                    <span style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; display: block; font-weight: 500;">Computador (Desktop)</span>
+                    <div style="width: 100%; height: 160px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); background: #eee;">
+                      <img id="preview-hero-desktop" src="/assets/desktop_banner_1.webp" alt="Preview Desktop" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='/assets/desktop_banner_1.webp'">
+                    </div>
+                  </div>
+
+                  <!-- Preview Mobile -->
+                  <div>
+                    <span style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; display: block; font-weight: 500;">Celular (Mobile)</span>
+                    <div style="width: 100%; height: 160px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); background: #eee;">
+                      <img id="preview-hero-mobile" src="/assets/Mobile_banner_1.webp" alt="Preview Mobile" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='/assets/Mobile_banner_1.webp'">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BOTÃO SALVAR -->
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary" id="btn-salvar-hero" style="font-size: 14px; padding: 12px 28px; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fas fa-check"></i> Salvar Alterações no Hero
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -1878,8 +2064,8 @@ window.ENV = {
 </script>
 
   <!-- Camadas e Lógica JS da SPA -->
-  <script src="/vendas/db.js?v=1787998469"></script>
+  <script src="/vendas/db.js?v=1789322869"></script>
   <script src="/vendas/charts.js?v=1780665466"></script>
-  <script src="/vendas/app.js?v=1780710554"></script>
+  <script src="/vendas/app.js?v=1789323278"></script>
 </body>
 </html>

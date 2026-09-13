@@ -212,6 +212,8 @@ const App = {
           this.renderizarTabelaInsumos();
         } else if (targetSectionId === 'sec-financeiro') {
           this.renderizarAbaFinanceiro();
+        } else if (targetSectionId === 'sec-hero-banner') {
+          this.carregarHeroConfig();
         }
       });
     });
@@ -1158,8 +1160,50 @@ const App = {
     document.getElementById('form-venda')?.addEventListener('submit', (e) => this.handleSubmitVenda(e));
     document.getElementById('form-cliente')?.addEventListener('submit', (e) => this.handleSubmitCliente(e));
     document.getElementById('form-supabase-config')?.addEventListener('submit', (e) => this.handleSubmitSupabase(e));
-    document.getElementById('btn-desconectar-supa')?.addEventListener('click', (e) => this.handleDesconectarSupabase(e));
     document.getElementById('btn-sincronizar-insumos')?.addEventListener('click', () => this.handleSincronizarInsumos());
+
+    // === LISTENERS DO HERO & BANNERS ===
+    document.getElementById('form-hero-config')?.addEventListener('submit', (e) => this.handleSubmitHero(e));
+    document.getElementById('btn-salvar-hero')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.handleSubmitHero(e);
+    });
+    
+    document.getElementById('hero-banner-desktop')?.addEventListener('input', (e) => {
+      const preview = document.getElementById('preview-hero-desktop');
+      if (preview) preview.src = e.target.value || '/assets/desktop_banner_1.webp';
+    });
+
+    document.getElementById('hero-banner-mobile')?.addEventListener('input', (e) => {
+      const preview = document.getElementById('preview-hero-mobile');
+      if (preview) preview.src = e.target.value || '/assets/Mobile_banner_1.webp';
+    });
+
+    // Botões para acessar arquivos e formatar em WebP
+    document.getElementById('btn-arquivo-hero-desktop')?.addEventListener('click', () => {
+      document.getElementById('input-arquivo-hero-desktop')?.click();
+    });
+    document.getElementById('input-arquivo-hero-desktop')?.addEventListener('change', () => {
+      this.processarUploadBanner('desktop');
+    });
+
+    document.getElementById('btn-arquivo-hero-mobile')?.addEventListener('click', () => {
+      document.getElementById('input-arquivo-hero-mobile')?.click();
+    });
+    document.getElementById('input-arquivo-hero-mobile')?.addEventListener('change', () => {
+      this.processarUploadBanner('mobile');
+    });
+
+    const radioMediaBanner = document.getElementById('media-type-banner');
+    const radioMediaVideo = document.getElementById('media-type-video');
+
+    radioMediaBanner?.addEventListener('change', () => {
+      this.atualizarBadgesHeroUI('banner');
+    });
+
+    radioMediaVideo?.addEventListener('change', () => {
+      this.atualizarBadgesHeroUI('video');
+    });
 
     // Escutadores para o modal de confirmacao de exclusao
     document.querySelector('.btn-cancel-delete')?.addEventListener('click', (e) => {
@@ -1975,13 +2019,18 @@ const App = {
     }
   },
 
-  converterArquivoParaBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
+  async converterArquivoParaBase64(file) {
+    try {
+      const res = await this.converterArquivoParaWebP(file, 1200, 0.85);
+      return res.dataUrl;
+    } catch (e) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
   },
 
   // 14. SUBMITS DE CADASTROS
@@ -2408,6 +2457,237 @@ const App = {
       this.showToast('Erro na Sincronização', 'Não foi possível enviar os materiais para a nuvem.', 'danger');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-arrow-up"></i> Sincronizar Materiais → Nuvem'; }
+    }
+  },
+
+  atualizarBadgesHeroUI(mediaType) {
+    const labelBanner = document.getElementById('label-media-banner');
+    const labelVideo = document.getElementById('label-media-video');
+    const badgeBanner = document.getElementById('badge-media-banner');
+    const badgeVideo = document.getElementById('badge-media-video');
+
+    if (mediaType === 'video') {
+      if (labelVideo) labelVideo.classList.add('active');
+      if (labelBanner) labelBanner.classList.remove('active');
+      if (badgeVideo) {
+        badgeVideo.textContent = '(Ativo)';
+        badgeVideo.style.color = '#2e7d32';
+        badgeVideo.style.fontWeight = '700';
+      }
+      if (badgeBanner) {
+        badgeBanner.textContent = '(Desativado)';
+        badgeBanner.style.color = 'var(--text-muted)';
+        badgeBanner.style.fontWeight = '600';
+      }
+    } else {
+      if (labelBanner) labelBanner.classList.add('active');
+      if (labelVideo) labelVideo.classList.remove('active');
+      if (badgeBanner) {
+        badgeBanner.textContent = '(Ativo)';
+        badgeBanner.style.color = '#2e7d32';
+        badgeBanner.style.fontWeight = '700';
+      }
+      if (badgeVideo) {
+        badgeVideo.textContent = '(Desativado)';
+        badgeVideo.style.color = 'var(--text-muted)';
+        badgeVideo.style.fontWeight = '600';
+      }
+    }
+  },
+
+  // === MÓDULO DE GESTÃO DO HERO E BANNERS DA PÁGINA INICIAL ===
+  async carregarHeroConfig() {
+    try {
+      const config = await DB.getHeroConfig();
+      const mediaBanner = document.getElementById('media-type-banner');
+      const mediaVideo = document.getElementById('media-type-video');
+      const inputDesktop = document.getElementById('hero-banner-desktop');
+      const inputMobile = document.getElementById('hero-banner-mobile');
+      const previewDesktop = document.getElementById('preview-hero-desktop');
+      const previewMobile = document.getElementById('preview-hero-mobile');
+
+      if (config.mediaType === 'video') {
+        if (mediaVideo) mediaVideo.checked = true;
+      } else {
+        if (mediaBanner) mediaBanner.checked = true;
+      }
+      this.atualizarBadgesHeroUI(config.mediaType);
+
+      const desktopUrl = config.desktopBanner || '/assets/desktop_banner_1.webp';
+      const mobileUrl = config.mobileBanner || '/assets/Mobile_banner_1.webp';
+
+      if (inputDesktop) inputDesktop.value = desktopUrl;
+      if (inputMobile) inputMobile.value = mobileUrl;
+      if (previewDesktop) previewDesktop.src = desktopUrl;
+      if (previewMobile) previewMobile.src = mobileUrl;
+    } catch (e) {
+      console.error("Erro ao carregar Hero config:", e);
+    }
+  },
+
+  aplicarPresetBanner(desktopUrl, mobileUrl) {
+    const inputDesktop = document.getElementById('hero-banner-desktop');
+    const inputMobile = document.getElementById('hero-banner-mobile');
+    const previewDesktop = document.getElementById('preview-hero-desktop');
+    const previewMobile = document.getElementById('preview-hero-mobile');
+
+    if (inputDesktop) {
+      inputDesktop.value = desktopUrl;
+      inputDesktop.dispatchEvent(new Event('input'));
+    }
+    if (inputMobile) {
+      inputMobile.value = mobileUrl;
+      inputMobile.dispatchEvent(new Event('input'));
+    }
+    if (previewDesktop) previewDesktop.src = desktopUrl;
+    if (previewMobile) previewMobile.src = mobileUrl;
+
+    this.showToast('Banner Selecionado', 'Banner aplicado aos campos. Clique em "Salvar Alterações no Hero" para confirmar.', 'info');
+  },
+
+  converterArquivoParaWebP(file, maxWidth = 1920, quality = 0.88) {
+    return new Promise((resolve, reject) => {
+      if (!file || !file.type.startsWith('image/')) {
+        return reject(new Error('Por favor, selecione um arquivo de imagem válido.'));
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Falha ao ler o arquivo de imagem.'));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Falha ao decodificar a imagem selecionada.'));
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+
+          // Redimensionamento proporcional se exceder a largura recomendada
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Formata obrigatoriamente a saída como image/webp
+          const dataUrlWebP = canvas.toDataURL('image/webp', quality);
+
+          canvas.toBlob((blob) => {
+            const sizeKB = blob ? Math.round(blob.size / 1024) : Math.round((dataUrlWebP.length * 0.75) / 1024);
+            resolve({
+              blob,
+              dataUrl: dataUrlWebP,
+              width,
+              height,
+              sizeKB
+            });
+          }, 'image/webp', quality);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  },
+
+  async processarUploadBanner(tipo) {
+    const isDesktop = tipo === 'desktop';
+    const fileInput = document.getElementById(isDesktop ? 'input-arquivo-hero-desktop' : 'input-arquivo-hero-mobile');
+    const btnUpload = document.getElementById(isDesktop ? 'btn-arquivo-hero-desktop' : 'btn-arquivo-hero-mobile');
+    const targetInput = document.getElementById(isDesktop ? 'hero-banner-desktop' : 'hero-banner-mobile');
+    const targetPreview = document.getElementById(isDesktop ? 'preview-hero-desktop' : 'preview-hero-mobile');
+
+    if (!fileInput || !fileInput.files || !fileInput.files[0]) return;
+    const file = fileInput.files[0];
+    const originalBtnHTML = btnUpload ? btnUpload.innerHTML : '';
+
+    try {
+      if (btnUpload) {
+        btnUpload.disabled = true;
+        btnUpload.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Formatando WebP...';
+      }
+
+      const maxWidth = isDesktop ? 1920 : 1080;
+      const resultado = await this.converterArquivoParaWebP(file, maxWidth, 0.88);
+
+      let finalUrl = resultado.dataUrl;
+
+      // Se Supabase Storage estiver ativo, faz upload automático do arquivo formatado em WebP
+      if (resultado.blob && DB.isSupabaseActive()) {
+        try {
+          const nomeFormatado = `banner_${tipo}_${Date.now()}.webp`;
+          const urlStorage = await DB.uploadBannerStorage(resultado.blob, nomeFormatado);
+          if (urlStorage) {
+            finalUrl = urlStorage;
+          }
+        } catch (storageErr) {
+          console.warn("Storage upload fallback para DataURL WebP:", storageErr);
+        }
+      }
+
+      if (targetInput) {
+        targetInput.value = finalUrl;
+        targetInput.dispatchEvent(new Event('input'));
+      }
+      if (targetPreview) {
+        targetPreview.src = finalUrl;
+      }
+
+      this.showToast('Formatado em WebP!', `Imagem formatada com sucesso para .webp (${resultado.width}x${resultado.height}px, ${resultado.sizeKB}KB). Clique em "Salvar Alterações" para publicar.`, 'success');
+    } catch (err) {
+      console.error("Erro ao converter e formatar imagem:", err);
+      this.showToast('Erro ao Formatar', err.message || 'Não foi possível formatar a imagem em WebP.', 'danger');
+    } finally {
+      if (btnUpload) {
+        btnUpload.disabled = false;
+        btnUpload.innerHTML = originalBtnHTML;
+      }
+      fileInput.value = '';
+    }
+  },
+
+  async handleSubmitHero(e) {
+    if (e) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    }
+    const btn = document.getElementById('btn-salvar-hero');
+    const originalHTML = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando no Site...';
+    }
+
+    try {
+      const mediaType = document.querySelector('input[name="hero_media_type"]:checked')?.value || 'banner';
+      const desktopBanner = document.getElementById('hero-banner-desktop')?.value.trim() || '/assets/desktop_banner_1.webp';
+      const mobileBanner = document.getElementById('hero-banner-mobile')?.value.trim() || '/assets/Mobile_banner_1.webp';
+
+      const config = {
+        mediaType,
+        desktopBanner,
+        mobileBanner,
+        bannersList: [
+          { desktop: desktopBanner, mobile: mobileBanner }
+        ]
+      };
+
+      await DB.salvarHeroConfig(config);
+      
+      // Notifica abas do site principal e componentes ativos
+      window.dispatchEvent(new CustomEvent('hero_config_updated', { detail: config }));
+      
+      this.showToast('Hero Atualizado!', 'O banner foi alterado com sucesso e já está ativo na página principal.', 'success');
+    } catch (err) {
+      console.error("Erro ao salvar Hero:", err);
+      this.showToast('Erro ao Salvar', 'Não foi possível salvar as configurações do Hero. ' + (err.message || ''), 'danger');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+      }
     }
   },
 

@@ -9,6 +9,9 @@ import QualitySection from './components/QualitySection';
 import Footer from './components/Footer';
 import ColecoeAnterioresPage from './pages/ColecoeAnterioresPage';
 import LinkHubPage from './pages/LinkHubPage';
+import SalePage from './pages/SalePage';
+import SaleStickyBar from './components/SaleStickyBar';
+import FloatingSaleTimer from './components/FloatingSaleTimer';
 
 /* Página principal */
 const HomePage = () => (
@@ -38,9 +41,13 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <SaleStickyBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/colecoes-anteriores" element={<ColecoeAnterioresPage />} />
+        <Route path="/sale" element={<SalePage />} />
+        <Route path="/promocao" element={<SalePage />} />
+        <Route path="/dia-do-consumidor" element={<SalePage />} />
         <Route path="/links" element={<LinkHubPage />} />
         <Route path="/hub" element={<LinkHubPage />} />
       </Routes>

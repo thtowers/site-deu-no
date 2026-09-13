@@ -53,31 +53,1553 @@ let supabaseClient = null;
 
 // ==================== SEEDS DE DADOS GLOBAIS (PRODUTOS, CLIENTES E VENDAS) ====================
 const produtosSeed = [
-      // COLARES
-      { id: 'p1', nome: 'Colar Rastro', categoria: 'Colar', sku: 'COL-RASTRO', custo: 10.00, mao_obra: 5.00, valor_venda: 40.00, lucro: 25.00, estoque: 15, status_margem: 'alta', foto: '/assets/produtos/rastro.webp', created_at: new Date('2026-02-15T10:00:00Z').toISOString() },
-      { id: 'p2', nome: 'Colar Fluxo', categoria: 'Colar', sku: 'COL-FLUXO', custo: 12.00, mao_obra: 5.00, valor_venda: 45.00, lucro: 28.00, estoque: 20, status_margem: 'alta', foto: '/assets/produtos/fluxo.webp', created_at: new Date('2026-02-15T11:00:00Z').toISOString() },
-      { id: 'p3', nome: 'Colar Traço', categoria: 'Colar', sku: 'COL-TRACO', custo: 14.00, mao_obra: 6.00, valor_venda: 58.00, lucro: 38.00, estoque: 12, status_margem: 'alta', foto: '/assets/produtos/traco.webp', created_at: new Date('2026-02-16T09:00:00Z').toISOString() },
-      { id: 'p4', nome: 'Colar Ângulo', categoria: 'Colar', sku: 'COL-ANGULO', custo: 15.00, mao_obra: 6.00, valor_venda: 60.00, lucro: 39.00, estoque: 10, status_margem: 'alta', foto: '/assets/produtos/angulo.webp', created_at: new Date('2026-02-18T14:00:00Z').toISOString() },
-      { id: 'p5', nome: 'Colar Ponto', categoria: 'Colar', sku: 'COL-PONTO', custo: 15.00, mao_obra: 6.00, valor_venda: 60.00, lucro: 39.00, estoque: 25, status_margem: 'alta', foto: '/assets/produtos/ponto.webp', created_at: new Date('2026-02-20T16:00:00Z').toISOString() },
-      { id: 'p6', nome: 'Colar Vínculo', categoria: 'Colar', sku: 'COL-VINCULO', custo: 16.00, mao_obra: 7.00, valor_venda: 65.00, lucro: 42.00, estoque: 8, status_margem: 'alta', foto: '/assets/produtos/vinculo.webp', created_at: new Date('2026-02-21T10:00:00Z').toISOString() },
-      { id: 'p7', nome: 'Colar Eixo', categoria: 'Colar', sku: 'COL-EIXO', custo: 18.00, mao_obra: 7.00, valor_venda: 70.00, lucro: 45.00, estoque: 18, status_margem: 'alta', foto: '/assets/produtos/eixo.webp', created_at: new Date('2026-02-22T11:00:00Z').toISOString() },
-      { id: 'p8', nome: 'Colar Domo', categoria: 'Colar', sku: 'COL-DOMO', custo: 20.00, mao_obra: 8.00, valor_venda: 75.00, lucro: 47.00, estoque: 6, status_margem: 'alta', foto: '/assets/produtos/domo.webp', created_at: new Date('2026-02-23T14:00:00Z').toISOString() },
-      { id: 'p9', nome: 'Colar Velo', categoria: 'Colar', sku: 'COL-VELO', custo: 20.00, mao_obra: 8.00, valor_venda: 75.00, lucro: 47.00, estoque: 10, status_margem: 'alta', foto: '/assets/produtos/velo.webp', created_at: new Date('2026-02-24T15:00:00Z').toISOString() },
-      { id: 'p10', nome: 'Colar Começo', categoria: 'Colar', sku: 'COL-COMECO', custo: 22.00, mao_obra: 8.00, valor_venda: 85.00, lucro: 55.00, estoque: 7, status_margem: 'alta', foto: '/assets/produtos/comeco.webp', created_at: new Date('2026-02-25T16:00:00Z').toISOString() },
-      { id: 'p11', nome: 'Colar Eco', categoria: 'Colar', sku: 'COL-ECO', custo: 24.00, mao_obra: 9.00, valor_venda: 85.00, lucro: 52.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/eco.webp', created_at: new Date('2026-02-26T17:00:00Z').toISOString() },
-      
-      // PULSEIRAS
-      { id: 'p12', nome: 'Pulseira Orvalho', categoria: 'Pulseira', sku: 'PUL-ORVALHO', custo: 12.00, mao_obra: 5.00, valor_venda: 48.00, lucro: 31.00, estoque: 22, status_margem: 'alta', foto: '/assets/produtos/orvalho.webp', created_at: new Date('2026-02-27T10:00:00Z').toISOString() },
-      { id: 'p13', nome: 'Pulseira Elo', categoria: 'Pulseira', sku: 'PUL-ELO', custo: 13.00, mao_obra: 5.00, valor_venda: 50.00, lucro: 32.00, estoque: 30, status_margem: 'alta', foto: '/assets/produtos/elo.webp', created_at: new Date('2026-02-27T11:00:00Z').toISOString() },
-      { id: 'p14', nome: 'Pulseira Laço', categoria: 'Pulseira', sku: 'PUL-LACO', custo: 14.00, mao_obra: 6.00, valor_venda: 55.00, lucro: 35.00, estoque: 15, status_margem: 'alta', foto: '/assets/produtos/laco.webp', created_at: new Date('2026-02-28T09:00:00Z').toISOString() },
-      
-      // BRINCOS
-      { id: 'p15', nome: 'Brinco Bae', categoria: 'Brinco', sku: 'BRI-BAE', custo: 7.00, mao_obra: 3.00, valor_venda: 30.00, lucro: 20.00, estoque: 0, status_margem: 'alta', foto: '/assets/produtos/bae5.webp', created_at: new Date('2026-02-28T14:00:00Z').toISOString() },
-      { id: 'p16', nome: 'Brinco Douré', categoria: 'Brinco', sku: 'BRI-DOURE', custo: 9.00, mao_obra: 4.00, valor_venda: 40.00, lucro: 27.00, estoque: 20, status_margem: 'alta', foto: '/assets/produtos/doure.webp', created_at: new Date('2026-02-28T15:00:00Z').toISOString() },
-      { id: 'p17', nome: 'Brinco Amá', categoria: 'Brinco', sku: 'BRI-AMA', custo: 10.00, mao_obra: 4.00, valor_venda: 45.00, lucro: 31.00, estoque: 35, status_margem: 'alta', foto: '/assets/produtos/ama.webp', created_at: new Date('2026-02-28T16:00:00Z').toISOString() }
-,
-      { id: 'p18', nome: 'Colar Sopro', categoria: 'Colar', sku: 'COL-SOPRO', custo: 60.02, mao_obra: 10.00, valor_venda: 85.00, lucro: 24.98, estoque: 10, status_margem: 'alta', foto: '/assets/produtos/sopro.webp', created_at: new Date('2026-02-28T17:00:00Z').toISOString() }
-    ];
+  {
+    "id": "p1",
+    "nome": "Colar Ainda",
+    "categoria": "Colar",
+    "sku": "COL-AINDA",
+    "custo": 12,
+    "mao_obra": 5,
+    "valor_venda": 37,
+    "valor_venda_atacado": 26,
+    "estoque": 10,
+    "foto": "/assets/produtos/ainda.webp",
+    "fotos_extras": [
+      "/assets/produtos/ainda2.webp"
+    ],
+    "descricao": "Ainda existe muito de você pra descobrir.",
+    "material": "Corda náutica e acabamentos banhados",
+    "destaque": true,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 20,
+    "lucro_atacado": 9,
+    "margem_desejada_varejo": 54.05,
+    "margem_desejada_atacado": 34.62,
+    "status_margem": "alta",
+    "status_margem_atacado": "media",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p2",
+    "nome": "Colar Enfim",
+    "categoria": "Colar",
+    "sku": "COL-ENFIM",
+    "custo": 14,
+    "mao_obra": 6,
+    "valor_venda": 45,
+    "valor_venda_atacado": 32,
+    "estoque": 12,
+    "foto": "/assets/produtos/enfim.webp",
+    "fotos_extras": [
+      "/assets/produtos/enfim2.webp"
+    ],
+    "descricao": "Algumas respostas levam tempo. Enfim, elas chegam.",
+    "material": "Camurça ecológica e metais finos",
+    "destaque": true,
+    "cores": [
+      "camurca_marrom",
+      "camurca_caramelo",
+      "camurca_areia",
+      "camurca_preto"
+    ],
+    "lucro": 25,
+    "lucro_atacado": 12,
+    "margem_desejada_varejo": 55.56,
+    "margem_desejada_atacado": 37.5,
+    "status_margem": "alta",
+    "status_margem_atacado": "media",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p3",
+    "nome": "Colar Agora",
+    "categoria": "Colar",
+    "sku": "COL-AGORA",
+    "custo": 16,
+    "mao_obra": 7,
+    "valor_venda": 55,
+    "valor_venda_atacado": 39,
+    "estoque": 10,
+    "foto": "/assets/produtos/agora1.webp",
+    "fotos_extras": [
+      "/assets/produtos/agora2.1.webp"
+    ],
+    "descricao": "O momento certo tem o nome do presente.",
+    "material": "Camurça e banhos metálicos bicolores",
+    "destaque": true,
+    "cores": [
+      "prata_e_dourado",
+      "preto_dourado",
+      "camurca_marrom",
+      "camurca_caramelo",
+      "camurca_areia",
+      "camurca_preto"
+    ],
+    "lucro": 32,
+    "lucro_atacado": 16,
+    "margem_desejada_varejo": 58.18,
+    "margem_desejada_atacado": 41.03,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p4",
+    "nome": "Colar Adiante",
+    "categoria": "Colar",
+    "sku": "COL-ADIANTE",
+    "custo": 18,
+    "mao_obra": 7,
+    "valor_venda": 65,
+    "valor_venda_atacado": 45,
+    "estoque": 8,
+    "foto": "/assets/produtos/adiante1.webp",
+    "fotos_extras": [
+      "/assets/produtos/adiante2.webp"
+    ],
+    "descricao": "Olhe adiante. O passado já cumpriu seu papel.",
+    "material": "Cordão São Francisco e metais banhados",
+    "destaque": true,
+    "cores": [
+      "azul_marinho_sf",
+      "marrom_sf",
+      "bordo_sf",
+      "preto_sf",
+      "bege_natural_sf",
+      "turquesa_sf"
+    ],
+    "lucro": 40,
+    "lucro_atacado": 20,
+    "margem_desejada_varejo": 61.54,
+    "margem_desejada_atacado": 44.44,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p5",
+    "nome": "Colar Inteira",
+    "categoria": "Colar",
+    "sku": "COL-INTEIRA",
+    "custo": 20,
+    "mao_obra": 8,
+    "valor_venda": 75,
+    "valor_venda_atacado": 52,
+    "estoque": 15,
+    "foto": "/assets/produtos/inteira1.webp",
+    "fotos_extras": [
+      "/assets/produtos/inteira2.webp"
+    ],
+    "descricao": "Você nunca precisou ser metade.",
+    "material": "Corda náutica com múltiplos nós artesanais",
+    "destaque": true,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 47,
+    "lucro_atacado": 24,
+    "margem_desejada_varejo": 62.67,
+    "margem_desejada_atacado": 46.15,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p6",
+    "nome": "Colar Pausa",
+    "categoria": "Colar",
+    "sku": "COL-PAUSA",
+    "custo": 20,
+    "mao_obra": 8,
+    "valor_venda": 75,
+    "valor_venda_atacado": 52,
+    "estoque": 10,
+    "foto": "/assets/produtos/pausa.webp",
+    "fotos_extras": [
+      "/assets/produtos/pausa2.webp"
+    ],
+    "descricao": "Nem toda pausa interrompe. Algumas transformam.",
+    "material": "Corda náutica premium e entremeios",
+    "destaque": true,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 47,
+    "lucro_atacado": 24,
+    "margem_desejada_varejo": 62.67,
+    "margem_desejada_atacado": 46.15,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p7",
+    "nome": "Colar Entre",
+    "categoria": "Colar",
+    "sku": "COL-ENTRE",
+    "custo": 21,
+    "mao_obra": 8,
+    "valor_venda": 78,
+    "valor_venda_atacado": 55,
+    "estoque": 8,
+    "foto": "/assets/produtos/entre1.webp",
+    "fotos_extras": [
+      "/assets/produtos/entre2.webp"
+    ],
+    "descricao": "Entre quem você foi e quem escolheu ser.",
+    "material": "Corda náutica entrelaçada e metais",
+    "destaque": false,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 49,
+    "lucro_atacado": 26,
+    "margem_desejada_varejo": 62.82,
+    "margem_desejada_atacado": 47.27,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p8",
+    "nome": "Colar Margem",
+    "categoria": "Colar",
+    "sku": "COL-MARGEM",
+    "custo": 21,
+    "mao_obra": 8,
+    "valor_venda": 78,
+    "valor_venda_atacado": 55,
+    "estoque": 9,
+    "foto": "/assets/produtos/margem1.webp",
+    "fotos_extras": [
+      "/assets/produtos/margem2.webp"
+    ],
+    "descricao": "Foi longe do centro que você encontrou a si mesma.",
+    "material": "Corda náutica bicolor e ponteiras banhadas",
+    "destaque": false,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 49,
+    "lucro_atacado": 26,
+    "margem_desejada_varejo": 62.82,
+    "margem_desejada_atacado": 47.27,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p9",
+    "nome": "Colar Começo",
+    "categoria": "Colar",
+    "sku": "COL-COMECO",
+    "custo": 22,
+    "mao_obra": 8,
+    "valor_venda": 85,
+    "valor_venda_atacado": 60,
+    "estoque": 7,
+    "foto": "/assets/produtos/comeco.webp",
+    "fotos_extras": [
+      "/assets/produtos/comeco2.webp"
+    ],
+    "descricao": "Toda mudança tem um primeiro gesto.",
+    "material": "Corda náutica nobre estruturada",
+    "destaque": true,
+    "cores": [
+      "preto",
+      "azul_marinho",
+      "verde_jade",
+      "terracota"
+    ],
+    "lucro": 55,
+    "lucro_atacado": 30,
+    "margem_desejada_varejo": 64.71,
+    "margem_desejada_atacado": 50,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p10",
+    "nome": "Pulseira Volta",
+    "categoria": "Pulseira",
+    "sku": "PUL-VOLTA",
+    "custo": 12,
+    "mao_obra": 5,
+    "valor_venda": 45,
+    "valor_venda_atacado": 32,
+    "estoque": 14,
+    "foto": "/assets/produtos/volta2.webp",
+    "fotos_extras": [
+      "/assets/produtos/volta1.webp"
+    ],
+    "descricao": "Às vezes, voltar é seguir.",
+    "material": "Cordão São Francisco e terminais banhados",
+    "destaque": true,
+    "cores": [
+      "azul_marinho_sf",
+      "preto_sf",
+      "marrom_sf",
+      "bordo_sf",
+      "bege_natural_sf",
+      "turquesa_sf"
+    ],
+    "lucro": 28,
+    "lucro_atacado": 15,
+    "margem_desejada_varejo": 62.22,
+    "margem_desejada_atacado": 46.88,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p11",
+    "nome": "Pulseira Orvalho",
+    "categoria": "Pulseira",
+    "sku": "PUL-ORVALHO",
+    "custo": 12,
+    "mao_obra": 5,
+    "valor_venda": 48,
+    "valor_venda_atacado": 34,
+    "estoque": 22,
+    "foto": "/assets/produtos/orvalho1.2.webp",
+    "fotos_extras": [
+      "/assets/produtos/orvalho2.2.webp"
+    ],
+    "descricao": "Sútil no olhar, marcante no sentir.",
+    "material": "Corda de polipropileno e passador tubo 36mm",
+    "destaque": true,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 31,
+    "lucro_atacado": 17,
+    "margem_desejada_varejo": 64.58,
+    "margem_desejada_atacado": 50,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p12",
+    "nome": "Pulseira Elo",
+    "categoria": "Pulseira",
+    "sku": "PUL-ELO",
+    "custo": 13,
+    "mao_obra": 5,
+    "valor_venda": 50,
+    "valor_venda_atacado": 35,
+    "estoque": 30,
+    "foto": "/assets/produtos/elo.2.1.webp",
+    "fotos_extras": [
+      "/assets/produtos/elo2.2.webp"
+    ],
+    "descricao": "Presença que se impõe, estilo que permanece.",
+    "material": "Corda de polipropileno e passador duplo 23mm",
+    "destaque": true,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 32,
+    "lucro_atacado": 17,
+    "margem_desejada_varejo": 64,
+    "margem_desejada_atacado": 48.57,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p13",
+    "nome": "Brinco Bae",
+    "categoria": "Brinco",
+    "sku": "BRI-BAE",
+    "custo": 7,
+    "mao_obra": 3,
+    "valor_venda": 30,
+    "valor_venda_atacado": 22,
+    "estoque": 15,
+    "foto": "/assets/produtos/bae5.webp",
+    "fotos_extras": [
+      "/assets/produtos/bae6.webp"
+    ],
+    "descricao": "Prova: o essencial também impõe presença.",
+    "material": "Corda polipropileno e base 10mm banhada",
+    "destaque": true,
+    "cores": [
+      "azul_marinho",
+      "preto",
+      "areia",
+      "vermelho_figo",
+      "cinza",
+      "mostarda",
+      "terracota",
+      "verde_militar",
+      "verde_bandeira",
+      "verde_jade",
+      "marrom_escuro",
+      "marrom",
+      "caramelo",
+      "rami",
+      "chumbo"
+    ],
+    "lucro": 20,
+    "lucro_atacado": 12,
+    "margem_desejada_varejo": 66.67,
+    "margem_desejada_atacado": 54.55,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p14",
+    "nome": "Brinco Longe",
+    "categoria": "Brinco",
+    "sku": "BRI-LONGE",
+    "custo": 8,
+    "mao_obra": 4,
+    "valor_venda": 35,
+    "valor_venda_atacado": 25,
+    "estoque": 12,
+    "foto": "/assets/produtos/1787353286403~2.jpg.webp",
+    "fotos_extras": [
+      "/assets/produtos/1786963377150.webp"
+    ],
+    "descricao": "Algumas distâncias aproximam.",
+    "material": "Corda náutica com gotas resinadas",
+    "destaque": true,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 23,
+    "lucro_atacado": 13,
+    "margem_desejada_varejo": 65.71,
+    "margem_desejada_atacado": 52,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p15",
+    "nome": "Brinco Douré",
+    "categoria": "Brinco",
+    "sku": "BRI-DOURE",
+    "custo": 9,
+    "mao_obra": 4,
+    "valor_venda": 40,
+    "valor_venda_atacado": 28,
+    "estoque": 20,
+    "foto": "/assets/produtos/1786824425529.webp",
+    "fotos_extras": [
+      "/assets/produtos/1786731366461.webp"
+    ],
+    "descricao": "Menos dúvida, mais presença.",
+    "material": "Corda polipropileno e base 9.8mm banhada ouro",
+    "destaque": true,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "marrom_escuro",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 27,
+    "lucro_atacado": 15,
+    "margem_desejada_varejo": 67.5,
+    "margem_desejada_atacado": 53.57,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p16",
+    "nome": "Brinco Amá",
+    "categoria": "Brinco",
+    "sku": "BRI-AMA",
+    "custo": 10,
+    "mao_obra": 4,
+    "valor_venda": 45,
+    "valor_venda_atacado": 32,
+    "estoque": 25,
+    "foto": "/assets/produtos/Ama1.1.webp",
+    "fotos_extras": [
+      "/assets/produtos/Ama1.2.webp"
+    ],
+    "descricao": "Onde o atemporal encontra a sua força.",
+    "material": "Corda e base argola nobre banhada",
+    "destaque": true,
+    "cores": [
+      "rami",
+      "azul_marinho",
+      "chumbo",
+      "verde_bandeira",
+      "areia",
+      "preto",
+      "verde_jade",
+      "mostarda",
+      "marrom",
+      "marrom_escuro",
+      "caramelo",
+      "vinho",
+      "vermelho_figo",
+      "terracota",
+      "vermelho",
+      "rosa",
+      "roxo",
+      "azul_royal",
+      "verde_militar",
+      "rosa_bebe",
+      "azul_bebe",
+      "cinza",
+      "azul_marinho_sf",
+      "preto_sf",
+      "marrom_sf",
+      "bege_natural_sf",
+      "bordo_sf",
+      "turquesa_sf"
+    ],
+    "lucro": 31,
+    "lucro_atacado": 18,
+    "margem_desejada_varejo": 68.89,
+    "margem_desejada_atacado": 56.25,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p17",
+    "nome": "Colar Rastro",
+    "categoria": "Colar",
+    "sku": "COL-RASTRO",
+    "custo": 10,
+    "mao_obra": 5,
+    "valor_venda": 40,
+    "valor_venda_atacado": 28,
+    "estoque": 15,
+    "foto": "/assets/produtos/rastro.webp",
+    "fotos_extras": [
+      "/assets/produtos/rastro2.webp",
+      "/assets/produtos/rastro3.webp"
+    ],
+    "descricao": "Forte, marcante, inesquecível — como você.",
+    "material": "Corda polipropileno, chapa e bola oval",
+    "destaque": false,
+    "cores": [
+      "verde_militar",
+      "verde_bandeira",
+      "azul_marinho",
+      "caramelo",
+      "verde_jade"
+    ],
+    "lucro": 25,
+    "lucro_atacado": 13,
+    "margem_desejada_varejo": 62.5,
+    "margem_desejada_atacado": 46.43,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p18",
+    "nome": "Colar Fluxo",
+    "categoria": "Colar",
+    "sku": "COL-FLUXO",
+    "custo": 12,
+    "mao_obra": 5,
+    "valor_venda": 45,
+    "valor_venda_atacado": 32,
+    "estoque": 20,
+    "foto": "/assets/produtos/Fluxo4.webp",
+    "fotos_extras": [
+      "/assets/produtos/Fluxo5.webp",
+      "/assets/produtos/fluxo3.webp"
+    ],
+    "descricao": "Um colar, infinitas versões de você.",
+    "material": "Marroquino, corrente argola e pingente coração",
+    "destaque": false,
+    "cores": [
+      "preto_dourado",
+      "prata_e_dourado"
+    ],
+    "lucro": 28,
+    "lucro_atacado": 15,
+    "margem_desejada_varejo": 62.22,
+    "margem_desejada_atacado": 46.88,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p19",
+    "nome": "Colar Traço",
+    "categoria": "Colar",
+    "sku": "COL-TRACO",
+    "custo": 14,
+    "mao_obra": 6,
+    "valor_venda": 58,
+    "valor_venda_atacado": 40,
+    "estoque": 12,
+    "foto": "/assets/produtos/traco.webp",
+    "fotos_extras": [
+      "/assets/produtos/traco2.webp",
+      "/assets/produtos/traco3.webp",
+      "/assets/produtos/traco4.webp",
+      "/assets/produtos/traco5.webp"
+    ],
+    "descricao": "A força do simples bem definido.",
+    "material": "Corda polipropileno e entremeio de resina",
+    "destaque": false,
+    "cores": [
+      "preto",
+      "terracota",
+      "marrom"
+    ],
+    "lucro": 38,
+    "lucro_atacado": 20,
+    "margem_desejada_varejo": 65.52,
+    "margem_desejada_atacado": 50,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p20",
+    "nome": "Colar Ângulo",
+    "categoria": "Colar",
+    "sku": "COL-ANGULO",
+    "custo": 15,
+    "mao_obra": 6,
+    "valor_venda": 60,
+    "valor_venda_atacado": 42,
+    "estoque": 10,
+    "foto": "/assets/produtos/angulo.webp",
+    "fotos_extras": [
+      "/assets/produtos/angulo2.webp",
+      "/assets/produtos/angulo3.webp",
+      "/assets/produtos/angulo4.webp"
+    ],
+    "descricao": "Impacto sutil, elegância absoluta.",
+    "material": "Cordão São Francisco e tubo orgânico",
+    "destaque": false,
+    "cores": [
+      "bordo_sf",
+      "azul_marinho_sf",
+      "bege_natural_sf",
+      "marrom_sf",
+      "preto_sf",
+      "turquesa_sf"
+    ],
+    "lucro": 39,
+    "lucro_atacado": 21,
+    "margem_desejada_varejo": 65,
+    "margem_desejada_atacado": 50,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p21",
+    "nome": "Colar Vínculo",
+    "categoria": "Colar",
+    "sku": "COL-VINCULO",
+    "custo": 16,
+    "mao_obra": 7,
+    "valor_venda": 65,
+    "valor_venda_atacado": 45,
+    "estoque": 8,
+    "foto": "/assets/produtos/vinculo.webp",
+    "fotos_extras": [
+      "/assets/produtos/vinculo2.webp",
+      "/assets/produtos/vinculo4.webp"
+    ],
+    "descricao": "Moderno no design, forte na personalidade.",
+    "material": "Lenço de cetim e pingente estrela",
+    "destaque": false,
+    "cores": [
+      "lenço_azul_bebe",
+      "lenço_vermelho",
+      "lenço_preto",
+      "lenço_branco",
+      "lenço_vermelho_vivo",
+      "lenço_bege",
+      "lenço_marrom_escuro",
+      "lenço_azul_marinho",
+      "lenço_verde",
+      "lenço_verde_escuro"
+    ],
+    "lucro": 42,
+    "lucro_atacado": 22,
+    "margem_desejada_varejo": 64.62,
+    "margem_desejada_atacado": 48.89,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p22",
+    "nome": "Colar Eixo",
+    "categoria": "Colar",
+    "sku": "COL-EIXO",
+    "custo": 18,
+    "mao_obra": 7,
+    "valor_venda": 70,
+    "valor_venda_atacado": 49,
+    "estoque": 18,
+    "foto": "/assets/produtos/eixo.webp",
+    "fotos_extras": [
+      "/assets/produtos/eixo2.webp",
+      "/assets/produtos/eixo3.webp"
+    ],
+    "descricao": "O equilíbrio entre quem você é e o que você mostra.",
+    "material": "Corda náutica geométrica e passadores",
+    "destaque": false,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "vinho",
+      "caramelo",
+      "marrom",
+      "marrom_escuro",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 45,
+    "lucro_atacado": 24,
+    "margem_desejada_varejo": 64.29,
+    "margem_desejada_atacado": 48.98,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p23",
+    "nome": "Colar Domo",
+    "categoria": "Colar",
+    "sku": "COL-DOMO",
+    "custo": 20,
+    "mao_obra": 8,
+    "valor_venda": 75,
+    "valor_venda_atacado": 52,
+    "estoque": 6,
+    "foto": "/assets/produtos/domo2.webp",
+    "fotos_extras": [
+      "/assets/produtos/domo.webp",
+      "/assets/produtos/domo3.webp"
+    ],
+    "descricao": "Design moderno com personalidade inconfundível.",
+    "material": "Resina tartaruga e corda de alta qualidade",
+    "destaque": false,
+    "cores": [
+      "marrom",
+      "preto",
+      "terracota",
+      "areia",
+      "caramelo",
+      "verde_militar",
+      "mostarda"
+    ],
+    "lucro": 47,
+    "lucro_atacado": 24,
+    "margem_desejada_varejo": 62.67,
+    "margem_desejada_atacado": 46.15,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p24",
+    "nome": "Colar Velo",
+    "categoria": "Colar",
+    "sku": "COL-VELO",
+    "custo": 20,
+    "mao_obra": 8,
+    "valor_venda": 75,
+    "valor_venda_atacado": 52,
+    "estoque": 10,
+    "foto": "/assets/produtos/velo.webp",
+    "fotos_extras": [
+      "/assets/produtos/velo2.webp",
+      "/assets/produtos/velo3.webp",
+      "/assets/produtos/velo4.webp"
+    ],
+    "descricao": "Sofisticação que revela sua essência.",
+    "material": "Cordões entrelaçados e ponteiras artesanais",
+    "destaque": false,
+    "cores": [
+      "preto",
+      "azul_marinho",
+      "marrom"
+    ],
+    "lucro": 47,
+    "lucro_atacado": 24,
+    "margem_desejada_varejo": 62.67,
+    "margem_desejada_atacado": 46.15,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p25",
+    "nome": "Colar Lume",
+    "categoria": "Colar",
+    "sku": "COL-LUME",
+    "custo": 15,
+    "mao_obra": 6,
+    "valor_venda": 55,
+    "valor_venda_atacado": 38,
+    "estoque": 8,
+    "foto": "/assets/produtos/luma4.webp",
+    "fotos_extras": [
+      "/assets/produtos/luma3.webp",
+      "/assets/produtos/lume.webp"
+    ],
+    "descricao": "Não passa despercebido. Nem tenta.",
+    "material": "Corda estruturada e acabamento fino",
+    "destaque": false,
+    "cores": [
+      "verde_militar",
+      "preto"
+    ],
+    "lucro": 34,
+    "lucro_atacado": 17,
+    "margem_desejada_varejo": 61.82,
+    "margem_desejada_atacado": 44.74,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p26",
+    "nome": "Colar Esfera",
+    "categoria": "Colar",
+    "sku": "COL-ESFERA",
+    "custo": 18,
+    "mao_obra": 7,
+    "valor_venda": 65,
+    "valor_venda_atacado": 45,
+    "estoque": 10,
+    "foto": "/assets/produtos/esfera.webp",
+    "fotos_extras": [
+      "/assets/produtos/esfera1.webp",
+      "/assets/produtos/esfera2.webp"
+    ],
+    "descricao": "Um nó, infinitas combinações.",
+    "material": "Corda náutica e passador esférico",
+    "destaque": false,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "caramelo",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho"
+    ],
+    "lucro": 40,
+    "lucro_atacado": 20,
+    "margem_desejada_varejo": 61.54,
+    "margem_desejada_atacado": 44.44,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p27",
+    "nome": "Colar Chave",
+    "categoria": "Colar",
+    "sku": "COL-CHAVE",
+    "custo": 10,
+    "mao_obra": 5,
+    "valor_venda": 40,
+    "valor_venda_atacado": 28,
+    "estoque": 14,
+    "foto": "/assets/produtos/chave.webp",
+    "fotos_extras": [
+      "/assets/produtos/chave2.webp"
+    ],
+    "descricao": "Discreto o suficiente para o olhar. Inesquecível para a memória.",
+    "material": "Corda minimalista e pingente chave",
+    "destaque": false,
+    "cores": [
+      "areia",
+      "cinza",
+      "azul_bebe",
+      "amarelo_manteiga",
+      "verde_limao",
+      "rosa_bebe",
+      "verde_militar",
+      "azul_petroleo",
+      "verde_bandeira",
+      "azul_marinho",
+      "azul_anil",
+      "azul_royal",
+      "roxo",
+      "rosa",
+      "laranja",
+      "vermelho",
+      "terracota",
+      "vermelho_figo",
+      "caramelo",
+      "chumbo",
+      "mostarda",
+      "verde_jade",
+      "preto",
+      "preto_poa_branco",
+      "azul_marinho_poa_branco",
+      "verde_militar_poa_branco",
+      "rami_branco",
+      "areia_poa_marrom_escuro",
+      "vermelho_poa_azul_marinho",
+      "areia_caramelo_mesclada"
+    ],
+    "lucro": 25,
+    "lucro_atacado": 13,
+    "margem_desejada_varejo": 62.5,
+    "margem_desejada_atacado": 46.43,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p28",
+    "nome": "Colar Ponto",
+    "categoria": "Colar",
+    "sku": "COL-PONTO",
+    "custo": 15,
+    "mao_obra": 6,
+    "valor_venda": 60,
+    "valor_venda_atacado": 42,
+    "estoque": 12,
+    "foto": "/assets/produtos/ponto.webp",
+    "fotos_extras": [
+      "/assets/produtos/ponto2.webp"
+    ],
+    "descricao": "O ponto exato de equilíbrio no seu visual.",
+    "material": "Corda polipropileno e chapa",
+    "destaque": false,
+    "cores": [
+      "preto",
+      "areia",
+      "verde_militar",
+      "caramelo"
+    ],
+    "lucro": 39,
+    "lucro_atacado": 21,
+    "margem_desejada_varejo": 65,
+    "margem_desejada_atacado": 50,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p29",
+    "nome": "Colar Eco",
+    "categoria": "Colar",
+    "sku": "COL-ECO",
+    "custo": 24,
+    "mao_obra": 9,
+    "valor_venda": 85,
+    "valor_venda_atacado": 59,
+    "estoque": 6,
+    "foto": "/assets/produtos/eco.webp",
+    "fotos_extras": [
+      "/assets/produtos/eco2.webp"
+    ],
+    "descricao": "Design sustentável que reverbera sofisticação.",
+    "material": "Cordões nobres e ponteiras banhadas",
+    "destaque": false,
+    "cores": [
+      "areia",
+      "marrom",
+      "verde_jade",
+      "preto"
+    ],
+    "lucro": 52,
+    "lucro_atacado": 26,
+    "margem_desejada_varejo": 61.18,
+    "margem_desejada_atacado": 44.07,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p30",
+    "nome": "Pulseira Laço",
+    "categoria": "Pulseira",
+    "sku": "PUL-LACO",
+    "custo": 14,
+    "mao_obra": 6,
+    "valor_venda": 55,
+    "valor_venda_atacado": 38,
+    "estoque": 15,
+    "foto": "/assets/produtos/laco.webp",
+    "fotos_extras": [
+      "/assets/produtos/laco2.webp"
+    ],
+    "descricao": "O laço que une elegância e delicadeza.",
+    "material": "Corda de polipropileno e passador 22mm",
+    "destaque": false,
+    "cores": [
+      "areia",
+      "preto",
+      "terracota",
+      "azul_marinho"
+    ],
+    "lucro": 35,
+    "lucro_atacado": 18,
+    "margem_desejada_varejo": 63.64,
+    "margem_desejada_atacado": 47.37,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "id": "p31",
+    "nome": "Colar Sopro",
+    "categoria": "Colar",
+    "sku": "COL-SOPRO",
+    "custo": 22,
+    "mao_obra": 8,
+    "valor_venda": 85,
+    "valor_venda_atacado": 59,
+    "estoque": 8,
+    "foto": "/assets/produtos/sopro.webp",
+    "fotos_extras": [],
+    "descricao": "Leveza e fluidez em cada curva artesanal.",
+    "material": "Corda náutica e metais dourados",
+    "destaque": false,
+    "cores": [
+      "areia",
+      "preto",
+      "verde_militar"
+    ],
+    "lucro": 55,
+    "lucro_atacado": 29,
+    "margem_desejada_varejo": 64.71,
+    "margem_desejada_atacado": 49.15,
+    "status_margem": "alta",
+    "status_margem_atacado": "alta",
+    "pronta_entrega": true,
+    "ativo": true,
+    "peso": 0.2,
+    "largura": 11,
+    "altura": 4,
+    "comprimento": 16,
+    "created_at": "2026-03-01T10:00:00.000Z"
+  }
+];
 
 const clientesSeed = [
       { id: 'c1', nome: 'Mariana Silva Souza', telefone: '(11) 98888-7777', tipo_cliente: 'varejo', total_compras: 525.00, created_at: new Date('2026-03-01T10:00:00Z').toISOString() },
@@ -1022,6 +2544,26 @@ const DB = {
   },
 
   // 7. CARREGADOR DE DADOS DO CATÁLOGO REAL DEU NÓ (SEEDER)
+    async resetarCatalogoOficial() {
+    console.log("Resetando catálogo para produtos oficiais da Deu Nó...");
+    this.setLocalData(LOCAL_KEYS.PRODUTOS, produtosSeed);
+    if (this.isSupabaseActive()) {
+      try {
+        await supabaseClient.from("produtos").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+        const payload = produtosSeed.map(p => {
+          const pCopy = { ...p };
+          delete pCopy.id;
+          return pCopy;
+        });
+        await supabaseClient.from("produtos").insert(payload);
+        console.log("Supabase repovoado com 31 produtos oficiais!");
+      } catch(e) {
+        console.error("Erro ao repovoar Supabase:", e);
+      }
+    }
+    return produtosSeed;
+  },
+
   semearSeVazio() {
     let produtosExistentes = this.getLocalData(LOCAL_KEYS.PRODUTOS);
     let vendasExistentes = this.getLocalData(LOCAL_KEYS.VENDAS);
@@ -1152,7 +2694,7 @@ const DB = {
 
     // Força a atualização/mesclagem dos dados locais (vendas e produtos de Maio)
     const DB_DATA_VERSION_KEY = 'site_semijoias_data_version';
-    const DATA_VERSION_ATUAL = 'v4';
+    const DATA_VERSION_ATUAL = 'v5';
     const dataVersaoSalva = localStorage.getItem(DB_DATA_VERSION_KEY);
 
     if (dataVersaoSalva !== DATA_VERSION_ATUAL) {
@@ -1183,10 +2725,118 @@ const DB = {
     }
 
     console.log("Semeando banco de dados local com catálogo real Deu Nó e histórico financeiro...");
+  },
 
-    // 17 PRODUTOS OFICIAIS DO CATÁLOGO DEU NÓ COM FOTOS REAIS
-    
+  // 8. CONFIGURAÇÕES DO HERO & BANNERS DO SITE
+  async getHeroConfig() {
+    const defaultConfig = {
+      mediaType: 'banner',
+      desktopBanner: '/assets/desktop_banner_1.webp',
+      mobileBanner: '/assets/Mobile_banner_1.webp',
+      bannersList: [
+        { desktop: '/assets/desktop_banner_1.webp', mobile: '/assets/Mobile_banner_1.webp' },
+        { desktop: '/assets/desktop_banner_2.webp', mobile: '/assets/mobile_banner_2.webp' },
+        { desktop: '/assets/desktop_banner_3.webp', mobile: '/assets/mobile_banner_3.webp' }
+      ]
+    };
 
+    if (this.isSupabaseActive()) {
+      try {
+        const { data, error } = await supabaseClient
+          .from('website_settings')
+          .select('key, value')
+          .in('key', ['hero_media_type', 'hero_banner_desktop', 'hero_banner_mobile', 'hero_banners_list']);
+
+        if (!error && data && data.length > 0) {
+          const map = {};
+          data.forEach(d => { map[d.key] = d.value; });
+          
+          let bannersList = defaultConfig.bannersList;
+          if (map.hero_banners_list) {
+            try { bannersList = JSON.parse(map.hero_banners_list); } catch (e) {}
+          } else if (map.hero_banner_desktop || map.hero_banner_mobile) {
+            bannersList = [{
+              desktop: map.hero_banner_desktop || defaultConfig.desktopBanner,
+              mobile: map.hero_banner_mobile || defaultConfig.mobileBanner
+            }];
+          }
+
+          const resolved = {
+            mediaType: map.hero_media_type || defaultConfig.mediaType,
+            desktopBanner: map.hero_banner_desktop || defaultConfig.desktopBanner,
+            mobileBanner: map.hero_banner_mobile || defaultConfig.mobileBanner,
+            bannersList
+          };
+          localStorage.setItem('site_hero_config', JSON.stringify(resolved));
+          return resolved;
+        }
+      } catch (err) {
+        console.warn("Erro ao buscar Hero Config no Supabase:", err);
+      }
+    }
+
+    const local = localStorage.getItem('site_hero_config');
+    return local ? JSON.parse(local) : defaultConfig;
+  },
+
+  async salvarHeroConfig(config) {
+    localStorage.setItem('site_hero_config', JSON.stringify(config));
+
+    if (this.isSupabaseActive()) {
+      try {
+        const updates = [
+          { key: 'hero_media_type', value: config.mediaType || 'banner', description: 'Tipo de mídia exibida no Hero da página inicial: banner ou video' },
+          { key: 'hero_banner_desktop', value: config.desktopBanner || '/assets/desktop_banner_1.webp', description: 'Caminho ou URL do banner desktop principal do Hero' },
+          { key: 'hero_banner_mobile', value: config.mobileBanner || '/assets/Mobile_banner_1.webp', description: 'Caminho ou URL do banner mobile principal do Hero' },
+          { key: 'hero_banners_list', value: JSON.stringify(config.bannersList || []), description: 'Lista de banners em formato JSON para o carrossel do Hero' }
+        ];
+
+        for (const item of updates) {
+          const { error } = await supabaseClient
+            .from('website_settings')
+            .upsert(item, { onConflict: 'key' });
+          if (error) {
+            console.error("Erro no upsert de website_settings:", error);
+            throw error;
+          }
+        }
+        return { sucesso: true };
+      } catch (err) {
+        console.error("Erro ao salvar Hero Config no Supabase:", err);
+        throw err;
+      }
+    }
+    return { sucesso: true, offline: true };
+  },
+
+  async uploadBannerStorage(blob, fileName = 'banner.webp') {
+    if (!this.isSupabaseActive() || !supabaseClient) {
+      return null;
+    }
+    try {
+      const cleanName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const path = `banners/${Date.now()}_${cleanName}`;
+      const { data, error } = await supabaseClient.storage
+        .from('website-media')
+        .upload(path, blob, {
+          contentType: 'image/webp',
+          upsert: true
+        });
+
+      if (error) {
+        console.warn("Aviso ao fazer upload para storage:", error);
+        return null;
+      }
+
+      const { data: publicUrlData } = supabaseClient.storage
+        .from('website-media')
+        .getPublicUrl(path);
+
+      return publicUrlData ? publicUrlData.publicUrl : null;
+    } catch (err) {
+      console.warn("Erro ao fazer upload no Supabase Storage:", err);
+      return null;
+    }
   }
 };
 
@@ -1195,15 +2845,15 @@ DB.semearSeVazio();
 // Inicializa conexão se as chaves do Supabase já estiverem salvas
 DB.initSupabase();
 
-// Garantir que o estoque do Brinco Bae seja 0 (indisponível) no banco local
+// Garantir que o estoque do Brinco Bae seja atualizado no banco local
 try {
   const prods = DB.getLocalData(LOCAL_KEYS.PRODUTOS);
   if (prods && prods.length > 0) {
     const baeProd = prods.find(p => p.sku === 'BRI-BAE');
-    if (baeProd && baeProd.estoque !== 0) {
-      baeProd.estoque = 0;
+    if (baeProd && baeProd.estoque === 0) {
+      baeProd.estoque = 10;
       DB.setLocalData(LOCAL_KEYS.PRODUTOS, prods);
-      console.log("Estoque do Brinco Bae atualizado para 0 (indisponível).");
+      console.log("Estoque do Brinco Bae atualizado para 10 (disponível).");
     }
   }
 } catch (e) {
