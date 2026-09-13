@@ -21,8 +21,8 @@ const DEFAULT_HERO_CONFIG = {
     ]
 };
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://qubfrnezfmbrpmxintdq.supabase.co';
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1YmZybmV6Zm1icnBteGludGRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MzgxMDIsImV4cCI6MjA5NjIxNDEwMn0.IVZkMEHx1ftdURf9i6kD6qd4nuddLdUAJ4SElvLQYX8';
+const SUPABASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) || 'https://qubfrnezfmbrpmxintdq.supabase.co';
+const SUPABASE_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1YmZybmV6Zm1icnBteGludGRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MzgxMDIsImV4cCI6MjA5NjIxNDEwMn0.IVZkMEHx1ftdURf9i6kD6qd4nuddLdUAJ4SElvLQYX8';
 
 let cachedConfig = null;
 
@@ -33,8 +33,9 @@ export async function getHeroSettings(forceRefresh = false) {
 
     try {
         const response = await fetch(
-            `${SUPABASE_URL}/rest/v1/website_settings?key=in.(hero_media_type,hero_banner_desktop,hero_banner_mobile,hero_banners_list)&select=key,value&t=${Date.now()}`,
+            `${SUPABASE_URL}/rest/v1/website_settings?key=in.(hero_media_type,hero_banner_desktop,hero_banner_mobile,hero_banners_list)&select=key,value`,
             {
+                cache: 'no-store',
                 headers: {
                     apikey: SUPABASE_KEY,
                     Authorization: `Bearer ${SUPABASE_KEY}`
