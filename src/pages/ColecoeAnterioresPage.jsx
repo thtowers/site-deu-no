@@ -90,7 +90,7 @@ const ColecoeAnterioresPage = () => {
 
                         {/* 1. Colar Rastro */}
                         <ProductCard
-                            colorOptions={['verde_militar', 'verde_bandeira', 'azul_marinho', 'caramelo', 'verde_jade']}
+                            colorOptions={['verde_bandeira', 'azul_marinho', 'caramelo', 'verde_jade']}
                             name="Colar Rastro"
                             description={["Forte, marcante, inesquecível — como você."]}
                             price="R$ 40,00"
@@ -249,7 +249,7 @@ const ColecoeAnterioresPage = () => {
                         <ProductCard
                             colorOptions={[
                                 'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao', 'rosa_bebe',
-                                'verde_militar', 'azul_petroleo', 'verde_bandeira', 'azul_marinho',
+                                'azul_petroleo', 'verde_bandeira', 'azul_marinho',
                                 'azul_anil', 'azul_royal', 'roxo', 'rosa', 'laranja', 'vermelho',
                                 'terracota', 'vermelho_figo', 'caramelo', 'chumbo', 'mostarda',
                                 'verde_jade', 'preto', 'preto_poa_branco', 'azul_marinho_poa_branco',

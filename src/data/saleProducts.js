@@ -13,7 +13,7 @@ export const SALE_PRODUCTS = [
         ],
         mobileImageSrc: '/assets/produtos/rastro.webp',
         imageClass: 'object-center lg:object-bottom',
-        colorOptions: ['verde_militar', 'verde_bandeira', 'azul_marinho', 'caramelo', 'verde_jade'],
+        colorOptions: ['verde_bandeira', 'azul_marinho', 'caramelo', 'verde_jade'],
         reversed: false
     },
     {
@@ -31,7 +31,7 @@ export const SALE_PRODUCTS = [
         imageClass: 'object-center',
         colorOptions: [
             'areia', 'cinza', 'azul_bebe', 'amarelo_manteiga', 'verde_limao',
-            'rosa_bebe', 'verde_militar', 'azul_petroleo', 'verde_bandeira',
+            'rosa_bebe', 'azul_petroleo', 'verde_bandeira',
             'azul_marinho', 'azul_anil', 'azul_royal', 'roxo', 'rosa',
             'laranja', 'vermelho', 'terracota', 'vermelho_figo', 'caramelo',
             'chumbo', 'mostarda', 'verde_jade', 'preto', 'preto_poa_branco',
