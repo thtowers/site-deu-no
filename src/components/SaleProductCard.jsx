@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Sparkles, Tag, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Tag, Smartphone, CreditCard } from 'lucide-react';
 import { COLORS_CATALOG } from '../data/colorsCatalog';
 
 const SaleProductCard = ({
@@ -427,13 +427,14 @@ const SaleProductCard = ({
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
                         onClick={() => React.startTransition(() => setShowPaymentModal(false))}
+                        style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
                     >
                         <motion.div
-                            initial={{ scale: 0.95, opacity: 0, y: 15 }}
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.95, opacity: 0, y: 15 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-[#e8e6e3] relative"
+                            className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 max-w-sm w-full shadow-2xl border border-white/20 relative"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button
@@ -446,41 +447,42 @@ const SaleProductCard = ({
                                 </svg>
                             </button>
 
-                            <div className="text-center mb-6">
-                                <h4
-                                    className="text-2xl font-serif text-[#3f4d41] tracking-tight mb-2"
-                                    style={{ fontFamily: "'Playfair Display', serif" }}
-                                >
-                                    Pagamento Seguro
+                            <div className="text-center mb-8">
+                                <h4 className="text-2xl font-serif text-[#3f4d41] tracking-tight mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                    Formas de Pagamento
                                 </h4>
-                                <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#78877a] to-transparent mx-auto" />
+                                <div className="w-12 h-px bg-linear-to-r from-transparent via-[#78877a] to-transparent mx-auto mb-2"></div>
+                                <p className="text-xs text-[#78877a] font-light uppercase tracking-widest mt-1" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                                    Escolha sua forma de pagamento
+                                </p>
                             </div>
 
-                            <div className="space-y-4 text-sm text-[#78877a]" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                                <div className="p-3.5 rounded-2xl bg-[#faf9f7] border border-[#e8e6e3] flex items-start gap-3">
-                                    <ShieldCheck className="text-[#3f4d41] shrink-0 mt-0.5" size={18} />
+                            <div className="space-y-4">
+                                {/* PIX */}
+                                <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-[#faf9f7] to-white border border-[#e8e6e3] hover:shadow-md transition-all duration-300">
+                                    <div className="w-10 h-10 rounded-full bg-[#1da851]/10 flex items-center justify-center text-[#1da851]">
+                                        <Smartphone size={20} />
+                                    </div>
                                     <div>
-                                        <p className="font-medium text-[#3f4d41] text-xs uppercase tracking-wider">PIX com Envio Imediato</p>
-                                        <p className="text-xs text-[#78877a] mt-0.5">Pagamento instantâneo para reserva prioritária da peça.</p>
+                                        <span className="block font-medium text-[#3f4d41]" style={{ fontFamily: "'Poppins', sans-serif" }}>PIX</span>
                                     </div>
                                 </div>
 
-                                <div className="p-3.5 rounded-2xl bg-[#faf9f7] border border-[#e8e6e3] flex items-start gap-3">
-                                    <Sparkles className="text-[#c97d60] shrink-0 mt-0.5" size={18} />
+                                {/* Cartão de Crédito */}
+                                <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-[#faf9f7] to-white border border-[#e8e6e3] hover:shadow-md transition-all duration-300">
+                                    <div className="w-10 h-10 rounded-full bg-[#3f4d41]/10 flex items-center justify-center text-[#3f4d41]">
+                                        <CreditCard size={20} />
+                                    </div>
                                     <div>
-                                        <p className="font-medium text-[#3f4d41] text-xs uppercase tracking-wider">Cartão de Crédito</p>
-                                        <p className="text-xs text-[#78877a] mt-0.5">Parcelamento facilitado através de link seguro de pagamento.</p>
+                                        <span className="block font-medium text-[#3f4d41]" style={{ fontFamily: "'Poppins', sans-serif" }}>Cartão de Crédito</span>
+                                        <span className="text-xs text-[#78877a]">Parcelamento em até 3x em compras acima de R$ 150 </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <button
-                                onClick={() => React.startTransition(() => setShowPaymentModal(false))}
-                                className="w-full mt-6 py-2.5 rounded-full bg-[#3f4d41] text-white text-xs uppercase tracking-wider font-medium hover:bg-[#2d382f] transition-all cursor-pointer"
-                                style={{ fontFamily: "'Poppins', sans-serif" }}
-                            >
-                                Entendido
-                            </button>
+                            <p className="mt-8 text-[11px] text-center text-[#78877a] font-light leading-relaxed uppercase tracking-wider" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                                Entre em contato por meio do WhatsApp para finalizar sua compra
+                            </p>
                         </motion.div>
                     </motion.div>
                 )}
