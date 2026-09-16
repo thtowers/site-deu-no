@@ -2,7 +2,7 @@
 // Serviço para consulta leve e reativa das configurações do site (Hero, banners, etc.)
 
 const DEFAULT_HERO_CONFIG = {
-    mediaType: 'banner', // 'banner' ou 'video'
+    mediaType: 'video', // 'banner' ou 'video'
     desktopBanner: '/assets/desktop_banner_1.webp',
     mobileBanner: '/assets/Mobile_banner_1.webp',
     bannersList: [

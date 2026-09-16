@@ -1,7 +1,6 @@
 import React, { useState, useEffect, startTransition } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ChevronDown, Sparkles, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { getHeroSettings } from '../services/siteSettings';
 
 const DEFAULT_BANNERS = [
@@ -36,7 +35,7 @@ const Hero = () => {
             }
         } catch (e) {}
         return {
-            mediaType: 'banner',
+            mediaType: 'video',
             desktopBanner: '/assets/desktop_banner_1.webp',
             mobileBanner: '/assets/Mobile_banner_1.webp',
             bannersList: DEFAULT_BANNERS
@@ -104,10 +103,8 @@ const Hero = () => {
         }
     }, [activeBanners.length, current]);
 
-    const shouldShowVideo = heroConfig.mediaType === 'video' && isMobile && !videoError;
-
     useEffect(() => {
-        if (shouldShowVideo) return; // Não roda timer de banners se o vídeo estiver ativo no mobile
+        if (isMobile && !videoError) return; // Não executa o timer no mobile se o vídeo estiver carregando corretamente
         if (activeBanners.length <= 1) return;
 
         const duration = 6000;
@@ -115,16 +112,16 @@ const Hero = () => {
             next();
         }, duration);
         return () => clearTimeout(timer);
-    }, [current, shouldShowVideo, activeBanners.length]);
+    }, [current, isMobile, videoError, activeBanners.length]);
 
     return (
         <div className="relative w-full">
             <div 
-                className={`relative overflow-hidden w-full ${shouldShowVideo ? 'h-auto' : 'h-[68svh] min-h-[480px] md:h-[85vh]'}`} 
+                className="relative h-auto md:h-[85vh] overflow-hidden w-full" 
                 style={{ backgroundColor: 'var(--color-off-white)' }}
             >
-                {shouldShowVideo ? (
-                    /* Modo Vídeo: Força exibição de vídeo 9:16 quando em dispositivos móveis (isMobile && !videoError) */
+                {(isMobile && !videoError) ? (
+                    /* Versão Mobile: Apenas Vídeo */
                     <div className="w-full overflow-hidden aspect-[9/16] bg-zinc-100" style={{ maxHeight: 'calc(100svh - 152px)' }}>
                         <video
                             autoPlay
@@ -143,7 +140,7 @@ const Hero = () => {
                         </video>
                     </div>
                 ) : (
-                    /* Modo Banner (Padrão Ativo ou Desktop): Responsivo Desktop & Mobile */
+                    /* Versão Desktop: Carrossel de Banners */
                     <>
                         <AnimatePresence initial={false}>
                             <motion.div
@@ -182,7 +179,7 @@ const Hero = () => {
                                     <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
                                 </button>
 
-                                <div className="absolute bottom-4 md:bottom-5 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3 z-10">
+                                <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3 z-10">
                                     {activeBanners.map((_, idx) => (
                                         <button
                                             key={idx}
@@ -196,31 +193,6 @@ const Hero = () => {
                         )}
                     </>
                 )}
-
-                {/* Botão Promocional no Hero do Banner */}
-                <div className="absolute bottom-12 md:bottom-14 left-1/2 -translate-x-1/2 z-20 w-auto px-4 text-center">
-                    <Link
-                        to="/sale"
-                        className="group relative inline-flex items-center gap-2.5 sm:gap-3 px-5 py-2.5 sm:px-7 sm:py-3 rounded-full shadow-lg hover:shadow-2xl border transition-all duration-300 hover:scale-105 backdrop-blur-md cursor-pointer"
-                        style={{
-                            backgroundColor: 'rgba(255, 255, 255, 0.92)',
-                            borderColor: 'rgba(255, 255, 255, 0.8)',
-                            color: '#3f4d41'
-                        }}
-                    >
-                        <Sparkles size={16} className="text-[#c97d60] animate-pulse shrink-0" />
-                        <span
-                            className="text-[11px] sm:text-xs uppercase tracking-[0.2em] font-medium"
-                            style={{ fontFamily: "'Poppins', sans-serif" }}
-                        >
-                            Dia do Consumidor
-                        </span>
-                        <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-[#c97d60] text-white tracking-wider">
-                            SALE
-                        </span>
-                        <ArrowRight size={14} className="text-[#3f4d41] group-hover:translate-x-1 transition-transform shrink-0" />
-                    </Link>
-                </div>
             </div>
 
             {/* Seta indicadora de scroll */}
