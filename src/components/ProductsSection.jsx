@@ -235,6 +235,7 @@ const ProductsSection = () => {
                     imageSrc={["/assets/produtos/orvalho1.2.webp", "/assets/produtos/orvalho2.2.webp"]}
                     mobileImageSrc="/assets/produtos/orvalho1.2.webp"
                     /* badgeText="Coleção Âmago" */
+                    isOutOfStock={true}
                     reversed={false}
                     imageClass="object-bottom"
                 />
