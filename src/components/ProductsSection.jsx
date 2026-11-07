@@ -74,6 +74,7 @@ const ProductsSection = () => {
                 <ProductCard
                     colorOptions={['prata_e_dourado', 'preto_dourado', 'camurca_marrom', 'camurca_caramelo', 'camurca_areia', 'camurca_preto']}
                     name="Colar Agora"
+                    isOutOfStock={true}
                     description={["O momento certo tem o nome do presente."]}
                     price="R$ 55,00"
                     imageSrc={["/assets/produtos/agora1.webp", "/assets/produtos/agora2.1.webp"]}
