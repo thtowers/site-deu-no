@@ -1,73 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, Sparkles } from 'lucide-react';
+import { getBlackFridayState } from '../utils/campaignConfig';
 
-// Calcula o estágio atual e a data alvo da campanha Dia do Consumidor (14/09 a 15/09):
-// 1. Antes de 14/09 às 00:00:00 -> Contagem regressiva até o INÍCIO das ofertas (14/09 00:00)
-// 2. De 14/09 até 15/09 às 23:59:59 -> Contagem regressiva até o ENCERRAMENTO da promoção (15/09 23:59:59)
-// 3. Após 15/09 às 23:59:59 -> Promoção encerrada
-export const getSaleTimeline = () => {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    // Início: 14 de Setembro às 00:00:00 (mês 8 em JS = Setembro)
-    const startDate = new Date(currentYear, 8, 14, 0, 0, 0);
-    // Encerramento: 15 de Setembro às 23:59:59
-    const endDate = new Date(currentYear, 8, 15, 23, 59, 59);
-
-    const nowMs = now.getTime();
-    const startMs = startDate.getTime();
-    const endMs = endDate.getTime();
-
-    if (nowMs < startMs) {
-        return {
-            phase: 'upcoming',
-            targetDate: startMs,
-            timeLeft: Math.max(0, startMs - nowMs),
-            label: 'A Promoção Começa em',
-            shortLabel: 'Começa em:',
-            badgeText: 'COMEÇA 14/09',
-            infoText: '*A contagem regressiva começou! O Especial Dia do Consumidor inicia dia 14/09.'
-        };
-    } else if (nowMs <= endMs) {
-        return {
-            phase: 'active',
-            targetDate: endMs,
-            timeLeft: Math.max(0, endMs - nowMs),
-            label: 'A Promoção Encerra em',
-            shortLabel: 'Termina em:',
-            badgeText: 'ESPECIAL',
-            infoText: '*Especial Dia do Consumidor ativo! Ofertas encerram dia 15/09 às 23:59.'
-        };
-    } else {
-        return {
-            phase: 'ended',
-            targetDate: endMs,
-            timeLeft: 0,
-            label: 'Promoção Encerrada',
-            shortLabel: 'Encerrada',
-            badgeText: 'ENCERRADO',
-            infoText: '*O Especial Dia do Consumidor foi finalizado. Acompanhe nossas redes para novos lançamentos!'
-        };
-    }
-};
+// Calcula o estágio atual e a data alvo da campanha Black Friday (13/11 a 15/11):
+// 1. Antes de 13/11 às 00:00:00 -> Contagem regressiva até o INÍCIO das ofertas (13/11 00:00)
+// 2. De 13/11 até 15/11 às 23:59:59 -> Contagem regressiva até o ENCERRAMENTO da promoção (15/11 23:59:59)
+// 3. Após 15/11 às 23:59:59 -> Promoção encerrada (site volta ao modo original)
+export const getSaleTimeline = () => getBlackFridayState();
 
 export const getTargetDate = () => {
     return getSaleTimeline().targetDate;
 };
 
-const TimeUnit = ({ value, label }) => {
+const TimeUnit = ({ value, label, isHighlight = false }) => {
     const formatted = String(value).padStart(2, '0');
 
     return (
         <div className="flex flex-col items-center flex-1 max-w-[90px]">
             <div
-                className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center border shadow-xs transition-all relative overflow-hidden bg-white/90 backdrop-blur-md"
+                className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center border transition-all relative overflow-hidden"
                 style={{
-                    borderColor: 'rgba(120, 135, 122, 0.25)',
-                    boxShadow: '0 4px 16px -2px rgba(63, 77, 65, 0.05)'
+                    background: 'linear-gradient(180deg, #1d2620 0%, #141a16 100%)',
+                    borderColor: isHighlight ? 'rgba(212, 136, 106, 0.40)' : 'rgba(181, 194, 183, 0.16)',
+                    boxShadow: '0 6px 16px -4px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
                 }}
             >
-                <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-[#78877a]/40 to-transparent" />
+                <div
+                    className="absolute top-0 inset-x-0 h-px"
+                    style={{
+                        background: isHighlight
+                            ? 'linear-gradient(to right, transparent, rgba(212, 136, 106, 0.7), transparent)'
+                            : 'linear-gradient(to right, transparent, rgba(181, 194, 183, 0.35), transparent)'
+                    }}
+                />
                 <AnimatePresence mode="popLayout">
                     <motion.span
                         key={formatted}
@@ -75,8 +40,11 @@ const TimeUnit = ({ value, label }) => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -8, opacity: 0 }}
                         transition={{ duration: 0.25, ease: 'easeOut' }}
-                        className="text-xl sm:text-2xl md:text-3xl font-serif text-[#3f4d41] font-medium tracking-tight"
-                        style={{ fontFamily: "'Playfair Display', serif" }}
+                        className="text-xl sm:text-2xl md:text-3xl font-serif font-medium tracking-tight"
+                        style={{
+                            fontFamily: "'Playfair Display', serif",
+                            color: isHighlight ? '#d4886a' : '#faf9f7'
+                        }}
                     >
                         {formatted}
                     </motion.span>
@@ -84,7 +52,7 @@ const TimeUnit = ({ value, label }) => {
             </div>
             <span
                 className="mt-2.5 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-medium"
-                style={{ fontFamily: "'Poppins', sans-serif", color: '#78877a' }}
+                style={{ fontFamily: "'Poppins', sans-serif", color: '#b5c2b7' }}
             >
                 {label}
             </span>
@@ -111,46 +79,45 @@ const SaleCountdown = () => {
     const seconds = Math.floor((timeLeft / 1000) % 60);
 
     return (
-        <div className="w-full max-w-2xl mx-auto my-8 px-4 sm:px-6">
+        <div className="w-full max-w-2xl mx-auto my-6 px-4 sm:px-6">
             <div
-                className="rounded-3xl px-6 py-8 sm:px-10 sm:py-10 md:px-12 md:py-11 border relative overflow-hidden backdrop-blur-md shadow-sm"
+                className="rounded-3xl px-6 py-8 sm:px-10 sm:py-10 md:px-12 md:py-11 border relative overflow-hidden"
                 style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.75)',
-                    borderColor: 'rgba(120, 135, 122, 0.22)'
+                    background: 'linear-gradient(160deg, #18201b 0%, #121714 100%)',
+                    borderColor: '#26312a',
+                    boxShadow: '0 18px 40px -12px rgba(20, 26, 22, 0.25), 0 4px 12px -2px rgba(20, 26, 22, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                 }}
             >
-                {/* Luz ambiente sutil */}
+                {/* Filete sutil centralizado no topo do card */}
                 <div
-                    className="absolute -top-12 -right-12 w-48 h-48 rounded-full pointer-events-none"
+                    className="absolute top-0 inset-x-0 h-px pointer-events-none"
                     style={{
-                        background: 'radial-gradient(circle, rgba(169, 180, 170, 0.25) 0%, transparent 70%)'
+                        background: 'linear-gradient(90deg, transparent 10%, rgba(181, 194, 183, 0.25) 50%, transparent 90%)'
                     }}
                 />
 
-                <div className="flex items-center justify-center gap-2 mb-6">
-                    <Clock size={16} className="text-[#78877a]" />
+                <div className="flex items-center justify-center mb-6 relative z-10">
                     <span
-                        className="text-xs uppercase tracking-[0.25em] font-medium"
-                        style={{ fontFamily: "'Poppins', sans-serif", color: '#78877a' }}
+                        className="text-xs sm:text-sm uppercase tracking-[0.25em] font-medium"
+                        style={{ fontFamily: "'Poppins', sans-serif", color: '#faf9f7' }}
                     >
                         {label}
                     </span>
-                    <Sparkles size={14} className="text-[#c97d60]" />
                 </div>
 
-                <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 max-w-md mx-auto">
+                <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 max-w-md mx-auto relative z-10">
                     <TimeUnit value={days} label="Dias" />
-                    <span className="text-lg sm:text-xl font-serif text-[#78877a]/50 -mt-6">:</span>
+                    <span className="text-lg sm:text-xl font-serif text-[#b5c2b7]/50 -mt-6">:</span>
                     <TimeUnit value={hours} label="Horas" />
-                    <span className="text-lg sm:text-xl font-serif text-[#78877a]/50 -mt-6">:</span>
+                    <span className="text-lg sm:text-xl font-serif text-[#b5c2b7]/50 -mt-6">:</span>
                     <TimeUnit value={minutes} label="Min" />
-                    <span className="text-lg sm:text-xl font-serif text-[#78877a]/50 -mt-6">:</span>
-                    <TimeUnit value={seconds} label="Seg" />
+                    <span className="text-lg sm:text-xl font-serif text-[#b5c2b7]/50 -mt-6">:</span>
+                    <TimeUnit value={seconds} label="Seg" isHighlight />
                 </div>
 
                 <p
-                    className="text-center text-xs mt-5 font-light tracking-wide italic"
-                    style={{ fontFamily: "'Poppins', sans-serif", color: '#78877a' }}
+                    className="text-center text-xs sm:text-sm mt-6 font-light tracking-wide italic relative z-10"
+                    style={{ fontFamily: "'Poppins', sans-serif", color: '#c7d2c9' }}
                 >
                     {infoText}
                 </p>

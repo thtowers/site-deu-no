@@ -1,0 +1,47 @@
+name: Reverter Black Friday para Versão Original
+
+on:
+  # Executa automaticamente em 16 de Novembro às 00:00 BRT (03:00 UTC)
+  schedule:
+    - cron: '0 3 16 11 *'
+  # Também permite acionar manualmente com 1 clique na aba Actions do GitHub
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore-original-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório completo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Restaurar arquivos para a versão original pré-Black Friday
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          BACKUP_TAG="pre-black-friday-backup"
+          FALLBACK_COMMIT="3887646"
+
+          if git rev-parse "$BACKUP_TAG" >/dev/null 2>&1; then
+            TARGET_REF="$BACKUP_TAG"
+          else
+            TARGET_REF="$FALLBACK_COMMIT"
+          fi
+
+          echo "Restaurando código da main a partir de: $TARGET_REF"
+          git checkout "$TARGET_REF" -- .
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add -A
+            git commit -m "chore(auto-revert): restaurar versão original do site após fim da Black Friday"
+            git push origin main
+            echo "✅ Site restaurado para a versão original com sucesso!"
+          else
+            echo "ℹ️ A branch main já está na versão original. Nenhuma alteração necessária."
+          fi
