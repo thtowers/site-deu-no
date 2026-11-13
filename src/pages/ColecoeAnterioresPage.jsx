@@ -4,8 +4,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ElegantDivider from '../components/ElegantDivider';
 import ProductCard from '../components/ProductCard';
+import { SectionBlackFridayStamps, ProductsBlackFridayStamps } from '../components/BlackFridayStampsBackground';
+import { useBlackFridayStatus } from '../utils/campaignConfig';
 
 const ColecoeAnterioresPage = () => {
+    const { isBlackFridayActive } = useBlackFridayStatus();
+
     return (
         <div className="min-h-screen" style={{ backgroundColor: '#faf9f7' }}>
             <Header />
@@ -23,6 +27,9 @@ const ColecoeAnterioresPage = () => {
                             background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(120,135,122,0.08) 0%, transparent 70%)'
                         }}
                     />
+
+                    {/* Elementos de fundo (Carimbos Black Friday) */}
+                    {isBlackFridayActive && <SectionBlackFridayStamps variant="about" />}
 
                     <div className="container mx-auto px-4 text-center relative z-10">
                         {/* Linha decorativa superior */}
@@ -83,10 +90,12 @@ const ColecoeAnterioresPage = () => {
                 ══════════════════════════════════════════════════════ */}
                 <section
                     id="colecoes-anteriores-produtos"
-                    className="py-8 md:py-12"
+                    className="py-8 md:py-12 relative overflow-hidden"
                     style={{ backgroundColor: '#faf9f7' }}
                 >
-                    <div className="container mx-auto px-4">
+                    {isBlackFridayActive && <ProductsBlackFridayStamps />}
+
+                    <div className="container mx-auto px-4 relative z-10">
 
                         {/* 1. Colar Rastro */}
                         <ProductCard

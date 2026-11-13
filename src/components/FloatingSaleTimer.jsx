@@ -9,7 +9,7 @@ const FloatingSaleTimer = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [isDismissed, setIsDismissed] = useState(false);
     const location = useLocation();
-    const isSalePage = location.pathname === '/sale' || location.pathname === '/promocao' || location.pathname === '/dia-do-consumidor';
+    const isHomePage = location.pathname === '/';
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -22,7 +22,6 @@ const FloatingSaleTimer = () => {
     useEffect(() => {
         const handleScroll = () => {
             if (isDismissed) return;
-            // Exibe após rolar um pouco para não cobrir o hero imediatamente
             setIsVisible(window.scrollY > 180);
         };
 
@@ -41,9 +40,9 @@ const FloatingSaleTimer = () => {
     const pad = (n) => String(n).padStart(2, '0');
 
     const handleScrollToOffers = (e) => {
-        if (isSalePage) {
+        if (isHomePage) {
             e.preventDefault();
-            const elem = document.getElementById('produtos-sale');
+            const elem = document.getElementById('produtos');
             if (elem) {
                 elem.scrollIntoView({ behavior: 'smooth' });
             }
@@ -54,7 +53,7 @@ const FloatingSaleTimer = () => {
         <AnimatePresence>
             {isVisible && !isDismissed && (
                 <motion.aside
-                    aria-label="Contagem regressiva da promoção"
+                    aria-label="Contagem regressiva da Black Friday"
                     initial={{ y: 50, opacity: 0, scale: 0.95 }}
                     animate={{ y: 0, opacity: 1, scale: 1 }}
                     exit={{ y: 50, opacity: 0, scale: 0.95 }}
@@ -62,65 +61,60 @@ const FloatingSaleTimer = () => {
                     className="fixed bottom-4 sm:bottom-6 right-3 sm:right-6 z-40 select-none"
                 >
                     <div
-                        className="group flex items-center gap-2.5 sm:gap-3 p-2 sm:p-2.5 pl-3 sm:pl-3.5 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#e8e6e3] hover:shadow-2xl transition-all duration-300"
+                        className="group flex items-center gap-2.5 sm:gap-3 p-2 sm:p-2.5 pl-3 sm:pl-3.5 bg-[#151c17]/95 backdrop-blur-md rounded-2xl shadow-2xl border border-[#2b3830] hover:border-[#d4886a]/50 transition-all duration-300"
                         style={{
-                            boxShadow: '0 12px 30px -4px rgba(63, 77, 65, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.05)'
+                            boxShadow: '0 16px 35px -4px rgba(0, 0, 0, 0.7)'
                         }}
                     >
-                        {/* Link / Botão que leva às ofertas */}
                         <Link
-                            to="/sale"
+                            to="/#produtos"
                             onClick={handleScrollToOffers}
                             className="flex items-center gap-2.5 sm:gap-3 cursor-pointer"
                         >
-                            {/* Ícone com luz sutil */}
-                            <div className="w-8 h-8 rounded-xl bg-[#faf9f7] border border-[#e8e6e3] flex items-center justify-center text-[#3f4d41] shrink-0 relative">
-                                <Clock size={16} />
-                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#c97d60] animate-pulse" />
+                            <div className="w-8 h-8 rounded-xl bg-[#0e120f] border border-[#2b3830] flex items-center justify-center text-[#faf9f7] shrink-0 relative">
+                                <Clock size={16} className="text-[#d4886a]" />
+                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#d4886a] animate-pulse" />
                             </div>
 
-                            {/* Informações do Relógio */}
                             <div className="text-left">
                                 <div className="flex items-center gap-1.5 leading-none mb-1">
                                     <span
-                                        className="text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold text-[#3f4d41]"
+                                        className="text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold text-[#faf9f7]"
                                         style={{ fontFamily: "'Poppins', sans-serif" }}
                                     >
                                         {shortLabel}
                                     </span>
-                                    <Sparkles size={11} className="text-[#c97d60]" />
+                                    <Sparkles size={11} className="text-[#d4886a]" />
                                 </div>
 
-                                {/* Dígitos do Relógio */}
-                                <div className="flex items-center gap-1 font-serif text-[#3f4d41] text-xs sm:text-sm font-medium tracking-tight">
-                                    <span className="px-1.5 py-0.5 rounded-md bg-[#faf9f7] border border-[#e8e6e3]/70 font-mono text-[11px] sm:text-xs">
-                                        {pad(days)}<span className="text-[9px] text-[#78877a] font-sans ml-0.5">d</span>
+                                <div className="flex items-center gap-1 font-serif text-[#faf9f7] text-xs sm:text-sm font-medium tracking-tight">
+                                    <span className="px-1.5 py-0.5 rounded-md bg-[#0e120f] border border-[#2b3830] font-mono text-[11px] sm:text-xs">
+                                        {pad(days)}<span className="text-[9px] text-[#b5c2b7] font-sans ml-0.5">d</span>
                                     </span>
-                                    <span className="text-[#78877a]/60 text-xs">:</span>
-                                    <span className="px-1.5 py-0.5 rounded-md bg-[#faf9f7] border border-[#e8e6e3]/70 font-mono text-[11px] sm:text-xs">
-                                        {pad(hours)}<span className="text-[9px] text-[#78877a] font-sans ml-0.5">h</span>
+                                    <span className="text-[#b5c2b7]/50 text-xs">:</span>
+                                    <span className="px-1.5 py-0.5 rounded-md bg-[#0e120f] border border-[#2b3830] font-mono text-[11px] sm:text-xs">
+                                        {pad(hours)}<span className="text-[9px] text-[#b5c2b7] font-sans ml-0.5">h</span>
                                     </span>
-                                    <span className="text-[#78877a]/60 text-xs">:</span>
-                                    <span className="px-1.5 py-0.5 rounded-md bg-[#faf9f7] border border-[#e8e6e3]/70 font-mono text-[11px] sm:text-xs">
-                                        {pad(minutes)}<span className="text-[9px] text-[#78877a] font-sans ml-0.5">m</span>
+                                    <span className="text-[#b5c2b7]/50 text-xs">:</span>
+                                    <span className="px-1.5 py-0.5 rounded-md bg-[#0e120f] border border-[#2b3830] font-mono text-[11px] sm:text-xs">
+                                        {pad(minutes)}<span className="text-[9px] text-[#b5c2b7] font-sans ml-0.5">m</span>
                                     </span>
-                                    <span className="text-[#78877a]/60 text-xs">:</span>
-                                    <span className="px-1.5 py-0.5 rounded-md bg-[#faf9f7] border border-[#e8e6e3]/70 font-mono text-[11px] sm:text-xs text-[#c97d60] font-semibold">
-                                        {pad(seconds)}<span className="text-[9px] text-[#78877a] font-sans ml-0.5">s</span>
+                                    <span className="text-[#b5c2b7]/50 text-xs">:</span>
+                                    <span className="px-1.5 py-0.5 rounded-md bg-[#0e120f] border border-[#2b3830] font-mono text-[11px] sm:text-xs text-[#d4886a] font-semibold">
+                                        {pad(seconds)}<span className="text-[9px] text-[#b5c2b7] font-sans ml-0.5">s</span>
                                     </span>
                                 </div>
                             </div>
 
-                            <ChevronRight size={14} className="text-[#78877a] group-hover:text-[#3f4d41] group-hover:translate-x-0.5 transition-all shrink-0 ml-0.5" />
+                            <ChevronRight size={14} className="text-[#b5c2b7] group-hover:text-[#faf9f7] group-hover:translate-x-0.5 transition-all shrink-0 ml-0.5" />
                         </Link>
 
-                        {/* Botão de Fechar */}
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setIsDismissed(true);
                             }}
-                            className="p-1 text-[#78877a]/60 hover:text-[#3f4d41] rounded-full hover:bg-black/5 transition-colors cursor-pointer ml-1"
+                            className="p-1 text-[#b5c2b7]/70 hover:text-[#faf9f7] rounded-full hover:bg-white/10 transition-colors cursor-pointer ml-1"
                             aria-label="Fechar relógio"
                         >
                             <X size={13} />

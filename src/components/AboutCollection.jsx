@@ -1,10 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { SectionBlackFridayStamps } from './BlackFridayStampsBackground';
+import { useBlackFridayStatus } from '../utils/campaignConfig';
 
 const AboutCollection = () => {
+    const { isBlackFridayActive } = useBlackFridayStatus();
+
     return (
         <section id="amago" className="py-24 md:py-32 bg-white relative overflow-hidden">
-            <div className="container mx-auto px-4 md:px-8">
+            {/* Elementos de fundo (Carimbos Black Friday apenas durante a campanha) */}
+            {isBlackFridayActive && <SectionBlackFridayStamps variant="about" />}
+
+            <div className="container mx-auto px-4 md:px-8 relative z-10">
                 <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
 
                     {/* Texto Explicação */}
