@@ -1,6 +1,6 @@
-import React, { useState, useEffect, startTransition } from 'react';
+import React, { useState, useEffect, useRef, startTransition } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ChevronDown, Sparkles, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Sparkles, ArrowRight, Play } from 'lucide-react';
 import { getHeroSettings } from '../services/siteSettings';
 import { smoothScrollToSection } from '../App';
 import { useBlackFridayStatus } from '../utils/campaignConfig';
@@ -105,6 +105,16 @@ const Hero = () => {
         typeof window !== 'undefined' ? window.matchMedia('(max-width: 1024px)').matches : false
     );
     const [videoError, setVideoError] = useState(false);
+    const videoRef = useRef(null);
+    const [videoNeedsPlay, setVideoNeedsPlay] = useState(false);
+
+    const playHeroVideo = () => {
+        const video = videoRef.current;
+        if (!video) return;
+        video.muted = true;
+        video.defaultMuted = true;
+        video.play()?.catch(() => setVideoNeedsPlay(true));
+    };
     const [heroConfig, setHeroConfig] = useState(() => {
         try {
             const local = typeof window !== 'undefined' ? localStorage.getItem('site_hero_config') : null;
@@ -207,7 +217,7 @@ const Hero = () => {
     return (
         <div className="relative w-full">
             <div 
-                className="relative h-auto md:h-[85vh] overflow-hidden w-full" 
+                className={`relative overflow-hidden w-full ${isMobile ? 'aspect-[9/16] max-h-[calc(100svh-152px)]' : 'h-[85vh]'}`}
                 style={{ backgroundColor: 'var(--color-off-white)' }}
             >
                 {/* ══════════════════════════════════════════════════════════════════════════
@@ -261,20 +271,36 @@ const Hero = () => {
                     /* Versão Mobile: Apenas Vídeo */
                     <div className="w-full overflow-hidden aspect-[9/16] bg-[#121714]" style={{ maxHeight: 'calc(100svh - 152px)' }}>
                         <video
+                            ref={videoRef}
                             autoPlay
                             loop
                             muted
                             playsInline
                             preload="auto"
-                            poster="/assets/produtos/video/video_poster.webp"
+                            poster="/assets/produtos/video/video_poster.webp?v=bf-2026"
+                            onCanPlay={playHeroVideo}
+                            onPlaying={() => setVideoNeedsPlay(false)}
+                            onPause={() => setVideoNeedsPlay(true)}
                             onError={() => setVideoError(true)}
                             className="w-full h-full block object-cover aspect-[9/16]"
                             style={{ maxHeight: 'calc(100svh - 152px)', objectPosition: 'top center' }}
                         >
-                            <source src="/assets/produtos/video/video_principal2.webm" type="video/webm" />
-                            <source src="/assets/produtos/video/video_principal2.mp4" type="video/mp4" />
+                            <source src="/assets/produtos/video/video_principal2.mp4?v=bf-2026" type="video/mp4" />
+                            <source src="/assets/produtos/video/video_principal2.webm?v=bf-2026" type="video/webm" />
                             Seu navegador não suporta vídeos.
                         </video>
+                        {videoNeedsPlay && (
+                            <button
+                                type="button"
+                                onClick={playHeroVideo}
+                                aria-label="Reproduzir vídeo"
+                                className="absolute inset-0 z-10 flex items-center justify-center cursor-pointer"
+                            >
+                                <span className="rounded-full bg-black/60 border border-white/60 p-5 text-white">
+                                    <Play className="w-9 h-9" aria-hidden="true" />
+                                </span>
+                            </button>
+                        )}
                     </div>
                 ) : (
                     /* Versão Desktop: Carrossel de Banners */
