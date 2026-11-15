@@ -375,6 +375,7 @@ const ProductsSection = () => {
                                 'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
                             ]}
                             name="Colar Margem"
+                            isOutOfStock={true}
                             modalSubtitle="Escolha 1 ou até 2 cores"
                             description={["Foi longe do centro que você encontrou a si mesma."]}
                             price="R$ 63,00"
@@ -612,6 +613,7 @@ const ProductsSection = () => {
                                 'rami_branco', 'areia_poa_marrom_escuro', 'vermelho_poa_azul_marinho', 'areia_caramelo_mesclada'
                             ]}
                             name="Colar Margem"
+                            isOutOfStock={true}
                             modalSubtitle="Escolha 1 ou até 2 cores"
                             description={["Foi longe do centro que você encontrou a si mesma."]}
                             price="R$ 78,00"
