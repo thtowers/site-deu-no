@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, Palette, Gem } from 'lucide-react';
-import { SectionBlackFridayStamps } from './BlackFridayStampsBackground';
-import { useBlackFridayStatus } from '../utils/campaignConfig';
 
 const qualityItems = [
     {
@@ -29,21 +27,19 @@ const qualityItems = [
 ];
 
 const QualitySection = () => {
-    const { isBlackFridayActive } = useBlackFridayStatus();
     const [expandedIds, setExpandedIds] = useState(['uv']); // Começa com UV aberto
 
     const handleCardClick = (id) => {
+        // Lógica de acordeão: se clicar, abre esse e fecha os outros
+        // Se clicar no já aberto, mantemos aberto (ou poderíamos fechar, mas acordeão visual geralmente mantém um foco)
         if (!expandedIds.includes(id)) {
             setExpandedIds([id]);
         }
     };
 
     return (
-        <section id="qualidade" className="py-16 md:py-24 bg-white relative overflow-hidden">
-            {/* Elementos de fundo (Carimbos Black Friday apenas durante a campanha) */}
-            {isBlackFridayActive && <SectionBlackFridayStamps variant="quality" />}
-
-            <div className="container mx-auto px-4 relative z-10">
+        <section id="qualidade" className="py-16 md:py-24 bg-white overflow-hidden">
+            <div className="container mx-auto px-4">
 
                 {/* Cabeçalho */}
                 <div className="text-center mb-12 md:mb-16 max-w-4xl mx-auto px-4">

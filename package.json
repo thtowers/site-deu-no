@@ -8,10 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "convert-images": "node converter-imagens.js",
-    "bf:status": "bash ./scripts/black-friday-switch.sh status",
-    "bf:publicar": "bash ./scripts/black-friday-switch.sh publicar",
-    "bf:restaurar-original": "bash ./scripts/black-friday-switch.sh restaurar-original"
+    "convert-images": "node converter-imagens.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
